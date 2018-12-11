@@ -42,3 +42,8 @@ void GFX::InputBox::Update(sf::Event const& event)
 	// Set to the new string
 	m_renderText.setString(m_prefix + m_currentString);
 }
+
+void GFX::InputBox::AddHandler(CORETOOLS::TextInputHandler& handler)
+{
+	m_handler.push_back(handler);
+}

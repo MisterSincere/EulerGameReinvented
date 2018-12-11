@@ -1,6 +1,16 @@
 #pragma once
 
+//////////////
+// INCLUDES //
+//////////////
+#include <vector>
+
+/////////////////
+// MY INCLUDES //
+/////////////////
 #include "TextBox.h"
+#include "TextInputHandler.h"
+
 
 namespace GFX
 {
@@ -11,7 +21,11 @@ namespace GFX
 
 		void Update(sf::Event const&) override;
 
+		void AddHandler(CORETOOLS::TextInputHandler&);
+
 	private:
+		std::vector<CORETOOLS::TextInputHandler> m_handler;
+
 		sf::String m_prefix;
 	};
 }
