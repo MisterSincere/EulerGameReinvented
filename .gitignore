@@ -1,2 +1,16 @@
+CMakeCache.txt
+cmake_install.cmake
+
 *.class
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+
+.vs/
 doc/
+CMakeFiles/
+Debug/
+Release/
+x64/
+EulerAdventure.dir/
