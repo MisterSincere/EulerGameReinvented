@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13.1)
 project (EulerAdventure)
 
 # Source files
-set (GFX source/InputBox.h source/InputBox.cpp)
+set (GFX source/IDrawable.h source/InputBox.h source/InputBox.cpp)
 set (EulerAdventure source/Tuna.h source/Tuna.cpp source/EulerAdventure.cpp)
 
 # Filter

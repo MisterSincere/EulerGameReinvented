@@ -1,5 +1,6 @@
 #include "Tuna.h"
 
+#include <SFML/Graphics.hpp>
 #include <iostream>
 
 bool Tuna::InitSystems()
@@ -7,6 +8,7 @@ bool Tuna::InitSystems()
 	m_window.create(sf::VideoMode(800u, 600u), "EulerAdventure");
 
 	if (!m_arialFont.loadFromFile("assets/fonts/arial.ttf")) return false;
+
 	m_inputBox.setFont(m_arialFont);
 	m_inputBox.setCharacterSize(24);
 	m_inputBox.setFillColor(sf::Color::Red);
@@ -28,7 +30,7 @@ int Tuna::Run()
 
 		m_window.clear(sf::Color(250, 250, 250));
 
-		m_window.draw(m_inputBox);
+		m_inputBox.Draw(m_window);
 
 		m_window.display();
 	}
