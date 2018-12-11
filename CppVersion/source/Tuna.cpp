@@ -12,6 +12,7 @@ bool Tuna::InitSystems()
 	// Input box
 	m_inputBox.SetFont(m_arialFont);
 	m_inputBox.SetFillColor(sf::Color::White);
+	m_inputBox.AddHandler(m_inputHandler);
 
 	// Adjust positions and sizes
 	SetStyleRelative(m_width, m_height);

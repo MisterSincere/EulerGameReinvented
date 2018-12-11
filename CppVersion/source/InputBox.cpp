@@ -30,6 +30,11 @@ void GFX::InputBox::Update(sf::Event const& event)
 			m_currentString.erase(m_currentString.getSize() - 1);
 			removeDone = true;
 		}
+		else if (event.text.unicode == 0x000D) //< Return pressed signal handler
+		{
+			for (auto handle : m_handler) handle.Handle(m_currentString.toAnsiString().c_str());
+			m_currentString.clear();
+		}
 		break;
 	}
 
