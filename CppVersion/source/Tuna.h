@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Window.hpp>
+#include "InputBox.h"
 
 class Tuna
 {
@@ -13,8 +13,12 @@ private:
 	bool InitSystems();
 	bool InitContent();
 
+	void ProcessInput();
+
 private:
-	sf::Window m_window;
+	sf::RenderWindow m_window;
+	GFX::InputBox m_inputBox;
+	sf::Font m_arialFont;
 
 	bool m_isInitialized{ false };
 };

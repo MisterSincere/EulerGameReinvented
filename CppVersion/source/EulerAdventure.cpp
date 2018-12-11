@@ -1,12 +1,12 @@
 
 #include <iostream>
 
-#include "MainLoop.h"
+#include "Tuna.h"
 
 
 int main(char** argv, int argc)
 {
-	MainLoop* ml = new MainLoop;
+	Tuna* ml = new Tuna;
 
 	// Let the game set itself up
 	if (!ml->Init()) return -1;
