@@ -1,22 +1,22 @@
-#include <SFML/Window.hpp>
+
+#include <iostream>
+
+#include "MainLoop.h"
 
 
 int main(char** argv, int argc)
 {
-	sf::Window window;
-	window.create(sf::VideoMode(800, 600), "SFML Works!");
+	MainLoop* ml = new MainLoop;
 
-	while (window.isOpen())
-	{
-		// Check windows event
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed) window.close();
-		}
-	}
+	// Let the game set itself up
+	if (!ml->Init()) return -1;
 
+	// Start main loop
+	int retVal = ml->Run();
+	if (retVal) system("PAUSE");
 
+	// Free memory
+	delete ml;
 
-	return 0;
+	return retVal;
 }
