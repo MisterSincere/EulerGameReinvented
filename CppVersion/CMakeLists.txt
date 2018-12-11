@@ -2,10 +2,11 @@ cmake_minimum_required(VERSION 3.13.1)
 project (EulerAdventure)
 
 # Source files
-set (GFX source/IDrawable.h source/InputBox.h source/InputBox.cpp)
+set (GFX source/IDrawable.h source/TextBox.h source/TextBox.cpp source/InputBox.h source/InputBox.cpp)
 set (EulerAdventure source/Tuna.h source/Tuna.cpp source/EulerAdventure.cpp)
 
 # Filter
+source_group ("CORE" FILES ${CORE})
 source_group ("GFX" FILES ${GFX})
 source_group ("" FILES ${EulerAdventure})
 
@@ -16,7 +17,7 @@ link_directories ($ENV{ECA_SFML}/lib)
 include_directories ($ENV{ECA_SFML}/include)
 
 # Add source files
-add_executable (EulerAdventure ${EulerAdventure} ${GFX})
+add_executable (EulerAdventure ${EulerAdventure} ${GFX} ${CORE})
 
 # Debug libs
 target_link_libraries (EulerAdventure debug

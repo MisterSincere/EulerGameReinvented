@@ -5,13 +5,16 @@
 
 bool Tuna::InitSystems()
 {
-	m_window.create(sf::VideoMode(800u, 600u), "EulerAdventure");
+	m_window.create(sf::VideoMode(m_width, m_height), "EulerAdventure");
 
 	if (!m_arialFont.loadFromFile("assets/fonts/arial.ttf")) return false;
 
-	m_inputBox.setFont(m_arialFont);
-	m_inputBox.setCharacterSize(24);
-	m_inputBox.setFillColor(sf::Color::Red);
+	// Input box
+	m_inputBox.SetFont(m_arialFont);
+	m_inputBox.SetFillColor(sf::Color::White);
+
+	// Adjust positions and sizes
+	SetStyleRelative(m_width, m_height);
 
 	return true;
 }
@@ -28,7 +31,7 @@ int Tuna::Run()
 	{
 		ProcessInput();
 
-		m_window.clear(sf::Color(250, 250, 250));
+		m_window.clear(sf::Color(3, 3, 3));
 
 		m_inputBox.Draw(m_window);
 
@@ -36,6 +39,14 @@ int Tuna::Run()
 	}
 
 	return 0;
+}
+
+void Tuna::SetStyleRelative(unsigned int width, unsigned int height)
+{
+	m_width = width;
+	m_height = height;
+
+	m_inputBox.SetBounds(5.0f, m_height - 45.0f, 250, 22);
 }
 
 void Tuna::ProcessInput()
@@ -50,7 +61,7 @@ void Tuna::ProcessInput()
 		}
 		else if (event.type == sf::Event::KeyPressed)
 		{
-
+			if (event.key.code == sf::Keyboard::Escape) m_window.close();
 		}
 
 		m_inputBox.Update(event);
