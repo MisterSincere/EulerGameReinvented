@@ -1,16 +1,10 @@
 #pragma once
 
-/////////////////
-// MY INCLUDES //
-/////////////////
-#include "Window.h"
+#include <SFML/Window.hpp>
 
-class MainLoop
+class Tuna
 {
 public:
-	MainLoop();
-	~MainLoop();
-
 	bool Init() { return (m_isInitialized = InitSystems() | InitContent()); }
 
 	int Run();
@@ -20,7 +14,7 @@ private:
 	bool InitContent();
 
 private:
-	GFX::Window* m_pWindow{ nullptr };
+	sf::Window m_window;
 
 	bool m_isInitialized{ false };
 };
