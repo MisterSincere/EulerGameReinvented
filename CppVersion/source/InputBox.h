@@ -23,8 +23,10 @@ namespace GFX
 
 		void AddHandler(CORETOOLS::TextInputHandler&);
 
+
 	private:
 		std::vector<CORETOOLS::TextInputHandler> m_handler;
+		std::vector<CORETOOLS::AutoComplete*> m_autoCompleter;
 
 		sf::String m_prefix;
 	};
