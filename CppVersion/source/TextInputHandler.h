@@ -1,6 +1,14 @@
 #pragma once
 
+//////////////
+// INCLUDES //
+//////////////
 #include <SFML/Graphics/RenderWindow.hpp>
+
+/////////////////
+// MY INCLUDES //
+/////////////////
+#include "command.h"
 
 namespace CORETOOLS
 {
@@ -12,7 +20,7 @@ namespace CORETOOLS
 	class TextInputHandler
 	{
 	public:
-		TextInputHandler(sf::RenderWindow* window) : m_pWindow(window) {}
+		TextInputHandler(sf::RenderWindow*);
 
 		void Handle(char const* text);
 
@@ -20,5 +28,6 @@ namespace CORETOOLS
 
 	private:
 		sf::RenderWindow* m_pWindow;
+		CORETOOLS::CmdList m_commands;
 	};
 }

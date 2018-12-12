@@ -3,7 +3,7 @@
 //////////////
 // INCLUDES //
 //////////////
-#include <vector>
+#include <map>
 
 ///////////////////////////
 // FOREWARD DECLARATIONS //
@@ -15,10 +15,15 @@ namespace sf
 
 namespace CORETOOLS
 {
+	///////////////////////////
+	// FOREWARD DECLARATIONS //
+	///////////////////////////
+	struct CmdList;
+
 	class AutoComplete
 	{
 	public:
-		AutoComplete(/*Character*/);
+		AutoComplete(CmdList const&);
 
 		/**
 		 * First string will be changed to the nearest identical string that was set
@@ -27,11 +32,14 @@ namespace CORETOOLS
 		 * @param toBeCompleted		The string that the check will be against
 		 * @param completioned		Nearest identical string found
 		 *
-		 * @return An integer indicating the amount of character changes between toBeCompleted and completioned
+		 * @return An integer indicating the amount of equal characters
 		 **/
-		int Completion(sf::String const& toBeCompleted, sf::String& completioned);
+		int Complete(sf::String const& toBeCompleted, sf::String& completioned);
 
 	private:
-		std::vector<const char*> m_availableCmds;
+		void GetEquals(char const* string1, char const* string2, int& attachedEquals);
+
+	private:
+		CmdList const& m_availableCmds;
 	};
 }

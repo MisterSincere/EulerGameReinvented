@@ -24,8 +24,9 @@ bool GFX::TextBox::isValidText(sf::Uint32 character)
 	bool isNumber = character > 0x002F && character < 0x003A;
 	bool isBigLetter = character > 0x0040 && character < 0x005B;
 	bool isSmallLetter = character > 0x0060 && character < 0x007B;
+	bool isSpace = character == 0x0020;
 
-	return isNumber || isBigLetter || isSmallLetter;
+	return isNumber || isBigLetter || isSmallLetter || isSpace;
 }
 
 void GFX::TextBox::SetBounds(float x, float y, float w, float h)

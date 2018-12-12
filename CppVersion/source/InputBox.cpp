@@ -49,7 +49,7 @@ void GFX::InputBox::Update(sf::Event const& event)
 			{
 				if (!completion) continue;
 				// Make completion call
-				currNumChanged = completion->Completion(m_currentString, currNewString);
+				currNumChanged = completion->Complete(m_currentString, currNewString);
 				// If we are nearer update everything
 				if (minNumChanged >= currNumChanged && currNumChanged > 0) {
 					m_currentString = currNewString;

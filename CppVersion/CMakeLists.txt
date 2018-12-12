@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13.1)
 project (EulerAdventure)
 
 # Source files
-set (CORETOOLS source/AutoComplete.h source/AutoComplete.cpp source/TextInputHandler.h source/TextInputHandler.cpp)
+set (CORETOOLS source/command.h source/AutoComplete.h source/AutoComplete.cpp source/TextInputHandler.h source/TextInputHandler.cpp)
 set (GFX source/IDrawable.h source/TextBox.h source/TextBox.cpp source/InputBox.h source/InputBox.cpp)
 set (EulerAdventure source/Tuna.h source/Tuna.cpp source/EulerAdventure.cpp)
 
