@@ -18,7 +18,7 @@ namespace CORETOOLS
 	class AutoComplete
 	{
 	public:
-		AutoComplete(/*Character*/) {}
+		AutoComplete(/*Character*/);
 
 		/**
 		 * First string will be changed to the nearest identical string that was set
