@@ -15,7 +15,7 @@
 class Tuna
 {
 public:
-	bool Init() { return (m_isInitialized = InitSystems() | InitContent()); }
+	bool Init() { return (m_isInitialized = InitSystems() & InitContent()); }
 
 	int Run();
 
