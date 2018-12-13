@@ -1,12 +1,17 @@
 #include "TextInputHandler.h"
 
+//////////////
+// INCLUDES //
+//////////////
+#include <SFML/Graphics/RenderWindow.hpp>
+
 /////////////////
 // MY INCLUDES //
 /////////////////
 #include "AutoComplete.h"
 
 CORETOOLS::TextInputHandler::TextInputHandler(sf::RenderWindow* pWindow)
-	: m_pWindow(pWindow)
+	: IHandler(pWindow)
 {
 	m_commands += "exit";
 	m_commands += "explore";
@@ -23,7 +28,7 @@ CORETOOLS::TextInputHandler::TextInputHandler(sf::RenderWindow* pWindow)
 void CORETOOLS::TextInputHandler::Handle(char const* text)
 {
 	if (m_commands["exit"] == text) {
-		m_pWindow->close();
+		i_pWindow->close();
 	}
 }
 

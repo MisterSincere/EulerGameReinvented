@@ -42,7 +42,7 @@ void GFX::InputBox::Update(sf::Event const& event)
 
 		// RETURN
 		} else if (event.text.unicode == 0x000D) {
-			for (auto handle : m_handler) handle.Handle(m_currentString.toAnsiString().c_str());
+			for (auto handle : m_textHandler) handle->Handle(m_currentString.toAnsiString().c_str());
 			m_currentString.clear();
 			m_autoCompleteCmds.clear(); //< New autocomplete needed
 		
@@ -78,9 +78,9 @@ void GFX::InputBox::Update(sf::Event const& event)
 	m_renderText.setString(m_prefix + m_currentString);
 }
 
-void GFX::InputBox::AddHandler(CORETOOLS::TextInputHandler& handler)
+void GFX::InputBox::AddHandler(CORETOOLS::TextInputHandler* handler)
 {
-	m_handler.push_back(handler);
+	m_textHandler.push_back(handler);
 }
 
 void GFX::InputBox::SetAutoCompleter(CORETOOLS::AutoComplete* autoComplete)

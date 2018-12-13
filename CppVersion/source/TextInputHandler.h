@@ -1,13 +1,9 @@
 #pragma once
 
-//////////////
-// INCLUDES //
-//////////////
-#include <SFML/Graphics/RenderWindow.hpp>
-
 /////////////////
 // MY INCLUDES //
 /////////////////
+#include "IHandler.h"
 #include "command.h"
 
 namespace CORETOOLS
@@ -17,17 +13,16 @@ namespace CORETOOLS
 	///////////////////////////
 	class AutoComplete;
 
-	class TextInputHandler
+	class TextInputHandler : public IHandler<char const*>
 	{
 	public:
 		TextInputHandler(sf::RenderWindow*);
 
-		void Handle(char const* text);
+		void Handle(char const* text) override;
 
 		AutoComplete* AcquireAutoComplete();
 
 	private:
-		sf::RenderWindow* m_pWindow;
 		CORETOOLS::CmdList m_commands;
 	};
 }
