@@ -36,6 +36,8 @@ namespace CORETOOLS
 		 **/
 		int Complete(sf::String const& toBeCompleted, sf::String& completioned);
 
+		std::vector<Cmd> MultiComplete(sf::String const& toBeCompleted);
+
 	private:
 		void GetEquals(char const* string1, char const* string2, int& attachedEquals);
 

@@ -52,6 +52,7 @@ namespace CORETOOLS
 		// += operator to be able to add commands with string and cstring
 		CmdList operator+=(char const* cmd) { p_cmds.emplace_back(cmd); return *this; }
 		CmdList operator+=(std::string const& cmd) { p_cmds.emplace_back(cmd); return *this; }
+		CmdList operator+=(Cmd cmd) { p_cmds.push_back(cmd); return *this; }
 
 		std::vector<Cmd> p_cmds;
 	};

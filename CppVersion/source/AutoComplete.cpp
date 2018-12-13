@@ -41,6 +41,16 @@ int CORETOOLS::AutoComplete::Complete(sf::String const& toBeCompleted, sf::Strin
 	return maxAttachedEqual;
 }
 
+std::vector<CORETOOLS::Cmd> CORETOOLS::AutoComplete::MultiComplete(sf::String const& toBeCompleted)
+{
+	std::map<unsigned int, CORETOOLS::CmdList> cmdEqualityMap;
+
+	for (auto currCmd : m_availableCmds)
+	{
+
+	}
+}
+
 void CORETOOLS::AutoComplete::GetEquals(char const* string1, char const* string2, int& attachedEquals)
 {
 	int equals{ 0 };
