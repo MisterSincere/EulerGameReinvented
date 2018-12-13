@@ -45,10 +45,15 @@ namespace GFX
 	protected:
 		virtual bool isValidText(sf::Uint32);
 
+	private:
+		int InsertLineBreak(size_t index);
+
 	protected:
 		sf::String m_currentString;
 		sf::Text m_renderText;
 
 		unsigned int m_characterSize{ 20u };
+		sf::Vector2f m_position{ 0.0f, 0.0f };
+		sf::Vector2f m_size{ 200.0f, 200.0f };
 	};
 }

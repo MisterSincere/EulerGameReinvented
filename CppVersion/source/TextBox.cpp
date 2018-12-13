@@ -12,6 +12,7 @@
 GFX::TextBox::TextBox()
 {
 	m_renderText.setCharacterSize(m_characterSize);
+	m_renderText.setPosition(m_position);
 }
 
 void GFX::TextBox::Update(sf::Event const& event)
@@ -21,6 +22,13 @@ void GFX::TextBox::Update(sf::Event const& event)
 
 void GFX::TextBox::Draw(sf::RenderWindow& window)
 {
+	for (size_t i = 0; i < m_currentString.getSize(); i++) {
+		sf::Vector2f pos = m_renderText.findCharacterPos(i);
+		if (pos.x > (m_position.x + m_size.x)) {
+			i -= InsertLineBreak(i);
+		}
+	}
+
 	window.draw(m_renderText);
 }
 
@@ -34,6 +42,18 @@ bool GFX::TextBox::isValidText(sf::Uint32 character)
 	return isNumber || isBigLetter || isSmallLetter || isSpace;
 }
 
+int GFX::TextBox::InsertLineBreak(size_t index)
+{
+	size_t tempIndex = index;
+
+	unsigned int maxBack = 10u;
+	while (index && (m_currentString[index] != ' ' || maxBack--)) index--;
+
+	m_currentString.insert(index, "\n");
+
+	return tempIndex - index;
+}
+
 void GFX::TextBox::SetBounds(float x, float y, float w, float h)
 {
 	if (m_characterSize > h) {
@@ -41,6 +61,7 @@ void GFX::TextBox::SetBounds(float x, float y, float w, float h)
 		m_renderText.setCharacterSize(m_characterSize);
 	}
 	m_renderText.setPosition(x, y);
+	m_position = { x, y };
 }
 
 void GFX::TextBox::SetString(char const* text)
