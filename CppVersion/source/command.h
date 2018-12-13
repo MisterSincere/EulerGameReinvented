@@ -24,14 +24,23 @@ namespace CORETOOLS
 		Cmd operator=(std::string const& cmd) { p_text = cmd.c_str(); }
 		Cmd operator=(char const* cmd) { p_text = cmd; }
 
+		/// Comparison operators for equality amounts
+		template<typename T> bool operator==(T equals) const { return equals == p_equals; }
+		template<typename T> bool operator>=(T equals) const { return equals >= p_equals; }
+		template<typename T> bool operator<=(T equals) const { return equals <= p_equals; }
+		template<typename T> bool operator>(T equals) const { return equals > p_equals; }
+		template<typename T> bool operator<(T equals) const { return equals < p_equals; }
+
 		/// Equal operators for Command, string and cstring
 		bool operator==(Cmd cmd) const { return (strcmp(p_text, cmd.p_text) == 0); }
 		bool operator==(std::string const& cmd) const { return (strcmp(p_text, cmd.c_str()) == 0); }
 		bool operator==(char const* cmd) const { return (strcmp(p_text, cmd) == 0); }
 
+
 		char operator[](unsigned int index) { return p_text[index]; }
 
-		char const* p_text;
+		char const* p_text{ nullptr };
+		unsigned int p_equals{ 0u };
 	};
 
 	struct CmdList

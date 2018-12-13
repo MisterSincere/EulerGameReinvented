@@ -22,12 +22,15 @@ namespace GFX
 		void Update(sf::Event const&) override;
 
 		void AddHandler(CORETOOLS::TextInputHandler&);
-
+		void SetAutoCompleter(CORETOOLS::AutoComplete*);
 
 	private:
 		std::vector<CORETOOLS::TextInputHandler> m_handler;
-		std::vector<CORETOOLS::AutoComplete*> m_autoCompleter;
+		CORETOOLS::AutoComplete* m_pAutoCompleter{ nullptr };
 
 		sf::String m_prefix;
+
+		std::vector<CORETOOLS::Cmd> m_autoCompleteCmds;
+		unsigned int m_autoCompleteCmdIndex{ 0u };
 	};
 }
