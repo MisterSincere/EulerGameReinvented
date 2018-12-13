@@ -28,6 +28,8 @@ namespace GFX
 	class TextBox : public IDrawable
 	{
 	public:
+		TextBox();
+
 		virtual void Update(sf::Event const&) override;
 		virtual void Draw(sf::RenderWindow&) override;
 
@@ -46,5 +48,7 @@ namespace GFX
 	protected:
 		sf::String m_currentString;
 		sf::Text m_renderText;
+
+		unsigned int m_characterSize{ 20u };
 	};
 }

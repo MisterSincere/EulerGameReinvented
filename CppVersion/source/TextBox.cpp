@@ -9,6 +9,11 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 
+GFX::TextBox::TextBox()
+{
+	m_renderText.setCharacterSize(m_characterSize);
+}
+
 void GFX::TextBox::Update(sf::Event const& event)
 {
 	// Static text can be set with setText
@@ -31,7 +36,10 @@ bool GFX::TextBox::isValidText(sf::Uint32 character)
 
 void GFX::TextBox::SetBounds(float x, float y, float w, float h)
 {
-	m_renderText.setCharacterSize(h);
+	if (m_characterSize > h) {
+		m_characterSize = static_cast<unsigned int>(h);
+		m_renderText.setCharacterSize(m_characterSize);
+	}
 	m_renderText.setPosition(x, y);
 }
 

@@ -29,9 +29,13 @@ private:
 
 private:
 	sf::RenderWindow m_window;
+
 	sf::Font m_arialFont;
+	sf::Font m_squareFont;
 
 	CORETOOLS::TextInputHandler* m_pInputHandler{ new CORETOOLS::TextInputHandler(&m_window) };
+
+	GFX::TextBox m_outputBox;
 	GFX::InputBox m_inputBox;
 
 	unsigned int m_width{ 800u };
