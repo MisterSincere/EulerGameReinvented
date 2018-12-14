@@ -19,7 +19,7 @@
 GFX::InputBox::InputBox()
 {
 	m_prefix = "> ";
-	m_renderText.setString(m_prefix);
+	i_renderText.setString(m_prefix);
 }
 
 void GFX::InputBox::Update(sf::Event const& event)
@@ -32,35 +32,35 @@ void GFX::InputBox::Update(sf::Event const& event)
 
 		// TEXT
 		if (isValidText(event.text.unicode)) {
-			m_curStringWrapped += event.text.unicode;
+			i_curStringWrapped += event.text.unicode;
 			m_autoCompleteCmds.clear(); //< New autocomplete needed
 
 		// BACKSPACE
-		} else if (event.text.unicode == 0x08 && m_curStringWrapped.getSize()) {
-			m_curStringWrapped.erase(m_curStringWrapped.getSize() - 1);
+		} else if (event.text.unicode == 0x08 && i_curStringWrapped.getSize()) {
+			i_curStringWrapped.erase(i_curStringWrapped.getSize() - 1);
 			removeDone = true;
 			m_autoCompleteCmds.clear(); //< New autocomplete needed
 
 		// RETURN
 		} else if (event.text.unicode == 0x000D) {
-			for (auto handle : m_textHandler) handle->Handle(m_curStringWrapped.toAnsiString().c_str());
-			m_curStringWrapped.clear();
+			for (auto handle : m_textHandler) handle->Handle(i_curStringWrapped.toAnsiString().c_str());
+			i_curStringWrapped.clear();
 			m_autoCompleteCmds.clear(); //< New autocomplete needed
 		
 		// TAB (autocomplete)
-		} else if (event.text.unicode == 0x0009 && m_curStringWrapped.getSize() && m_pAutoCompleter) {
+		} else if (event.text.unicode == 0x0009 && i_curStringWrapped.getSize() && m_pAutoCompleter) {
 
 			// If we have no auto complete suggestions get some...
 			if (m_autoCompleteCmds.empty()) {
 				
-				m_autoCompleteCmds = m_pAutoCompleter->MultiComplete(m_curStringWrapped);
+				m_autoCompleteCmds = m_pAutoCompleter->MultiComplete(i_curStringWrapped);
 				m_autoCompleteCmdIndex = 0u;
-				if(!m_autoCompleteCmds.empty()) m_curStringWrapped = m_autoCompleteCmds[0].get();
+				if(!m_autoCompleteCmds.empty()) i_curStringWrapped = m_autoCompleteCmds[0].get();
 
 			//... otherwise query through them
 			} else {
 				m_autoCompleteCmdIndex = ++m_autoCompleteCmdIndex % m_autoCompleteCmds.size();
-				m_curStringWrapped = m_autoCompleteCmds[m_autoCompleteCmdIndex].get();
+				i_curStringWrapped = m_autoCompleteCmds[m_autoCompleteCmdIndex].get();
 			}
 
 		}
@@ -71,17 +71,12 @@ void GFX::InputBox::Update(sf::Event const& event)
 	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl))
 		&& sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace) && !removeDone)
 	{
-		m_curStringWrapped.clear();
+		i_curStringWrapped.clear();
 		m_autoCompleteCmds.clear();
 	}
 
 	// Update string to render
-	m_renderText.setString(m_prefix + m_curStringWrapped);
-}
-
-void GFX::InputBox::Draw(sf::RenderWindow& rw)
-{
-	rw.draw(m_renderText);
+	i_renderText.setString(m_prefix + i_curStringWrapped);
 }
 
 void GFX::InputBox::AddHandler(CORETOOLS::TextInputHandler* handler)

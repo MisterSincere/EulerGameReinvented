@@ -20,7 +20,6 @@ namespace GFX
 		InputBox();
 
 		void Update(sf::Event const&) override;
-		void Draw(sf::RenderWindow&) override;
 
 		void AddHandler(CORETOOLS::TextInputHandler*);
 		void SetAutoCompleter(CORETOOLS::AutoComplete*);

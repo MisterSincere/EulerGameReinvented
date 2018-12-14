@@ -11,8 +11,8 @@
 
 GFX::TextBox::TextBox()
 {
-	m_renderText.setCharacterSize(m_characterSize);
-	m_renderText.setPosition(m_position);
+	i_renderText.setCharacterSize(i_characterSize);
+	i_renderText.setPosition(i_position);
 }
 
 void GFX::TextBox::Update(sf::Event const& event)
@@ -22,7 +22,7 @@ void GFX::TextBox::Update(sf::Event const& event)
 
 void GFX::TextBox::Draw(sf::RenderWindow& window)
 {
-	window.draw(m_renderText);
+	window.draw(i_renderText);
 }
 
 bool GFX::TextBox::isValidText(sf::Uint32 character) const {
@@ -35,26 +35,26 @@ bool GFX::TextBox::isValidText(sf::Uint32 character) const {
 }
 
 void GFX::TextBox::TextWrap() {
-	if (!m_rawString) return;
+	if (!i_rawString) return;
 
 	// Set back to raw string
-	m_curStringWrapped = sf::String(m_rawString);
-	m_renderText.setString(m_curStringWrapped);
+	i_curStringWrapped = sf::String(i_rawString);
+	i_renderText.setString(i_curStringWrapped);
 
 	// Query through string till a character is out of bounds to insert a line break
 	sf::Vector2f pos;
-	for (size_t i = 0; i < m_curStringWrapped.getSize(); i++) {
+	for (size_t i = 0; i < i_curStringWrapped.getSize(); i++) {
 		// Check width out of bounds
-		pos = m_renderText.findCharacterPos(i);
-		if (pos.x > (m_position.x + m_size.x)) {
+		pos = i_renderText.findCharacterPos(i);
+		if (pos.x > (i_position.x + i_size.x)) {
 			i -= InsertLineBreak(i);
-			m_renderText.setString(m_curStringWrapped);
-			pos = m_renderText.findCharacterPos(i);
+			i_renderText.setString(i_curStringWrapped);
+			pos = i_renderText.findCharacterPos(i);
 		}
 		// Break or erase the rest if out of bounds
-		if (pos.y > (m_position.y + m_size.y)) {
-			m_curStringWrapped.erase(i, m_curStringWrapped.getSize() - i);
-			m_renderText.setString(m_curStringWrapped);
+		if (pos.y > (i_position.y + i_size.y)) {
+			i_curStringWrapped.erase(i, i_curStringWrapped.getSize() - i);
+			i_renderText.setString(i_curStringWrapped);
 			break;
 		}
 	}
@@ -62,13 +62,13 @@ void GFX::TextBox::TextWrap() {
 
 int GFX::TextBox::InsertLineBreak(size_t index) {
 	size_t tempIndex{ index };
-	while (index > 0 && m_curStringWrapped[index] != ' ') index--;
-	m_curStringWrapped.replace(index, 1, "\n");
+	while (index > 0 && i_curStringWrapped[index] != ' ') index--;
+	i_curStringWrapped.replace(index, 1, "\n");
 	return (tempIndex - index);
 }
 
 void GFX::TextBox::SetString(char const* text) {
-	m_rawString = text;
+	i_rawString = text;
 	TextWrap();
 }
 
@@ -79,12 +79,12 @@ void GFX::TextBox::SetBounds(float x, float y, float w, float h) {
 
 void GFX::TextBox::SetSize(float w, float h) {
 	// Clamp charactersize to the maximum of the box size
-	if (m_characterSize > h) {
-		m_characterSize = static_cast<unsigned int>(h);
-		m_renderText.setCharacterSize(m_characterSize);
+	if (i_characterSize > h) {
+		i_characterSize = static_cast<unsigned int>(h);
+		i_renderText.setCharacterSize(i_characterSize);
 	}
 
-	m_size = { w,h };
+	i_size = { w,h };
 	// TODO: Update possible background box
 
 	// Wrap text to new size
@@ -92,33 +92,34 @@ void GFX::TextBox::SetSize(float w, float h) {
 }
 
 void GFX::TextBox::SetPosition(float x, float y) {
-	m_position = { x, y };
-	m_renderText.setPosition(x, y);
+	i_position = { x, y };
+	i_renderText.setPosition(x, y);
 }
 
 void GFX::TextBox::SetFont(sf::Font const& font) {
-	m_renderText.setFont(font);
+	i_renderText.setFont(font);
 }
 
 void GFX::TextBox::SetCharacterSize(unsigned int size) {
-	m_renderText.setCharacterSize(size);
+	i_characterSize = size;
+	i_renderText.setCharacterSize(i_characterSize);
 	TextWrap();
 }
 
 void GFX::TextBox::SetFillColor(sf::Color const& color) {
-	m_renderText.setFillColor(color);
+	i_renderText.setFillColor(color);
 }
 
 void GFX::TextBox::SetOutlineColor(sf::Color const& color) {
-	m_renderText.setOutlineColor(color);
+	i_renderText.setOutlineColor(color);
 }
 
 template<>
 char const* GFX::TextBox::GetString<char const*>() const {
-	return m_rawString;
+	return i_rawString;
 }
 
 template<>
 std::string GFX::TextBox::GetString<std::string>() const {
-	return std::string(m_rawString);
+	return std::string(i_rawString);
 }

@@ -14,6 +14,7 @@ bool Tuna::InitSystems()
 	// Output box
 	m_outputBox.SetFont(m_arialFont);
 	m_outputBox.SetFillColor(sf::Color(255, 255, 255));
+	m_outputBox.SetCharacterSize(18);
 	m_outputBox.SetString("Sehr geehrter Herr Euler,\nes ist 8 Uhr morgens und du stehst in deinem Büro der Universität(Lehrer Etage).In deinem Büro ist mittig ein überfüllter Schreibtisch[desk] an dem ein Scott Chefsessel aus original Kunstleder im Wert von 500€ steht[chair].Außerdem stehen zwei Schränke in jeweils einer Ecke des Raumes. Von hier aus kannst du in den Korridor[corridor] gehen.Generell gilt : Um woanders hinzugehen gibst du ein : go <Raum>.Für <Raum> setzt du den englischen Namen deines Ziels ein, because you need to learn English.");
 
 	// Input box

@@ -33,7 +33,6 @@ namespace GFX
 		virtual void Update(sf::Event const&) override;
 		virtual void Draw(sf::RenderWindow&) override;
 
-
 		void SetBounds(float x, float y, float w, float h) override;
 		void SetString(char const* text);
 		void SetSize(float w, float h);
@@ -49,17 +48,17 @@ namespace GFX
 	protected:
 		virtual bool isValidText(sf::Uint32) const;
 
+	protected:
+		char const* i_rawString{ nullptr };
+		sf::String i_curStringWrapped;
+		sf::Text i_renderText;
+
+		unsigned int i_characterSize{ 20u };
+		sf::Vector2f i_position{ 0.0f, 0.0f };
+		sf::Vector2f i_size{ 200.0f, 200.0f };
+
 	private:
 		void TextWrap();
 		int InsertLineBreak(size_t index);
-
-	protected:
-		char const* m_rawString{ nullptr };
-		sf::String m_curStringWrapped;
-		sf::Text m_renderText;
-
-		unsigned int m_characterSize{ 20u };
-		sf::Vector2f m_position{ 0.0f, 0.0f };
-		sf::Vector2f m_size{ 200.0f, 200.0f };
 	};
 }

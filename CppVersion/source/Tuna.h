@@ -38,8 +38,8 @@ private:
 	GFX::TextBox m_outputBox;
 	GFX::InputBox m_inputBox;
 
-	unsigned int m_width{ 800u };
-	unsigned int m_height{ 600u };
+	unsigned int m_width{ 1100u };
+	unsigned int m_height{ 700u };
 
 	bool m_isInitialized{ false };
 };
