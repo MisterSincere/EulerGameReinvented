@@ -6,6 +6,7 @@
 //////////////
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <limits.h>
 #include <algorithm>
 
@@ -31,35 +32,35 @@ void GFX::InputBox::Update(sf::Event const& event)
 
 		// TEXT
 		if (isValidText(event.text.unicode)) {
-			m_currentString += event.text.unicode;
+			m_curStringWrapped += event.text.unicode;
 			m_autoCompleteCmds.clear(); //< New autocomplete needed
 
 		// BACKSPACE
-		} else if (event.text.unicode == 0x08 && m_currentString.getSize()) {
-			m_currentString.erase(m_currentString.getSize() - 1);
+		} else if (event.text.unicode == 0x08 && m_curStringWrapped.getSize()) {
+			m_curStringWrapped.erase(m_curStringWrapped.getSize() - 1);
 			removeDone = true;
 			m_autoCompleteCmds.clear(); //< New autocomplete needed
 
 		// RETURN
 		} else if (event.text.unicode == 0x000D) {
-			for (auto handle : m_textHandler) handle->Handle(m_currentString.toAnsiString().c_str());
-			m_currentString.clear();
+			for (auto handle : m_textHandler) handle->Handle(m_curStringWrapped.toAnsiString().c_str());
+			m_curStringWrapped.clear();
 			m_autoCompleteCmds.clear(); //< New autocomplete needed
 		
 		// TAB (autocomplete)
-		} else if (event.text.unicode == 0x0009 && m_currentString.getSize() && m_pAutoCompleter) {
+		} else if (event.text.unicode == 0x0009 && m_curStringWrapped.getSize() && m_pAutoCompleter) {
 
 			// If we have no auto complete suggestions get some...
 			if (m_autoCompleteCmds.empty()) {
 				
-				m_autoCompleteCmds = m_pAutoCompleter->MultiComplete(m_currentString);
+				m_autoCompleteCmds = m_pAutoCompleter->MultiComplete(m_curStringWrapped);
 				m_autoCompleteCmdIndex = 0u;
-				if(!m_autoCompleteCmds.empty()) m_currentString = m_autoCompleteCmds[0].get();
+				if(!m_autoCompleteCmds.empty()) m_curStringWrapped = m_autoCompleteCmds[0].get();
 
 			//... otherwise query through them
 			} else {
 				m_autoCompleteCmdIndex = ++m_autoCompleteCmdIndex % m_autoCompleteCmds.size();
-				m_currentString = m_autoCompleteCmds[m_autoCompleteCmdIndex].get();
+				m_curStringWrapped = m_autoCompleteCmds[m_autoCompleteCmdIndex].get();
 			}
 
 		}
@@ -70,12 +71,17 @@ void GFX::InputBox::Update(sf::Event const& event)
 	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl))
 		&& sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace) && !removeDone)
 	{
-		m_currentString.clear();
+		m_curStringWrapped.clear();
 		m_autoCompleteCmds.clear();
 	}
 
 	// Update string to render
-	m_renderText.setString(m_prefix + m_currentString);
+	m_renderText.setString(m_prefix + m_curStringWrapped);
+}
+
+void GFX::InputBox::Draw(sf::RenderWindow& rw)
+{
+	rw.draw(m_renderText);
 }
 
 void GFX::InputBox::AddHandler(CORETOOLS::TextInputHandler* handler)

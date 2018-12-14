@@ -34,22 +34,28 @@ namespace GFX
 		virtual void Draw(sf::RenderWindow&) override;
 
 
-		virtual void SetBounds(float x, float y, float w, float h) override;
+		void SetBounds(float x, float y, float w, float h) override;
 		void SetString(char const* text);
+		void SetSize(float w, float h);
 		void SetPosition(float x, float y);
 		void SetFont(sf::Font const&);
 		void SetCharacterSize(unsigned int);
 		void SetFillColor(sf::Color const&);
 		void SetOutlineColor(sf::Color const&);
 
+		template<typename T>
+		T GetString() const;
+
 	protected:
-		virtual bool isValidText(sf::Uint32);
+		virtual bool isValidText(sf::Uint32) const;
 
 	private:
+		void TextWrap();
 		int InsertLineBreak(size_t index);
 
 	protected:
-		sf::String m_currentString;
+		char const* m_rawString{ nullptr };
+		sf::String m_curStringWrapped;
 		sf::Text m_renderText;
 
 		unsigned int m_characterSize{ 20u };
