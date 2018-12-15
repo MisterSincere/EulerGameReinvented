@@ -1,0 +1,37 @@
+--------------------------------  Standorte  ------------------------------------------
+Büro 				0
+Korridor Lehreretage		1
+Tödlicher Kaffeeraum		2
+Lehrerzimmer 			3
+Kammer der Leere (mit Notiz) 	4
+Ventilationsraum (mit Notiz) 		5
+Damen Toiletten 			6
+Herren Toiletten 			7
+Schulleiterraum 			8
+Fahrstuhl 			9
+Treppenhaus			10
+Korridor Etage 1			11
+Hörsaal 1			12
+Spindraum			13
+Abstellraum			14
+Hörsaal 2			15
+Hörsaal 3			16
+Hörsaal 4			17
+Damentoilette			18
+Herrentoilette			19
+
+
+--------------------------------    Items    ------------------------------------------
+Schrank				000
+Stuhl				001
+Schreibtisch			002
+Rätsellösung -1/12			003
+Kaffeemaschine			200
+Mikrowelle			201
+Küchenschränke			202
+Lüftungsschacht			300
+Stundenplan			301
+Skillbook				600
+Feueraxt				900
+Luke				901
+Notiz				00
