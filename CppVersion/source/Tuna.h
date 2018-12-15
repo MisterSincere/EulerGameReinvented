@@ -10,7 +10,7 @@
 // MY INCLUDES //
 /////////////////
 #include "InputBox.h"
-#include "TextInputHandler.h"
+#include "GameManager.h"
 
 
 class Tuna
@@ -34,7 +34,7 @@ private:
 	sf::Font m_arialFont;
 	sf::Font m_squareFont;
 
-	ECA::TextInputHandler* m_pInputHandler{ new ECA::TextInputHandler(&m_window) };
+	ECA::GameManager* m_pInputHandler{ new ECA::GameManager(&m_window) };
 
 	GFX::TextBox m_outputBox;
 	GFX::InputBox m_inputBox;

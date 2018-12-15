@@ -57,8 +57,3 @@ target_link_libraries (EulerAdventure general
 
 # Define for sfml to use static libraries
 add_compile_definitions(SFML_STATIC)
-
-# IO Reader
-file (GLOB ioreader "source/ioreader/*.cpp" "source/ioreader/*.h")
-source_group ("" FILES ${ioreader})
-add_executable (IOReader ${ioreader})

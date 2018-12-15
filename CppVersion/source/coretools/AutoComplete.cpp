@@ -8,7 +8,7 @@
 /////////////////
 // MY INCLUDES //
 /////////////////
-#include "TextInputHandler.h"
+#include "GameManager.h"
 
 
 CORETOOLS::AutoComplete::AutoComplete(CmdList const& cmds)
