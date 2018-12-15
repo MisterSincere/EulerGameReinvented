@@ -3,24 +3,25 @@
 /////////////////
 // MY INCLUDES //
 /////////////////
-#include "IHandler.h"
+#include "ITextHandler.h"
 #include "command.h"
 
-namespace CORETOOLS
-{
-	///////////////////////////
-	// FOREWARD DECLARATIONS //
-	///////////////////////////
+///////////////////////////
+// FOREWARD DECLARATIONS //
+///////////////////////////
+namespace CORETOOLS {
 	class AutoComplete;
+}
 
-	class TextInputHandler : public IHandler<char const*>
-	{
+namespace ECA {
+
+	class TextInputHandler : public CORETOOLS::ITextHandler {
 	public:
 		TextInputHandler(sf::RenderWindow*);
 
 		void Handle(char const* text) override;
 
-		AutoComplete* AcquireAutoComplete();
+		CORETOOLS::AutoComplete* AcquireAutoComplete();
 
 	private:
 		CORETOOLS::CmdList m_commands;

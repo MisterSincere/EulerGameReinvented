@@ -10,8 +10,9 @@
 /////////////////
 #include "AutoComplete.h"
 
-CORETOOLS::TextInputHandler::TextInputHandler(sf::RenderWindow* pWindow)
-	: IHandler(pWindow)
+
+ECA::TextInputHandler::TextInputHandler(sf::RenderWindow* pWindow)
+	: ITextHandler(pWindow)
 {
 	m_commands += "exit";
 	m_commands += "explore";
@@ -25,14 +26,12 @@ CORETOOLS::TextInputHandler::TextInputHandler(sf::RenderWindow* pWindow)
 	m_commands += "back";
 }
 
-void CORETOOLS::TextInputHandler::Handle(char const* text)
-{
+void ECA::TextInputHandler::Handle(char const* text) {
 	if (m_commands["exit"] == text) {
 		i_pWindow->close();
 	}
 }
 
-CORETOOLS::AutoComplete* CORETOOLS::TextInputHandler::AcquireAutoComplete()
-{
-	return new AutoComplete(m_commands);
+CORETOOLS::AutoComplete* ECA::TextInputHandler::AcquireAutoComplete() {
+	return new CORETOOLS::AutoComplete(m_commands);
 }

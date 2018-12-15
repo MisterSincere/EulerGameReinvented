@@ -14,6 +14,7 @@
 // MY INCLUDES //
 /////////////////
 #include "AutoComplete.h"
+#include "ITextHandler.h"
 
 
 GFX::InputBox::InputBox(bool haveBackground, sf::Vector2f const& size, sf::Vector2f const& position, unsigned int charSize)
@@ -80,7 +81,7 @@ void GFX::InputBox::Update(sf::Event const& event)
 	i_renderText.setString(m_prefix + i_curStringWrapped);
 }
 
-void GFX::InputBox::AddHandler(CORETOOLS::TextInputHandler* handler)
+void GFX::InputBox::AddHandler(CORETOOLS::ITextHandler* handler)
 {
 	m_textHandler.push_back(handler);
 }

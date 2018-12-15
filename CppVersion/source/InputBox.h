@@ -9,7 +9,15 @@
 // MY INCLUDES //
 /////////////////
 #include "TextBox.h"
-#include "TextInputHandler.h"
+#include "command.h"
+
+//////////////////////////
+// FOREWARD DECLARATION //
+//////////////////////////
+namespace CORETOOLS {
+	class ITextHandler;
+	class AutoComplete;
+}
 
 
 namespace GFX
@@ -21,11 +29,11 @@ namespace GFX
 
 		void Update(sf::Event const&) override;
 
-		void AddHandler(CORETOOLS::TextInputHandler*);
+		void AddHandler(CORETOOLS::ITextHandler*);
 		void SetAutoCompleter(CORETOOLS::AutoComplete*);
 
 	private:
-		std::vector<CORETOOLS::TextInputHandler*> m_textHandler;
+		std::vector<CORETOOLS::ITextHandler*> m_textHandler;
 		CORETOOLS::AutoComplete* m_pAutoCompleter{ nullptr };
 
 		sf::String m_prefix;

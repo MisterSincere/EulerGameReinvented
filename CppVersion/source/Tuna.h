@@ -10,6 +10,7 @@
 // MY INCLUDES //
 /////////////////
 #include "InputBox.h"
+#include "TextInputHandler.h"
 
 
 class Tuna
@@ -33,7 +34,7 @@ private:
 	sf::Font m_arialFont;
 	sf::Font m_squareFont;
 
-	CORETOOLS::TextInputHandler* m_pInputHandler{ new CORETOOLS::TextInputHandler(&m_window) };
+	ECA::TextInputHandler* m_pInputHandler{ new ECA::TextInputHandler(&m_window) };
 
 	GFX::TextBox m_outputBox;
 	GFX::InputBox m_inputBox;

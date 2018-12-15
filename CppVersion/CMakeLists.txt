@@ -2,14 +2,15 @@ cmake_minimum_required(VERSION 3.13.1)
 project (EulerAdventure)
 
 # Source files
-set (CORETOOLS source/command.h source/AutoComplete.h source/AutoComplete.cpp source/IHandler.h source/TextInputHandler.h source/TextInputHandler.cpp)
+set (CORETOOLS source/command.h source/AutoComplete.h source/AutoComplete.cpp source/IHandler.h source/IButtonHandler.h source/ITextHandler.h)
 set (GFX source/IDrawable.h source/Box.h source/Box.cpp source/TextBox.h source/TextBox.cpp source/InputBox.h source/InputBox.cpp)
+set (ECA source/TextInputHandler.h source/TextInputHandler.cpp)
 set (EulerAdventure source/Tuna.h source/Tuna.cpp source/EulerAdventure.cpp)
 
 # Filter
 source_group ("CORETOOLS" FILES ${CORETOOLS})
-source_group ("CORE" FILES ${CORE})
 source_group ("GFX" FILES ${GFX})
+source_group ("ECA" FILES ${ECA})
 source_group ("" FILES ${EulerAdventure})
 
 # SFML Library
@@ -19,7 +20,7 @@ link_directories ($ENV{ECA_SFML}/lib)
 include_directories ($ENV{ECA_SFML}/include)
 
 # Add source files
-add_executable (EulerAdventure ${EulerAdventure} ${GFX} ${CORE} ${CORETOOLS})
+add_executable (EulerAdventure ${EulerAdventure} ${GFX} ${ECA} ${CORETOOLS})
 
 # Debug libs
 target_link_libraries (EulerAdventure debug
