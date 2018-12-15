@@ -18,6 +18,9 @@ link_directories ($ENV{ECA_SFML}/lib)
 
 # Includes
 include_directories ($ENV{ECA_SFML}/include)
+include_directories (source/coretools)
+include_directories (source/eca)
+include_directories (source/gfx)
 
 # Add source files
 add_executable (EulerAdventure ${EulerAdventure} ${GFX} ${ECA} ${CORETOOLS})
