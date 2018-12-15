@@ -10,7 +10,7 @@
 GFX::Box::Box(sf::Vector2f const& size, sf::Vector2f const& position)
 	: IDrawable(size, position)
 {
-	m_pRect = new sf::RectangleShape(i_size);
+	m_pRect = new sf::RectangleShape({ float(i_size.x), float(i_size.y) });
 	m_pRect->setPosition(i_position);
 }
 
@@ -31,7 +31,7 @@ void GFX::Box::Draw(sf::RenderWindow& rw) {
 
 void GFX::Box::SetSize(float w, float h) {
 	IDrawable::SetSize(w, h);
-	m_pRect->setSize(i_size);
+	m_pRect->setSize({ float(i_size.x), float(i_size.y) });
 }
 
 void GFX::Box::SetPosition(float x, float y) {

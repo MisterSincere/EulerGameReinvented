@@ -73,7 +73,7 @@ int GFX::TextBox::InsertLineBreak(size_t index) {
 	size_t tempIndex{ index };
 	while (index > 1 && i_curStringWrapped[index] != ' ') index--;
 	i_curStringWrapped.replace(index, 1, "\n");
-	return (tempIndex - index);
+	return int(tempIndex - index);
 }
 
 void GFX::TextBox::SetPadding(float left, float top, float right, float bottom) {

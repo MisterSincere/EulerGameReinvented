@@ -11,12 +11,25 @@
 /////////////////
 #include "InputBox.h"
 #include "GameManager.h"
+#include "Options.h"
 
+
+enum GameState {
+	RUNNING,
+	INITIALIZING,
+	INGAME,
+	DEAD,
+	OPTIONS,
+	ESCAPE = OPTIONS,
+	EXIT,
+};
 
 class Tuna
 {
 public:
-	bool Init() { return (m_isInitialized = InitSystems() & InitContent()); }
+	Tuna();
+
+	bool Init();
 
 	int Run();
 
@@ -24,11 +37,14 @@ private:
 	bool InitSystems();
 	bool InitContent();
 
-	void SetStyleRelative(unsigned int width, unsigned int height);
+	void Update();
+	void Draw();
 
-	void ProcessInput();
+	void SetStyleRelative(sf::Vector2u const& newSize);
 
 private:
+	CORETOOLS::Settings m_settings; //< Constructor
+	CORETOOLS::Options* m_pOptions; //< Constructor
 	sf::RenderWindow m_window;
 
 	sf::Font m_arialFont;
@@ -39,8 +55,6 @@ private:
 	GFX::TextBox m_outputBox;
 	GFX::InputBox m_inputBox;
 
-	unsigned int m_width{ 1100u };
-	unsigned int m_height{ 700u };
-
 	bool m_isInitialized{ false };
+	GameState m_gameState{ RUNNING };
 };

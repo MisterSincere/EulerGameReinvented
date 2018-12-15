@@ -3,10 +3,37 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-bool Tuna::InitSystems()
-{
-	m_window.create(sf::VideoMode(m_width, m_height), "EulerAdventure");
-	m_window.setFramerateLimit(60);
+
+Tuna::Tuna() {
+	m_settings.screenMode = CORETOOLS::WINDOWED;
+	m_settings.frameLimit = 60u;
+	m_settings.clientSize = { 1100u, 700u };
+
+	m_pOptions = new CORETOOLS::Options;
+	m_pOptions->Init(&m_settings);
+}
+
+bool Tuna::Init() {
+	m_gameState = INITIALIZING;
+	if (!InitSystems()) return false;
+	if (!InitContent()) return false;
+
+	m_gameState = INGAME;
+	return true;
+}
+
+bool Tuna::InitSystems() {
+
+	
+	int style = sf::Style::Default;
+	// Fullscreen or fake fullscreen will both have the window size
+	if (m_settings.screenMode == CORETOOLS::FULLSCREEN || m_settings.screenMode == CORETOOLS::FAKE_FULLSCREEN) {
+		style = m_settings.screenMode == CORETOOLS::FULLSCREEN ? sf::Style::Fullscreen : sf::Style::None;
+		m_settings.clientSize = { sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height };
+	}
+
+	m_window.create(sf::VideoMode(m_settings.clientSize.x, m_settings.clientSize.y), m_settings.title, style);
+	m_window.setFramerateLimit(m_settings.frameLimit);
 
 	// Load fonts
 	if (!m_arialFont.loadFromFile("assets/fonts/arial.ttf")) return false;
@@ -23,12 +50,12 @@ bool Tuna::InitSystems()
 	// Input box
 	m_inputBox.SetFont(m_arialFont);
 	m_inputBox.SetTextColor(sf::Color::Black);
-	m_inputBox.SetCharacterSize(22.0f);
+	m_inputBox.SetCharacterSize(22u);
 	m_inputBox.AddHandler(m_pInputHandler);
 	m_inputBox.SetAutoCompleter(m_pInputHandler->AcquireAutoComplete());
 
 	// Adjust positions and sizes
-	SetStyleRelative(m_width, m_height);
+	SetStyleRelative(m_settings.clientSize);
 
 	return true;
 }
@@ -41,47 +68,66 @@ bool Tuna::InitContent()
 
 int Tuna::Run()
 {
-	while (m_window.isOpen())
-	{
-		ProcessInput();
+	while (m_window.isOpen() && m_gameState != EXIT) {
+
+		Update();
 
 		m_window.clear(sf::Color(250, 250, 250));
-
-		m_outputBox.Draw(m_window);
-		m_inputBox.Draw(m_window);
-
+		Draw();
 		m_window.display();
 	}
 
 	return 0;
 }
 
-void Tuna::SetStyleRelative(unsigned int width, unsigned int height)
-{
-	m_width = width;
-	m_height = height;
-
-	m_outputBox.SetBounds(5.0f, 5.0f, width - 10.0f, height - 77.0f);
-	m_inputBox.SetBounds(5.0f, m_height - 50.0f, 250, 22);
-}
-
-void Tuna::ProcessInput()
-{
+void Tuna::Update() {
 	static sf::Event event;
 
+	while (m_window.pollEvent(event)) {
 
-	while (m_window.pollEvent(event))
-	{
-		if (event.type == sf::Event::Closed)
-		{
+		// EXIT BUTTON
+		if (event.type == sf::Event::Closed) {
 			m_window.close();
-		}
-		else if (event.type == sf::Event::KeyPressed)
-		{
+
+		// ESCAPE
+		} else if (event.type == sf::Event::KeyPressed) {
 			if (event.key.code == sf::Keyboard::Escape) m_window.close();
+
+			if (event.key.code == sf::Keyboard::F1) {
+				m_gameState = (m_gameState == OPTIONS) ? INGAME : OPTIONS;
+			}
 		}
 
-		m_inputBox.Update(event);
+		switch (m_gameState) {
+			case INGAME:
+				m_outputBox.Update(event);
+				m_inputBox.Update(event);
+				break;
+
+			case OPTIONS:
+				m_pOptions->Update(event, &m_window);
+				break;
+		}
 
 	}
+}
+
+void Tuna::Draw() {
+	switch (m_gameState) {
+		case INGAME:
+			m_outputBox.Draw(m_window);
+			m_inputBox.Draw(m_window);
+			break;
+
+		case OPTIONS:
+			m_pOptions->Draw(m_window);
+			break;
+	}
+}
+
+void Tuna::SetStyleRelative(sf::Vector2u const& newSize) {
+	m_settings.clientSize = newSize;
+
+	m_outputBox.SetBounds(5.0f, 5.0f, newSize.x - 10.0f, newSize.y - 77.0f);
+	m_inputBox.SetBounds(5.0f, newSize.y - 50.0f, 250, 22);
 }
