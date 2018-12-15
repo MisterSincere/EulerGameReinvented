@@ -14,7 +14,7 @@ GFX::TextBox::TextBox(bool haveBackground, sf::Vector2f const& size, sf::Vector2
 	, m_characterSize(charSize)
 {
 	i_renderText.setCharacterSize(m_characterSize);
-	i_renderText.setPosition(i_position);
+	i_renderText.setPosition({ i_position.x + m_leftPadding, i_position.y + m_topPadding });
 	if(haveBackground) m_pBox = new Box(i_size, i_position);
 }
 
@@ -46,8 +46,9 @@ void GFX::TextBox::TextWrap() {
 	// Get current font
 	sf::Font const* font = i_renderText.getFont();
 
-	float xBound = i_position.x + i_size.x;
-	float yBound = i_position.y + i_size.y;
+#define TOLERANCE 1.0f
+	float xBound = i_position.x + i_size.x - m_rightPadding - TOLERANCE;
+	float yBound = i_position.y + i_size.y - m_bottomPadding - TOLERANCE;
 
 	// Query through string till a character is out of bounds to insert a line break
 	sf::Vector2f pos;
@@ -70,9 +71,22 @@ void GFX::TextBox::TextWrap() {
 
 int GFX::TextBox::InsertLineBreak(size_t index) {
 	size_t tempIndex{ index };
-	while (index > 0 && i_curStringWrapped[index] != ' ') index--;
+	while (index > 1 && i_curStringWrapped[index] != ' ') index--;
 	i_curStringWrapped.replace(index, 1, "\n");
 	return (tempIndex - index);
+}
+
+void GFX::TextBox::SetPadding(float left, float top, float right, float bottom) {
+	if (left + right + 10.0f >= i_size.x || top + bottom + 10.0f >= i_size.y) {
+		printf("TextBox::Invalid padding! At least 10 pixels free space are required.\n");
+		return;
+	}
+
+	m_leftPadding = left;
+	m_topPadding = top;
+	m_rightPadding = right;
+	m_bottomPadding = bottom;
+	i_renderText.setPosition({ i_position.x + m_leftPadding, i_position.y + m_topPadding });
 }
 
 void GFX::TextBox::SetString(char const* text) {
@@ -96,7 +110,7 @@ void GFX::TextBox::SetSize(float w, float h) {
 
 void GFX::TextBox::SetPosition(float x, float y) {
 	i_position = { x, y };
-	i_renderText.setPosition(x, y);
+	i_renderText.setPosition({ i_position.x + m_leftPadding, i_position.y + m_topPadding });
 	if (m_pBox) m_pBox->SetPosition(x, y);
 }
 
