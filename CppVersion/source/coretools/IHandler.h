@@ -8,12 +8,10 @@ namespace sf {
 	class RenderWindow;
 }
 
-namespace CORETOOLS
-{
+namespace CORETOOLS {
 
 	/// Abstract Handler definition withouth a virtual Handle method
-	class __IHandler
-	{
+	class __IHandler {
 	public:
 		__IHandler(sf::RenderWindow* pW) : i_pWindow(pW) {}
 
@@ -23,8 +21,7 @@ namespace CORETOOLS
 
 	/// Abstract of a handler by adding the Handle method
 	template<typename TParam, typename TReturn = void>
-	class IHandler : public __IHandler
-	{
+	class IHandler : public __IHandler {
 	public:
 		IHandler(sf::RenderWindow* pW) : __IHandler(pW) {}
 		virtual TReturn Handle(TParam) = 0;

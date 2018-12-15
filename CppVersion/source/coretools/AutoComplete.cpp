@@ -17,8 +17,7 @@ CORETOOLS::AutoComplete::AutoComplete(CmdList const& cmds)
 	// Do sth!
 }
 
-int CORETOOLS::AutoComplete::Complete(sf::String const& toBeCompleted, sf::String& completed)
-{
+int CORETOOLS::AutoComplete::Complete(sf::String const& toBeCompleted, sf::String& completed) {
 	// Variables to store the result after all iterations
 	unsigned int maxAttachedEqual{ 0u };
 	sf::String completedString{ toBeCompleted };
@@ -41,14 +40,12 @@ int CORETOOLS::AutoComplete::Complete(sf::String const& toBeCompleted, sf::Strin
 	return maxAttachedEqual;
 }
 
-struct greater
-{
+struct greater {
 	template<class T>
 	bool operator()(T const &a, T const &b) const { return a > b; }
 };
 
-std::vector<CORETOOLS::Cmd> CORETOOLS::AutoComplete::MultiComplete(sf::String const& toBeCompleted, unsigned int minimum)
-{
+std::vector<CORETOOLS::Cmd> CORETOOLS::AutoComplete::MultiComplete(sf::String const& toBeCompleted, unsigned int minimum) {
 	std::vector<Cmd> equalityMap;
 
 	for (CORETOOLS::Cmd curCmd : m_availableCmds) {
@@ -64,8 +61,7 @@ std::vector<CORETOOLS::Cmd> CORETOOLS::AutoComplete::MultiComplete(sf::String co
 	return equalityMap;
 }
 
-unsigned int CORETOOLS::AutoComplete::GetEquals(char const* string1, char const* string2)
-{
+unsigned int CORETOOLS::AutoComplete::GetEquals(char const* string1, char const* string2) {
 	unsigned int equals{ 0u };
 	for (size_t i = 0; i < strlen(string1) || i < strlen(string2); i++) {
 		if (string1[i] == string2[i]) equals++;

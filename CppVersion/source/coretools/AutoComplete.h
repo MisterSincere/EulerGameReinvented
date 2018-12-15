@@ -9,21 +9,18 @@
 ///////////////////////////
 // FOREWARD DECLARATIONS //
 ///////////////////////////
-namespace sf
-{
+namespace sf {
 	class String;
 }
 
-namespace CORETOOLS
-{
+namespace CORETOOLS {
 	///////////////////////////
 	// FOREWARD DECLARATIONS //
 	///////////////////////////
 	struct CmdList;
 	struct Cmd;
 
-	class AutoComplete
-	{
+	class AutoComplete {
 	public:
 		AutoComplete(CmdList const&);
 

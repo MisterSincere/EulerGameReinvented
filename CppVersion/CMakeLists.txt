@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.13.1)
 project (EulerAdventure)
 
 # Source files
-set (CORETOOLS source/command.h source/AutoComplete.h source/AutoComplete.cpp source/IHandler.h source/IButtonHandler.h source/ITextHandler.h)
-set (GFX source/IDrawable.h source/Box.h source/Box.cpp source/TextBox.h source/TextBox.cpp source/InputBox.h source/InputBox.cpp)
-set (ECA source/TextInputHandler.h source/TextInputHandler.cpp)
-set (EulerAdventure source/Tuna.h source/Tuna.cpp source/EulerAdventure.cpp)
+file (GLOB CORETOOLS "source/coretools/*.h" "source/coretools/*.cpp")
+file (GLOB ECA "source/eca/*.h" "source/eca/*.cpp")
+file (GLOB GFX "source/gfx/*.h" "source/gfx/*.cpp")
+file (GLOB EulerAdventure "source/*.h" "source/*.cpp")
 
 # Filter
 source_group ("CORETOOLS" FILES ${CORETOOLS})

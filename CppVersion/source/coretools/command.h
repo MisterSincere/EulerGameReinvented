@@ -8,11 +8,9 @@
 #include <vector>
 
 
-namespace CORETOOLS
-{
+namespace CORETOOLS {
 
-	struct Cmd
-	{
+	struct Cmd {
 		/// Constructors for string and cstring
 		Cmd(std::string const& cmd) : p_text(cmd.c_str()) {}
 		Cmd(char const* cmd) : p_text(cmd) {}
@@ -43,8 +41,7 @@ namespace CORETOOLS
 		unsigned int p_equals{ 0u };
 	};
 
-	struct CmdList
-	{
+	struct CmdList {
 		// [] operator for string and cstring comparison
 		Cmd operator[](unsigned int i) { return p_cmds[i]; }
 		Cmd operator[](std::string const& cmd) const { return operator[](cmd.c_str()); }
