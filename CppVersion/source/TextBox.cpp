@@ -9,19 +9,21 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 
-GFX::TextBox::TextBox()
+GFX::TextBox::TextBox(bool haveBackground, sf::Vector2f const& size, sf::Vector2f const& position, unsigned int charSize)
+	: IDrawable(size, position)
+	, m_characterSize(charSize)
 {
-	i_renderText.setCharacterSize(i_characterSize);
+	i_renderText.setCharacterSize(m_characterSize);
 	i_renderText.setPosition(i_position);
+	if(haveBackground) m_pBox = new Box(i_size, i_position);
 }
 
-void GFX::TextBox::Update(sf::Event const& event)
-{
+void GFX::TextBox::Update(sf::Event const& event) {
 	// Static text can be set with setText
 }
 
-void GFX::TextBox::Draw(sf::RenderWindow& window)
-{
+void GFX::TextBox::Draw(sf::RenderWindow& window) {
+	if(m_pBox) m_pBox->Draw(window);
 	window.draw(i_renderText);
 }
 
@@ -41,18 +43,24 @@ void GFX::TextBox::TextWrap() {
 	i_curStringWrapped = sf::String(i_rawString);
 	i_renderText.setString(i_curStringWrapped);
 
+	// Get current font
+	sf::Font const* font = i_renderText.getFont();
+
+	float xBound = i_position.x + i_size.x;
+	float yBound = i_position.y + i_size.y;
+
 	// Query through string till a character is out of bounds to insert a line break
 	sf::Vector2f pos;
 	for (size_t i = 0; i < i_curStringWrapped.getSize(); i++) {
 		// Check width out of bounds
 		pos = i_renderText.findCharacterPos(i);
-		if (pos.x > (i_position.x + i_size.x)) {
+		if ((pos.x + font->getGlyph(i_curStringWrapped[i], m_characterSize, m_bold).bounds.width) > xBound) {
 			i -= InsertLineBreak(i);
 			i_renderText.setString(i_curStringWrapped);
 			pos = i_renderText.findCharacterPos(i);
 		}
 		// Break or erase the rest if out of bounds
-		if (pos.y > (i_position.y + i_size.y)) {
+		if ((pos.y + font->getGlyph(i_curStringWrapped[i], m_characterSize, m_bold).bounds.height) > yBound) {
 			i_curStringWrapped.erase(i, i_curStringWrapped.getSize() - i);
 			i_renderText.setString(i_curStringWrapped);
 			break;
@@ -72,20 +80,15 @@ void GFX::TextBox::SetString(char const* text) {
 	TextWrap();
 }
 
-void GFX::TextBox::SetBounds(float x, float y, float w, float h) {
-	SetPosition(x, y);
-	SetSize(w, h);
-}
-
 void GFX::TextBox::SetSize(float w, float h) {
 	// Clamp charactersize to the maximum of the box size
-	if (i_characterSize > h) {
-		i_characterSize = static_cast<unsigned int>(h);
-		i_renderText.setCharacterSize(i_characterSize);
+	if (m_characterSize > h) {
+		m_characterSize = static_cast<unsigned int>(h);
+		i_renderText.setCharacterSize(m_characterSize);
 	}
 
 	i_size = { w,h };
-	// TODO: Update possible background box
+	if(m_pBox) m_pBox->SetSize(w, h);
 
 	// Wrap text to new size
 	TextWrap();
@@ -94,6 +97,7 @@ void GFX::TextBox::SetSize(float w, float h) {
 void GFX::TextBox::SetPosition(float x, float y) {
 	i_position = { x, y };
 	i_renderText.setPosition(x, y);
+	if (m_pBox) m_pBox->SetPosition(x, y);
 }
 
 void GFX::TextBox::SetFont(sf::Font const& font) {
@@ -101,17 +105,21 @@ void GFX::TextBox::SetFont(sf::Font const& font) {
 }
 
 void GFX::TextBox::SetCharacterSize(unsigned int size) {
-	i_characterSize = size;
-	i_renderText.setCharacterSize(i_characterSize);
+	m_characterSize = size;
+	i_renderText.setCharacterSize(m_characterSize);
 	TextWrap();
 }
 
-void GFX::TextBox::SetFillColor(sf::Color const& color) {
+void GFX::TextBox::SetTextColor(sf::Color const& color) {
 	i_renderText.setFillColor(color);
 }
 
-void GFX::TextBox::SetOutlineColor(sf::Color const& color) {
+void GFX::TextBox::SetTextOutlineColor(sf::Color const& color) {
 	i_renderText.setOutlineColor(color);
+}
+
+void GFX::TextBox::SetBackgroundColor(sf::Color const& bgColor) {
+	if (m_pBox) m_pBox->SetBackgroundColor(bgColor);
 }
 
 template<>

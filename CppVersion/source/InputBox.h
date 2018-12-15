@@ -17,7 +17,7 @@ namespace GFX
 	class InputBox : public TextBox
 	{
 	public:
-		InputBox();
+		InputBox(bool haveBackground = false, sf::Vector2f const& size = { 200.0f, 200.0f }, sf::Vector2f const& position = { 0.0f,0.0f }, unsigned int charSize = 20.0f);
 
 		void Update(sf::Event const&) override;
 

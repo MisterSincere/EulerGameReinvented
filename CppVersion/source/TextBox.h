@@ -10,7 +10,7 @@
 /////////////////
 // MY INCLUDES //
 /////////////////
-#include "IDrawable.h"
+#include "Box.h"
 
 
 ///////////////////////////
@@ -28,19 +28,20 @@ namespace GFX
 	class TextBox : public IDrawable
 	{
 	public:
-		TextBox();
+		TextBox(bool haveBackground = true, sf::Vector2f const& size = { 200.0f, 200.0f }, sf::Vector2f const& position = { 0.0f,0.0f }, unsigned int charSize = 20.0f);
 
 		virtual void Update(sf::Event const&) override;
 		virtual void Draw(sf::RenderWindow&) override;
 
-		void SetBounds(float x, float y, float w, float h) override;
+		void SetSize(float w, float h) override;
+		void SetPosition(float x, float y) override;
+
 		void SetString(char const* text);
-		void SetSize(float w, float h);
-		void SetPosition(float x, float y);
 		void SetFont(sf::Font const&);
 		void SetCharacterSize(unsigned int);
-		void SetFillColor(sf::Color const&);
-		void SetOutlineColor(sf::Color const&);
+		void SetTextColor(sf::Color const&);
+		void SetTextOutlineColor(sf::Color const&);
+		void SetBackgroundColor(sf::Color const&);
 
 		template<typename T>
 		T GetString() const;
@@ -53,12 +54,14 @@ namespace GFX
 		sf::String i_curStringWrapped;
 		sf::Text i_renderText;
 
-		unsigned int i_characterSize{ 20u };
-		sf::Vector2f i_position{ 0.0f, 0.0f };
-		sf::Vector2f i_size{ 200.0f, 200.0f };
-
 	private:
 		void TextWrap();
 		int InsertLineBreak(size_t index);
+
+	private:
+		Box* m_pBox{ nullptr };
+
+		unsigned int m_characterSize; //< Initializer list
+		bool m_bold{ false };
 	};
 }

@@ -6,6 +6,7 @@
 bool Tuna::InitSystems()
 {
 	m_window.create(sf::VideoMode(m_width, m_height), "EulerAdventure");
+	m_window.setFramerateLimit(60);
 
 	// Load fonts
 	if (!m_arialFont.loadFromFile("assets/fonts/arial.ttf")) return false;
@@ -13,13 +14,14 @@ bool Tuna::InitSystems()
 
 	// Output box
 	m_outputBox.SetFont(m_arialFont);
-	m_outputBox.SetFillColor(sf::Color(255, 255, 255));
+	m_outputBox.SetTextColor(sf::Color(255, 255, 255));
+	m_outputBox.SetBackgroundColor(sf::Color(250, 10, 10));
 	m_outputBox.SetCharacterSize(18);
 	m_outputBox.SetString("Sehr geehrter Herr Euler,\nes ist 8 Uhr morgens und du stehst in deinem Büro der Universität(Lehrer Etage).In deinem Büro ist mittig ein überfüllter Schreibtisch[desk] an dem ein Scott Chefsessel aus original Kunstleder im Wert von 500€ steht[chair].Außerdem stehen zwei Schränke in jeweils einer Ecke des Raumes. Von hier aus kannst du in den Korridor[corridor] gehen.Generell gilt : Um woanders hinzugehen gibst du ein : go <Raum>.Für <Raum> setzt du den englischen Namen deines Ziels ein, because you need to learn English.");
 
 	// Input box
 	m_inputBox.SetFont(m_arialFont);
-	m_inputBox.SetFillColor(sf::Color::White);
+	m_inputBox.SetTextColor(sf::Color::White);
 	m_inputBox.AddHandler(m_pInputHandler);
 	m_inputBox.SetAutoCompleter(m_pInputHandler->AcquireAutoComplete());
 

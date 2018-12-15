@@ -16,7 +16,8 @@
 #include "AutoComplete.h"
 
 
-GFX::InputBox::InputBox()
+GFX::InputBox::InputBox(bool haveBackground, sf::Vector2f const& size, sf::Vector2f const& position, unsigned int charSize)
+	: TextBox(haveBackground, size, position, charSize)
 {
 	m_prefix = "> ";
 	i_renderText.setString(m_prefix);
