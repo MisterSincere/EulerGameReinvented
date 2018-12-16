@@ -7,7 +7,22 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <assert.h>
+#include <algorithm>
 
+
+GFX::TextBox::TextBox(char const* text, sf::Font const& font, unsigned int charSize)
+	: IDrawable({ 0.0f, 0.0f }, { 0.0f, 0.0f })
+	, m_characterSize(charSize)
+	, i_rawString(text)
+{
+	i_renderText.setCharacterSize(m_characterSize);
+	i_renderText.setFont(font);
+	i_renderText.setString(i_rawString);
+	
+#define TOLERANCE 4.0f
+	i_size = { i_renderText.getLocalBounds().width+TOLERANCE, i_renderText.getLocalBounds().height*2.0f };
+}
 
 GFX::TextBox::TextBox(bool haveBackground, sf::Vector2f const& size, sf::Vector2f const& position, unsigned int charSize)
 	: IDrawable(size, position)
@@ -15,7 +30,7 @@ GFX::TextBox::TextBox(bool haveBackground, sf::Vector2f const& size, sf::Vector2
 {
 	i_renderText.setCharacterSize(m_characterSize);
 	i_renderText.setPosition({ i_position.x + m_leftPadding, i_position.y + m_topPadding });
-	if(haveBackground) m_pBox = new Box(i_size, i_position);
+	if(haveBackground) m_pBox = new Field(i_size, i_position);
 }
 
 void GFX::TextBox::Update(sf::Event const& event) {
@@ -45,17 +60,17 @@ void GFX::TextBox::TextWrap() {
 
 	// Get current font
 	sf::Font const* font = i_renderText.getFont();
+	assert(font);
 
-#define TOLERANCE 1.0f
-	float xBound = i_position.x + i_size.x - m_rightPadding - TOLERANCE;
-	float yBound = i_position.y + i_size.y - m_bottomPadding - TOLERANCE;
+	float xBound = i_position.x + i_size.x - m_rightPadding;
+	float yBound = i_position.y + i_size.y - m_bottomPadding;
 
 	// Query through string till a character is out of bounds to insert a line break
 	sf::Vector2f pos;
 	for (size_t i = 0; i < i_curStringWrapped.getSize(); i++) {
 		// Check width out of bounds
 		pos = i_renderText.findCharacterPos(i);
-		if ((pos.x + font->getGlyph(i_curStringWrapped[i], m_characterSize, m_bold).bounds.width) > xBound) {
+		if ((pos.x + font->getGlyph(i_curStringWrapped[i], m_characterSize, m_bold).advance) > xBound) {
 			i -= InsertLineBreak(i);
 			i_renderText.setString(i_curStringWrapped);
 			pos = i_renderText.findCharacterPos(i);
@@ -73,7 +88,7 @@ int GFX::TextBox::InsertLineBreak(size_t index) {
 	size_t tempIndex{ index };
 	while (index > 1 && i_curStringWrapped[index] != ' ') index--;
 	i_curStringWrapped.replace(index, 1, "\n");
-	return (tempIndex - index);
+	return int(tempIndex - index);
 }
 
 void GFX::TextBox::SetPadding(float left, float top, float right, float bottom) {
@@ -133,7 +148,10 @@ void GFX::TextBox::SetTextOutlineColor(sf::Color const& color) {
 }
 
 void GFX::TextBox::SetBackgroundColor(sf::Color const& bgColor) {
-	if (m_pBox) m_pBox->SetBackgroundColor(bgColor);
+	if (!m_pBox) {
+		m_pBox = new GFX::Field(i_size, i_position);
+	}
+	m_pBox->SetBackgroundColor(bgColor);
 }
 
 template<>

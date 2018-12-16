@@ -10,7 +10,7 @@
 /////////////////
 // MY INCLUDES //
 /////////////////
-#include "Box.h"
+#include "Field.h"
 
 
 ///////////////////////////
@@ -28,7 +28,11 @@ namespace GFX
 	class TextBox : public IDrawable
 	{
 	public:
+		TextBox(char const* text, sf::Font const& font, unsigned int charSize = 20u);
 		TextBox(bool haveBackground = true, sf::Vector2f const& size = { 200.0f, 200.0f }, sf::Vector2f const& position = { 0.0f,0.0f }, unsigned int charSize = 20.0f);
+		TextBox(TextBox&) = delete;
+		TextBox(TextBox&&) = delete;
+
 
 		virtual void Update(sf::Event const&) override;
 		virtual void Draw(sf::RenderWindow&) override;
@@ -61,7 +65,7 @@ namespace GFX
 		int InsertLineBreak(size_t index);
 
 	private:
-		Box* m_pBox{ nullptr };
+		Field* m_pBox{ nullptr };
 
 		unsigned int m_characterSize; //< Initializer list
 		bool m_bold{ false };
