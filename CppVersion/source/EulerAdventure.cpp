@@ -76,7 +76,7 @@ bool EulerAdventure::InitContent() {
 
 int EulerAdventure::Run() {
 
-	ChangeGameState(INGAME);
+	ChangeGameState(MENU);
 
 	while (m_gameState != EXIT) {
 
@@ -139,7 +139,7 @@ void EulerAdventure::Draw() {
 
 
 	case MENU:
-		m_pMenu->Draw();
+		m_pMenu->Draw(m_window);
 		break;
 	}
 }

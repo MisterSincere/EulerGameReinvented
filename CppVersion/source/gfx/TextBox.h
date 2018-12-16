@@ -28,6 +28,7 @@ namespace GFX
 	class TextBox : public IDrawable
 	{
 	public:
+		TextBox(char const* text, sf::Font const& font, unsigned int charSize = 20u);
 		TextBox(bool haveBackground = true, sf::Vector2f const& size = { 200.0f, 200.0f }, sf::Vector2f const& position = { 0.0f,0.0f }, unsigned int charSize = 20.0f);
 		TextBox(TextBox&) = delete;
 		TextBox(TextBox&&) = delete;
