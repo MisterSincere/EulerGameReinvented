@@ -10,6 +10,11 @@
 #include <assert.h>
 #include <algorithm>
 
+/////////////////
+// MY INCLUDES //
+/////////////////
+#include "ecaDefs.h"
+
 
 GFX::TextBox::TextBox(char const* text, sf::Font const& font, unsigned int charSize)
 	: IDrawable({ 0.0f, 0.0f }, { 0.0f, 0.0f })
@@ -21,7 +26,11 @@ GFX::TextBox::TextBox(char const* text, sf::Font const& font, unsigned int charS
 	i_renderText.setString(i_rawString);
 	
 #define TOLERANCE 4.0f
-	i_size = { i_renderText.getLocalBounds().width+TOLERANCE, i_renderText.getLocalBounds().height*2.0f };
+	i_size = { i_renderText.getLocalBounds().width+TOLERANCE, i_renderText.getLocalBounds().height*1.5f };
+}
+
+GFX::TextBox::~TextBox() {
+	RELEASEP(m_pBox);
 }
 
 GFX::TextBox::TextBox(bool haveBackground, sf::Vector2f const& size, sf::Vector2f const& position, unsigned int charSize)
@@ -91,17 +100,30 @@ int GFX::TextBox::InsertLineBreak(size_t index) {
 	return int(tempIndex - index);
 }
 
-void GFX::TextBox::SetPadding(float left, float top, float right, float bottom) {
-	if (left + right + 10.0f >= i_size.x || top + bottom + 10.0f >= i_size.y) {
-		printf("TextBox::Invalid padding! At least 10 pixels free space are required.\n");
-		return;
+void GFX::TextBox::SetPadding(float left, float top, float right, float bottom, bool expand) {
+	if (!expand) {
+		if (left + right + 10.0f >= i_size.x || top + bottom + 10.0f >= i_size.y) {
+			printf("TextBox::Invalid padding! At least 10 pixels free space are required.\n");
+			return;
+		}
+
+		m_leftPadding = left;
+		m_topPadding = top;
+		m_rightPadding = right;
+		m_bottomPadding = bottom;
+		i_renderText.setPosition({ i_position.x + m_leftPadding, i_position.y + m_topPadding });
+
+	// Expand the surrounding box so that the text has the same space
+	} else {
+		i_size = { i_size.x + left + right, i_size.y + top + bottom };
+		i_position = { i_position.x - left, i_position.y - top };
+		// Update only box since the text and
+		if (m_pBox) {
+			m_pBox->SetSize(i_size.x, i_size.y);
+			m_pBox->SetPosition(i_position.x, i_position.y);
+		}
 	}
 
-	m_leftPadding = left;
-	m_topPadding = top;
-	m_rightPadding = right;
-	m_bottomPadding = bottom;
-	i_renderText.setPosition({ i_position.x + m_leftPadding, i_position.y + m_topPadding });
 }
 
 void GFX::TextBox::SetString(char const* text) {

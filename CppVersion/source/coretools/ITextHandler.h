@@ -11,7 +11,7 @@
 namespace CORETOOLS {
 
 	/// ABSTRACT text handler class definition
-	class ITextHandler : public IHandler<char const*, void>
+	class ITextHandler : public IHandler<void, char const*>
 	{
 	public:
 		ITextHandler(sf::RenderWindow* rw) : IHandler(rw) {}

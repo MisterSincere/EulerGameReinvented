@@ -20,10 +20,10 @@ namespace CORETOOLS {
 	};
 
 	/// Abstract of a handler by adding the Handle method
-	template<typename TParam, typename TReturn = void>
+	template<typename TReturn, typename ... TParams>
 	class IHandler : public __IHandler {
 	public:
 		IHandler(sf::RenderWindow* pW) : __IHandler(pW) {}
-		virtual TReturn Handle(TParam) = 0;
+		virtual TReturn Handle(TParams ...) = 0;
 	};
 }

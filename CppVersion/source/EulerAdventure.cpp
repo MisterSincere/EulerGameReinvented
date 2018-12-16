@@ -124,7 +124,7 @@ void EulerAdventure::Update() {
 			break;
 
 		case MENU:
-			m_pMenu->Update();
+			m_pMenu->Update(event);
 			break;
 		}
 

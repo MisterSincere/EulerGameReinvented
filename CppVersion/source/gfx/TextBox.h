@@ -32,6 +32,7 @@ namespace GFX
 		TextBox(bool haveBackground = true, sf::Vector2f const& size = { 200.0f, 200.0f }, sf::Vector2f const& position = { 0.0f,0.0f }, unsigned int charSize = 20.0f);
 		TextBox(TextBox&) = delete;
 		TextBox(TextBox&&) = delete;
+		virtual ~TextBox();
 
 
 		virtual void Update(sf::Event const&) override;
@@ -40,8 +41,8 @@ namespace GFX
 		void SetSize(float w, float h) override;
 		void SetPosition(float x, float y) override;
 
-		void SetPadding(float leftRight, float topBottom) { SetPadding(leftRight, topBottom, leftRight, topBottom); }
-		void SetPadding(float left, float top, float right, float bottom);
+		void SetPadding(float leftRight, float topBottom, bool expand = false) { SetPadding(leftRight, topBottom, leftRight, topBottom, expand); }
+		void SetPadding(float left, float top, float right, float bottom, bool expand = false);
 		void SetString(char const* text);
 		void SetFont(sf::Font const&);
 		void SetCharacterSize(unsigned int);
