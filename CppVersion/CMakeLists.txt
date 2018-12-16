@@ -29,21 +29,28 @@ include_directories (source)
 # Add source files
 add_executable (EulerAdventure ${EulerAdventure} ${GFX} ${ECA} ${SCENES} ${CORETOOLS})
 
-# Debug libs
-target_link_libraries (EulerAdventure debug
-	sfml-graphics-s-d.lib
-	sfml-window-s-d.lib
-	sfml-audio-s-d.lib
-	sfml-network-s-d.lib
-	sfml-system-s-d.lib)
 
-# Non Debug libs
-target_link_libraries (EulerAdventure optimized
-	sfml-graphics-s.lib
-	sfml-window-s.lib
-	sfml-audio-s.lib
-	sfml-network-s.lib
-	sfml-system-s.lib)
+# SFML libraries
+target_link_libraries (EulerAdventure
+	debug sfml-graphics-s-d.lib
+	optimized sfml-graphics-s.lib)
+
+target_link_libraries (EulerAdventure
+	debug sfml-window-s-d.lib
+	optimized sfml-window-s.lib)
+
+target_link_libraries (EulerAdventure
+	debug sfml-audio-s-d.lib
+	optimized sfml-audio-s.lib)
+
+target_link_libraries (EulerAdventure
+	debug sfml-network-s-d.lib
+	optimized sfml-network-s.lib)
+
+target_link_libraries (EulerAdventure
+	debug sfml-system-s-d.lib
+	optimized sfml-system-s.lib)
+
 
 # General libs
 target_link_libraries (EulerAdventure general

@@ -44,91 +44,91 @@ void ECA::GameManager::init() {
 	//--------------------------------------------------------------------------
 	//Büro
 	//--------------------------------------------------------------------------
-		description = {
-			//default
-			"In deinem Büro ist mittig ein überfüllter Schreibtisch [desk] an dem ein Scott Chefsessel mit original Kunstleder im Wert von 500€ steht [chair]. Außerdem stehen zwei Schränke in jeweils einer Ecke des Raumes.",
-			//explore
-			"Das Büro ist nicht besonders groß, aber du bist trotzdem stolz auf deinen Chefsessel. Außerdem steht eine Vitrine in dem Raum, in der deine Preise und Trophäen stehen.",
-			//already explored
-			"Der Raum ist nicht besonders groß, aber auf deinen Chefsessel bist du trotzdem stolz und natürlich auf deine Preis und Trophäen in deiner Vitrine."
-		};
+	description = {
+		//default
+		"In deinem Büro ist mittig ein überfüllter Schreibtisch [desk] an dem ein Scott Chefsessel mit original Kunstleder im Wert von 500€ steht [chair]. Außerdem stehen zwei Schränke in jeweils einer Ecke des Raumes.",
+		//explore
+		"Das Büro ist nicht besonders groß, aber du bist trotzdem stolz auf deinen Chefsessel. Außerdem steht eine Vitrine in dem Raum, in der deine Preise und Trophäen stehen.",
+		//already explored
+		"Der Raum ist nicht besonders groß, aber auf deinen Chefsessel bist du trotzdem stolz und natürlich auf deine Preis und Trophäen in deiner Vitrine."
+	};
 
-		items = std::vector<Item*>();
-		students = std::vector<Student*>();
-		exits = std::vector<LocationEnum>();
+	items = std::vector<Item*>();
+	students = std::vector<Student*>();
+	exits = std::vector<LocationEnum>();
 
-		//Stuhl
-		item = {
-			//name
-			"Stuhl [chair]",
-			//enum/id
-			CHAIR,
-			//description
-			"Ein Scott Chefsessel aus original Kunstleder im Wert von 500€, der nur dir gehört.",
-			//interactDescription
-			"Du setzt dich auf deinen Stuhl.\nEs macht knack und du sitzt auf'm Boden... Das Steak zum Frühstück war wohl doch zu viel.",
-			//visible
-			true,
-			//collected
-			false
-		};
-		items.push_back(&item);
+	//Stuhl
+	item = {
+		//name
+		"Stuhl [chair]",
+		//enum/id
+		CHAIR,
+		//description
+		"Ein Scott Chefsessel aus original Kunstleder im Wert von 500€, der nur dir gehört.",
+		//interactDescription
+		"Du setzt dich auf deinen Stuhl.\nEs macht knack und du sitzt auf'm Boden... Das Steak zum Frühstück war wohl doch zu viel.",
+		//visible
+		true,
+		//collected
+		false
+	};
+	items.push_back(&item);
 
-		//Schreibtisch
-		item = {
-			//name
-			"Schreibtisch [desk]",
-			//enum/id
-			DESK,
-			//description
-			"Dieser Schreibtisch braucht eine neue Lackierung. Achso, und ein Putzkommando!\nTrotz der Unordnung fällt dir ein vollgekritzeltes Papier [paper] auf, auf dem du dein letztes Meisterwerk, das Ergebnis der unendlichen Summe, niedergeschrieben hast!",
-			//interactDescription
-			nullptr, //TODO
-			//visible
-			true,
-			//collected
-			false
-		};
-		items.push_back(&item);
+	//Schreibtisch
+	item = {
+		//name
+		"Schreibtisch [desk]",
+		//enum/id
+		DESK,
+		//description
+		"Dieser Schreibtisch braucht eine neue Lackierung. Achso, und ein Putzkommando!\nTrotz der Unordnung fällt dir ein vollgekritzeltes Papier [paper] auf, auf dem du dein letztes Meisterwerk, das Ergebnis der unendlichen Summe, niedergeschrieben hast!",
+		//interactDescription
+		nullptr, //TODO
+		//visible
+		true,
+		//collected
+		false
+	};
+	items.push_back(&item);
 
-		//Rätsellösung
-		item = {
-			//name
-			"Rätsellösung [paper]",
-			//enum/id
-			PAPER,
-			//description
-			"Du hast hier die Summe der Unendlichkeit errechnet. Sie lautet -1/12!",
-			//interactDescription
-			nullptr, //TODO
-			//visible
-			false,
-			//collected
-			false
-		};
-		items.push_back(&item);
+	//Rätsellösung
+	item = {
+		//name
+		"Rätsellösung [paper]",
+		//enum/id
+		PAPER,
+		//description
+		"Du hast hier die Summe der Unendlichkeit errechnet. Sie lautet -1/12!",
+		//interactDescription
+		nullptr, //TODO
+		//visible
+		false,
+		//collected
+		false
+	};
+	items.push_back(&item);
 
-		exits.push_back(CORRIDOR_UP);
+	exits.push_back(CORRIDOR_UP);
 
-		location = {
-			//name
-			"Büro [office]",
-			//enum/id
-			OFFICE,
-			//explored
-			false,
-			//visible
-			true,
-			//description
-			&description,
-			//items
-			items,
-			//exits
-			exits,
-			//students
-			students
-		};
-		locations[location.id] = &location;
+	location = {
+		//name
+		"Büro [office]",
+		//enum/id
+		OFFICE,
+		//explored
+		false,
+		//visible
+		true,
+		//description
+		&description,
+		//items
+		items,
+		//exits
+		exits,
+		//students
+		students
+	};
+	locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Korridor obere Etage
