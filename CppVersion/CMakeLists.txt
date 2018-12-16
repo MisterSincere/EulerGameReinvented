@@ -5,12 +5,14 @@ project (EulerAdventure)
 file (GLOB CORETOOLS "source/coretools/*.h" "source/coretools/*.cpp")
 file (GLOB ECA "source/eca/*.h" "source/eca/*.cpp")
 file (GLOB GFX "source/gfx/*.h" "source/gfx/*.cpp")
+file (GLOB SCENES "source/scenes/*.h" "source/scenes/*.cpp")
 file (GLOB EulerAdventure "source/*.h" "source/*.cpp")
 
 # Filter
 source_group ("CORETOOLS" FILES ${CORETOOLS})
 source_group ("GFX" FILES ${GFX})
 source_group ("ECA" FILES ${ECA})
+source_group ("SCENES" FILES ${SCENES})
 source_group ("" FILES ${EulerAdventure})
 
 # SFML Library
@@ -21,9 +23,11 @@ include_directories ($ENV{ECA_SFML}/include)
 include_directories (source/coretools)
 include_directories (source/eca)
 include_directories (source/gfx)
+include_directories (source/scenes)
+include_directories (source)
 
 # Add source files
-add_executable (EulerAdventure ${EulerAdventure} ${GFX} ${ECA} ${CORETOOLS})
+add_executable (EulerAdventure ${EulerAdventure} ${GFX} ${ECA} ${SCENES} ${CORETOOLS})
 
 # Debug libs
 target_link_libraries (EulerAdventure debug
