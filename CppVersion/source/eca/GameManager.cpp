@@ -57,6 +57,57 @@ void ECA::GameManager::init() {
 		students = std::vector<Student*>();
 		exits = std::vector<LocationEnum>();
 
+		//Stuhl
+		item = {
+			//name
+			"Stuhl [chair]",
+			//enum/id
+			CHAIR,
+			//description
+			"Ein Scott Chefsessel aus original Kunstleder im Wert von 500€, der nur dir gehört.",
+			//interactDescription
+			"Du setzt dich auf deinen Stuhl.\nEs macht knack und du sitzt auf'm Boden... Das Steak zum Frühstück war wohl doch zu viel.",
+			//visible
+			true,
+			//collected
+			false
+		};
+		items.push_back(&item);
+
+		//Schreibtisch
+		item = {
+			//name
+			"Schreibtisch [desk]",
+			//enum/id
+			DESK,
+			//description
+			"Dieser Schreibtisch braucht eine neue Lackierung. Achso, und ein Putzkommando!\nTrotz der Unordnung fällt dir ein vollgekritzeltes Papier [paper] auf, auf dem du dein letztes Meisterwerk, das Ergebnis der unendlichen Summe, niedergeschrieben hast!",
+			//interactDescription
+			nullptr, //TODO
+			//visible
+			true,
+			//collected
+			false
+		};
+		items.push_back(&item);
+
+		//Rätsellösung
+		item = {
+			//name
+			"Rätsellösung [paper]",
+			//enum/id
+			PAPER,
+			//description
+			"Du hast hier die Summe der Unendlichkeit errechnet. Sie lautet -1/12!",
+			//interactDescription
+			nullptr, //TODO
+			//visible
+			false,
+			//collected
+			false
+		};
+		items.push_back(&item);
+
 		exits.push_back(CORRIDOR_UP);
 
 		location = {
@@ -77,7 +128,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -95,6 +145,40 @@ void ECA::GameManager::init() {
 		items = std::vector<Item*>();
 		students = std::vector<Student*>();
 		exits = std::vector<LocationEnum>();
+
+		//Kaffeelöscherkasten
+		item = {
+			//name
+			"Kaffeelöscherkasten [coffee extinguisher box]",
+			//enum/id
+			COFFEE_EXTINGUISHER_BOX,
+			//description
+			"Dieser Kasten beinhaltet einen Kaffeelöscher [coffee extinguisher], dieser ist der (un)natürlichste Bestandteil einer Feuerwehrausrüstung! Der Kasten ist durch ein elektronisches Sicherheitsschloss gesichert!",
+			//interactDescription
+			"Das kannst du nicht machen. Das elektronische Sicherheitsschloss will das nicht! Ob du einen Weg findest es zu bezwingen?",
+			//visible
+			false,
+			//collected
+			false
+		};
+		items.push_back(&item);
+
+		//Kaffeelöscher
+		item = {
+			//name
+			"Kaffeelöscher [coffee extinguisher]",
+			//enum/id
+			COFFEE_EXTINGUISHER,
+			//description
+			"Ein Feuerlöscher mit komisch riechendem Kaffee gefüllt.",
+			//interactDescription
+			"Jetzt bist du ein wahrer Feuerwehrmann.... Naja, nicht ganz, aber fast.",
+			//visible
+			false,
+			//collected
+			false
+		};
+		items.push_back(&item);
 
 		exits.push_back(OFFICE);
 		exits.push_back(COFFEE_ROOM);
@@ -122,7 +206,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 	
 	//--------------------------------------------------------------------------
@@ -140,6 +223,40 @@ void ECA::GameManager::init() {
 		items = std::vector<Item*>();
 		students = std::vector<Student*>();
 		exits = std::vector<LocationEnum>();
+
+		//Kaffeemaschine
+		item = {
+			//name
+			"Kaffeemaschine [coffee machine]",
+			//enum/id
+			COFFEE_MACHINE,
+			//description
+			"Eine hochwertig billige Kaffeemaschine. Die nicht funktoniert, irgendwer muss wohl das Stromkabel rausgezogen haben.",
+			//interactDescription
+			"Du willst den Stecker in die Steckdose stecken, aber die Steckdose will das nun halt nicht und gibt dir deswegen einen tödlichen Stromschlag.",
+			//visible
+			true,
+			//collected
+			false
+		};
+		items.push_back(&item);
+
+		//Küchenschränke
+		item = {
+			//name
+			"Küchenschränke [cupboards]",
+			//enum/id
+			CUPBOARDS,
+			//description
+			"Unter einem der Schränke ist ein Hohlraum, welcher unter dem ganzen Kaffeeraum hindurch führt zu einem geheimen Raum [chamber].",
+			//interactDescription
+			nullptr, //TODO
+			//visible
+			true,
+			//collected
+			false
+		};
+		items.push_back(&item);
 
 		exits.push_back(CORRIDOR_UP);
 		exits.push_back(CONFERENCE_ROOM);
@@ -162,7 +279,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -180,6 +296,23 @@ void ECA::GameManager::init() {
 		items = std::vector<Item*>();
 		students = std::vector<Student*>();
 		exits = std::vector<LocationEnum>();
+
+		//Lüftungsschacht
+		item = {
+			//name
+			"Lüftungsschacht [ventilation shaft]",
+			//enum/id
+			VENTILATION_SHAFT,
+			//description
+			"Du entdeckst einen Geheimraum [ventilationroom].",
+			//interactDescription
+			nullptr, //TODO
+			//visible
+			false,
+			//collected
+			false
+		};
+		items.push_back(&item);
 
 		exits.push_back(CORRIDOR_UP);
 		exits.push_back(COFFEE_ROOM);
@@ -202,7 +335,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -220,6 +352,23 @@ void ECA::GameManager::init() {
 		items = std::vector<Item*>();
 		students = std::vector<Student*>();
 		exits = std::vector<LocationEnum>();
+
+		//Notiz
+		item = {
+			//name
+			"Notiz [note]",
+			//enum/id
+			NOTE1,
+			//description
+			nullptr, //TODO
+			//interactDescription
+			nullptr, //TODO
+			//visible
+			false,
+			//collected
+			false
+		};
+		items.push_back(&item);
 
 		exits.push_back(COFFEE_ROOM);
 
@@ -241,7 +390,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -259,6 +407,23 @@ void ECA::GameManager::init() {
 		items = std::vector<Item*>();
 		students = std::vector<Student*>();
 		exits = std::vector<LocationEnum>();
+
+		//Notiz
+		item = {
+			//name
+			"Notiz [note]",
+			//enum/id
+			NOTE2,
+			//description
+			nullptr, //TODO
+			//interactDescription
+			nullptr, //TODO
+			//visible
+			false,
+			//collected
+			false
+		};
+		items.push_back(&item);
 
 		exits.push_back(CONFERENCE_ROOM);
 
@@ -280,7 +445,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -298,6 +462,23 @@ void ECA::GameManager::init() {
 		items = std::vector<Item*>();
 		students = std::vector<Student*>();
 		exits = std::vector<LocationEnum>();
+
+		//Skillbook
+		item = {
+			//name
+			"Skillbook [skillbook]",
+			//enum/id
+			SKILL_BOOK,
+			//description
+			"Dies ist das verstaubte Skillbook des toten Beammeisters.",
+			//interactDescription
+			"Du kannst dich nun beamen!",
+			//visible
+			false,
+			//collected
+			false
+		};
+		items.push_back(&item);
 
 		exits.push_back(CORRIDOR_UP);
 
@@ -319,7 +500,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -358,7 +538,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -397,7 +576,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -415,6 +593,40 @@ void ECA::GameManager::init() {
 		items = std::vector<Item*>();
 		students = std::vector<Student*>();
 		exits = std::vector<LocationEnum>();
+
+		//Feueraxt
+		item = {
+			//name
+			"Feueraxt [fire ax]",
+			//enum/id
+			FIRE_AXE,
+			//description
+			"Es ist eine Feueraxt!",
+			//interactDescription
+			"Diese Axt gehört zur Grundausstattung eines Feuerbekämpfers.",
+			//visible
+			true,
+			//collected
+			false
+		};
+		items.push_back(&item);
+
+		//Gulli
+		item = {
+			//name
+			"Gulli [gully]",
+			//enum/id
+			GULLY,
+			//description
+			"Ein Gullideckel... er ist eckig, er ist halt auch ein Individuum.\nDu brauchst irgendeinen Trick um den Gullideckel anheben zu können.",
+			//interactDescription
+			nullptr, //TODO
+			//visible
+			false,
+			//collected
+			false
+		};
+		items.push_back(&item);
 
 		exits.push_back(CORRIDOR_UP);
 
@@ -436,7 +648,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -476,7 +687,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -524,7 +734,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -576,7 +785,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -628,7 +836,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -680,7 +887,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -732,7 +938,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -750,6 +955,57 @@ void ECA::GameManager::init() {
 		items = std::vector<Item*>();
 		students = std::vector<Student*>();
 		exits = std::vector<LocationEnum>();
+
+		//Locker
+		item = {
+			//name
+			"Spind [locker]",
+			//enum/id
+			LOCKER,
+			//description
+			nullptr, //TODO
+			//interactDescription
+			nullptr, //TODO
+			//visible
+			false,
+			//collected
+			false
+		};
+		items.push_back(&item);
+
+		//Spind 42
+		item = {
+			//name
+			"Spind 42 [shiny locker]",
+			//enum/id
+			SHINY_LOCKER,
+			//description
+			nullptr, //TODO
+			//interactDescription
+			nullptr, //TODO
+			//visible
+			false,
+			//collected
+			false
+		};
+		items.push_back(&item);
+
+		//Notiz
+		item = {
+			//name
+			"Notiz [note]",
+			//enum/id
+			NOTE3,
+			//description
+			nullptr, //TODO
+			//interactDescription
+			nullptr, //TODO
+			//visible
+			false,
+			//collected
+			false
+		};
+		items.push_back(&item);
 
 		exits.push_back(CORRIDOR_DOWN);
 
@@ -771,7 +1027,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -789,6 +1044,23 @@ void ECA::GameManager::init() {
 		items = std::vector<Item*>();
 		students = std::vector<Student*>();
 		exits = std::vector<LocationEnum>();
+
+		//Spachtel
+		item = {
+			//name
+			"Spachtel [spatula]",
+			//enum/id
+			SPATULA,
+			//description
+			"Du wolltest ihn eigentlich der Chemiesammlung wiedergeben, aber er glänzt so schön.",
+			//interactDescription
+			nullptr, //TODO
+			//visible
+			false,
+			//collected
+			false
+		};
+		items.push_back(&item);
 
 		exits.push_back(CORRIDOR_DOWN);
 
@@ -810,7 +1082,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -849,7 +1120,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -867,6 +1137,23 @@ void ECA::GameManager::init() {
 		items = std::vector<Item*>();
 		students = std::vector<Student*>();
 		exits = std::vector<LocationEnum>();
+
+		//Notiz
+		item = {
+			//name
+			"Notiz [note]",
+			//enum/id
+			NOTE4,
+			//description
+			nullptr, //TODO
+			//interactDescription
+			nullptr, //TODO
+			//visible
+			true,
+			//collected
+			false
+		};
+		items.push_back(&item);
 
 		exits.push_back(CORRIDOR_DOWN);
 
@@ -888,7 +1175,6 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
@@ -906,6 +1192,23 @@ void ECA::GameManager::init() {
 		items = std::vector<Item*>();
 		students = std::vector<Student*>();
 		exits = std::vector<LocationEnum>();
+
+		//Kaffeetasse
+		item = {
+			//name
+			"Kaffeetasse [cup coffee]",
+			//enum/id
+			CUP_COFFEE,
+			//description
+			"Frischer Kaffee... Yammy",
+			//interactDescription
+			"Bei dem Versuch die Kaffeetasse hochzuheben, schmeißt du sie um, wodurch du einen schönen Kurzschluss verursachst. Wenn du Glück hast, hast du nur dich damit getötet und nicht gleich die ganze Welt!",
+			//visible
+			false,
+			//collected
+			false
+		};
+		items.push_back(&item);
 
 		location = {
 			//name
@@ -925,6 +1228,5 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-
 		locations[location.id] = &location;
 }
