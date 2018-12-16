@@ -38,6 +38,7 @@ namespace SCENES {
 		GFX::Field* m_pBackground;
 		GFX::TextBox* m_pTitle;
 		GFX::Button* m_pExitButton;
+		GFX::Button* m_pStartButton;
 
 		sf::Font* m_pSquareFont;
 		sf::Font* m_pArialFont;

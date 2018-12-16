@@ -106,10 +106,6 @@ void EulerAdventure::Update() {
 
 			// ESCAPE
 			if (event.key.code == sf::Keyboard::Escape) {
-				ChangeGameState(EXIT);
-
-			// CURRENT ESCAPE TEST F1
-			} else if (event.key.code == sf::Keyboard::F1) {
 				if (m_gameState == MENU) {
 					ChangeGameState(INGAME);
 				} else {

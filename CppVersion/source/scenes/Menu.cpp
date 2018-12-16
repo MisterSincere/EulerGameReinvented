@@ -33,6 +33,14 @@ SCENES::Menu::Menu(sf::Vector2u const& clientSize) {
 	m_pTitle = new GFX::TextBox("Euler Coffee Adventure", *m_pSquareFont, 50);
 	m_pTitle->SetPositionAligned(GFX::HORIZONTAL, clientSize);
 
+	// Start
+	m_pStartButton = new GFX::Button("Lets get so cool xoxo", *m_pArialFont, 29);
+	m_pStartButton->SetPosition(0.0f, 200.0f);
+	m_pStartButton->SetPositionAligned(GFX::HORIZONTAL, clientSize);
+	m_pStartButton->SetBackgroundColor(sf::Color(40, 40, 60));
+	m_pStartButton->SetPadding(10.0f, 10.0f, 10.0f, 10.0f, true);
+	m_pStartButton->AddButtonHandler(this);
+
 	// EXIT
 	m_pExitButton = new GFX::Button("Fck this shit, im out", *m_pArialFont, 29);
 	m_pExitButton->SetPosition(0.0f, clientSize.y - 150.0f);
@@ -46,6 +54,7 @@ SCENES::Menu::~Menu() {
 	RELEASEP(m_pBackground);
 	RELEASEP(m_pTitle);
 	RELEASEP(m_pExitButton);
+	RELEASEP(m_pStartButton);
 	RELEASEP(m_pSquareFont);
 	RELEASEP(m_pArialFont);
 }
@@ -53,6 +62,8 @@ SCENES::Menu::~Menu() {
 void SCENES::Menu::Handle(CORETOOLS::ButtonEvent event, GFX::Button* button) {
 	if (event == CORETOOLS::CLICK && button == m_pExitButton) {
 		EulerAdventure::ChangeGameState(EXIT);
+	} else if (event == CORETOOLS::CLICK && button == m_pStartButton) {
+		EulerAdventure::ChangeGameState(INGAME);
 	}
 }
 
@@ -60,10 +71,12 @@ void SCENES::Menu::Update(sf::Event const& event) {
 	m_pBackground->Update(event);
 	m_pTitle->Update(event);
 	m_pExitButton->Update(event);
+	m_pStartButton->Update(event);
 }
 
 void SCENES::Menu::Draw(sf::RenderWindow& rw) {
 	m_pBackground->Draw(rw);
 	m_pTitle->Draw(rw);
+	m_pStartButton->Draw(rw);
 	m_pExitButton->Draw(rw);
 }

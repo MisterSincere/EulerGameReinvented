@@ -27,13 +27,11 @@ GFX::Button::~Button() {
 }
 
 void GFX::Button::Update(sf::Event const& event) {
-	bool rightClick = event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right;
+	bool rightClick = event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left;
 
 	// If the mouse has moved update the mouse box position
-	if (event.type == sf::Event::MouseMoved) {
-		m_pMouseBox->left = float(event.mouseButton.x);
-		m_pMouseBox->top = float(event.mouseButton.y);
-	}
+	m_pMouseBox->left = float(event.mouseButton.x);
+	m_pMouseBox->top = float(event.mouseButton.y);
 
 	// Check for intersection
 	if (m_pMouseBox->intersects(*m_pButtonBox)) {
