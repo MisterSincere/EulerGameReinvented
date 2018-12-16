@@ -42,7 +42,7 @@ namespace GFX
 		void SetPosition(float x, float y) override;
 
 		void SetPadding(float leftRight, float topBottom, bool expand = false) { SetPadding(leftRight, topBottom, leftRight, topBottom, expand); }
-		void SetPadding(float left, float top, float right, float bottom, bool expand = false);
+		virtual void SetPadding(float left, float top, float right, float bottom, bool expand = false);
 		void SetString(char const* text);
 		void SetFont(sf::Font const&);
 		void SetCharacterSize(unsigned int);
@@ -60,6 +60,7 @@ namespace GFX
 		char const* i_rawString{ nullptr };
 		sf::String i_curStringWrapped;
 		sf::Text i_renderText;
+		float i_leftPadding{ 0.0f }, i_topPadding{ 0.0f }, i_rightPadding{ 0.0 }, i_bottomPadding{ 0.0f };
 
 	private:
 		void TextWrap();
@@ -70,6 +71,5 @@ namespace GFX
 
 		unsigned int m_characterSize; //< Initializer list
 		bool m_bold{ false };
-		float m_leftPadding{ 0.0f }, m_topPadding{ 0.0f }, m_rightPadding{ 0.0 }, m_bottomPadding{ 0.0f };
 	};
 }

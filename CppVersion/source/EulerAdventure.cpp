@@ -11,6 +11,7 @@
 /////////////////
 #include "Tuna.h"
 #include "Menu.h"
+#include "Mouse.h"
 
 GameState EulerAdventure::m_gameState = RUNNING;
 
@@ -59,6 +60,15 @@ bool EulerAdventure::InitSystems() {
 		m_settings.clientSize = m_window.getSize();
 	}
 
+	//
+	// MOUSE REPRESENTATION
+	//
+	if (!CORETOOLS::Mouse::Create(&m_window)) {
+		MESSAGE("> Mouse Creation failed!\n");
+		return false;
+	}
+	m_pMouse = CORETOOLS::Mouse::GetInstance();
+
 	return true;
 }
 
@@ -96,6 +106,8 @@ void EulerAdventure::Update() {
 	static sf::Event event;
 
 	while (m_window.pollEvent(event)) {
+
+		m_pMouse->Update(event);
 
 		// EXIT BUTTON
 		if (event.type == sf::Event::Closed) {

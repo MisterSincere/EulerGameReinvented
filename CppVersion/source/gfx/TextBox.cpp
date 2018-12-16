@@ -25,8 +25,7 @@ GFX::TextBox::TextBox(char const* text, sf::Font const& font, unsigned int charS
 	i_renderText.setFont(font);
 	i_renderText.setString(i_rawString);
 	
-#define TOLERANCE 4.0f
-	i_size = { i_renderText.getLocalBounds().width+TOLERANCE, i_renderText.getLocalBounds().height*1.5f };
+	i_size = { i_renderText.getLocalBounds().width, i_renderText.getLocalBounds().height };
 }
 
 GFX::TextBox::~TextBox() {
@@ -38,7 +37,7 @@ GFX::TextBox::TextBox(bool haveBackground, sf::Vector2f const& size, sf::Vector2
 	, m_characterSize(charSize)
 {
 	i_renderText.setCharacterSize(m_characterSize);
-	i_renderText.setPosition({ i_position.x + m_leftPadding, i_position.y + m_topPadding });
+	i_renderText.setPosition({ i_position.x + i_leftPadding, i_position.y + i_topPadding });
 	if(haveBackground) m_pBox = new Field(i_size, i_position);
 }
 
@@ -71,8 +70,8 @@ void GFX::TextBox::TextWrap() {
 	sf::Font const* font = i_renderText.getFont();
 	assert(font);
 
-	float xBound = i_position.x + i_size.x - m_rightPadding;
-	float yBound = i_position.y + i_size.y - m_bottomPadding;
+	float xBound = i_position.x + i_size.x - i_rightPadding;
+	float yBound = i_position.y + i_size.y - i_bottomPadding;
 
 	// Query through string till a character is out of bounds to insert a line break
 	sf::Vector2f pos;
@@ -107,11 +106,12 @@ void GFX::TextBox::SetPadding(float left, float top, float right, float bottom, 
 			return;
 		}
 
-		m_leftPadding = left;
-		m_topPadding = top;
-		m_rightPadding = right;
-		m_bottomPadding = bottom;
-		i_renderText.setPosition({ i_position.x + m_leftPadding, i_position.y + m_topPadding });
+		i_leftPadding = left;
+		i_topPadding = top;
+		i_rightPadding = right;
+		i_bottomPadding = bottom;
+		i_renderText.setPosition({ i_position.x + i_leftPadding, i_position.y + i_topPadding });
+		TextWrap();
 
 	// Expand the surrounding box so that the text has the same space
 	} else {
@@ -147,7 +147,7 @@ void GFX::TextBox::SetSize(float w, float h) {
 
 void GFX::TextBox::SetPosition(float x, float y) {
 	i_position = { x, y };
-	i_renderText.setPosition({ i_position.x + m_leftPadding, i_position.y + m_topPadding });
+	i_renderText.setPosition({ i_position.x + i_leftPadding, i_position.y + i_topPadding });
 	if (m_pBox) m_pBox->SetPosition(x, y);
 }
 

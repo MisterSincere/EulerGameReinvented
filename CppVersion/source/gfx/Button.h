@@ -10,6 +10,7 @@
 ///////////////////////////
 namespace CORETOOLS {
 	class IButtonHandler;
+	class Mouse;
 }
 
 namespace GFX {
@@ -24,11 +25,15 @@ namespace GFX {
 		void AddButtonHandler(CORETOOLS::IButtonHandler*);
 
 		void SetPosition(float x, float y) override;
+		void SetPadding(float left, float top, float right, float bottom, bool expand = false) override;
 
 	private:
 		std::vector<CORETOOLS::IButtonHandler*> m_handler;
 
-		sf::FloatRect* m_pMouseBox;
+		CORETOOLS::Mouse* m_pMouse;
 		sf::FloatRect* m_pButtonBox;
+
+		bool m_hovered{ false };
+		bool m_hoveredPrev{ false };
 	};
 }

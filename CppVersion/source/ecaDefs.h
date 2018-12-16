@@ -6,9 +6,9 @@
 #include <cstdio>
 
 #ifdef _DEBUG
-# define MESSAGE(msg, ___VA_ARGS___) printf(msg, ...);
+# define MESSAGE(msg, ...) printf(msg, __VA_ARGS__);
 #else
-# define MESSAGE(msg, ___VA_ARGS___)
+# define MESSAGE(msg, ...)
 #endif
 
 

@@ -33,7 +33,7 @@ void GFX::Field::Draw(sf::RenderWindow& rw) {
 }
 
 void GFX::Field::SetSize(float w, float h) {
-	IDrawable::SetSize(w, h);
+	IDrawable::SetSize(w, h * 1.4f);
 	m_pRect->setSize({ float(i_size.x), float(i_size.y) });
 }
 

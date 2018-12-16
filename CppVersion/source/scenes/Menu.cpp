@@ -63,12 +63,14 @@ void SCENES::Menu::Handle(CORETOOLS::ButtonEvent event, GFX::Button* button) {
 
 	// EXIT
 	if (button == m_pExitButton) {
-		if(event == CORETOOLS::CLICK) EulerAdventure::ChangeGameState(EXIT);
+		if (event == CORETOOLS::CLICK) EulerAdventure::ChangeGameState(EXIT);
+		if(event == CORETOOLS::RELEASE) m_pExitButton->SetBackgroundColor(sf::Color(40, 40, 60));
 		if(event == CORETOOLS::HOVER) m_pExitButton->SetBackgroundColor(sf::Color(0, 0, 0));
 
 	// START GAME
 	} else if (button == m_pStartButton) {
 		if (event == CORETOOLS::CLICK) EulerAdventure::ChangeGameState(INGAME);
+		if (event == CORETOOLS::RELEASE) m_pStartButton->SetBackgroundColor(sf::Color(40, 40, 60));
 		if (event == CORETOOLS::HOVER) m_pStartButton->SetBackgroundColor(sf::Color(0, 0, 0));
 	}
 }

@@ -17,6 +17,9 @@ namespace SCENES {
 	class Tuna;
 	class Menu;
 }
+namespace CORETOOLS {
+	class Mouse;
+}
 
 class EulerAdventure {
 public:
@@ -50,6 +53,8 @@ private:
 private:
 	sf::RenderWindow m_window;
 	Settings m_settings;
+
+	CORETOOLS::Mouse* m_pMouse{ nullptr };
 
 	SCENES::Tuna* m_pTuna{ nullptr };
 	SCENES::Menu* m_pMenu{ nullptr };
