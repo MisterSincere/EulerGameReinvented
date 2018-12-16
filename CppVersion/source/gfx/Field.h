@@ -17,11 +17,11 @@ namespace sf
 
 namespace GFX
 {
-	class Box : public IDrawable
+	class Field : public IDrawable
 	{
 	public:
-		Box(sf::Vector2f const& size = { 0.0f, 0.0f }, sf::Vector2f const& position = { 0.0f, 0.0f });
-		virtual ~Box();
+		Field(sf::Vector2f const& size = { 0.0f, 0.0f }, sf::Vector2f const& position = { 0.0f, 0.0f });
+		virtual ~Field();
 
 		virtual void Update(sf::Event const&) override;
 		virtual void Draw(sf::RenderWindow&) override;

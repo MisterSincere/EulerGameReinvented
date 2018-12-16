@@ -12,6 +12,7 @@
 #include "Tuna.h"
 #include "Menu.h"
 
+GameState EulerAdventure::m_gameState = RUNNING;
 
 EulerAdventure::EulerAdventure() {
 	m_settings.screenMode = WINDOWED;
@@ -25,7 +26,7 @@ EulerAdventure::~EulerAdventure() {
 }
 
 bool EulerAdventure::Init() {
-	NEW_GAMESTATE(INITIALIZING);
+	ChangeGameState(INITIALIZING);
 
 	if (!InitSystems()) return false;
 	if (!InitContent()) return false;
@@ -75,9 +76,9 @@ bool EulerAdventure::InitContent() {
 
 int EulerAdventure::Run() {
 
-	NEW_GAMESTATE(INGAME);
+	ChangeGameState(INGAME);
 
-	while (m_window.isOpen() && m_gameState != EXIT) {
+	while (m_gameState != EXIT) {
 
 		Update();
 
@@ -85,6 +86,8 @@ int EulerAdventure::Run() {
 		Draw();
 		m_window.display();
 	}
+
+	m_window.close();
 
 	return 0;
 }
@@ -96,23 +99,21 @@ void EulerAdventure::Update() {
 
 		// EXIT BUTTON
 		if (event.type == sf::Event::Closed) {
-			m_window.close();
-			NEW_GAMESTATE(EXIT);
+			ChangeGameState(EXIT);
 
 		// KEY PRESSED
 		} else if (event.type == sf::Event::KeyPressed) {
 
 			// ESCAPE
 			if (event.key.code == sf::Keyboard::Escape) {
-				m_window.close();
-				NEW_GAMESTATE(EXIT);
+				ChangeGameState(EXIT);
 
 			// CURRENT ESCAPE TEST F1
 			} else if (event.key.code == sf::Keyboard::F1) {
 				if (m_gameState == MENU) {
-					NEW_GAMESTATE(INGAME);
+					ChangeGameState(INGAME);
 				} else {
-					NEW_GAMESTATE(MENU);
+					ChangeGameState(MENU);
 				}
 			}
 		}
@@ -143,6 +144,13 @@ void EulerAdventure::Draw() {
 	}
 }
 
+void EulerAdventure::ChangeGameState(GameState gs) {
+	if (gs == m_gameState) return;
+#ifdef _DEBUG
+	printf("> Changed game state from %d to %d\n", m_gameState, gs);
+#endif
+	m_gameState = gs;
+}
 
 
 

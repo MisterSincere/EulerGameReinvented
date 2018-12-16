@@ -3,7 +3,7 @@
 /////////////////
 // MY INCLUDES //
 /////////////////
-#include "Box.h"
+#include "Field.h"
 
 //////////////
 // INCLUDES //
@@ -12,7 +12,7 @@
 
 
 SCENES::Menu::Menu(sf::Vector2u const& clientSize) {
-	m_pBackground = new GFX::Box();
+	m_pBackground = new GFX::Field;
 }
 
 SCENES::Menu::~Menu() {

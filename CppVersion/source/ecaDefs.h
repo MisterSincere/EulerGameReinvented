@@ -12,12 +12,6 @@
 #endif
 
 
-#ifdef _DEBUG
-#define NEW_GAMESTATE(x) { printf("> Changed gamestate from %d to %s\n", m_gameState, #x); m_gameState = x; }
-#else
-#define NEW_GAMESTATE(x) m_gameState = x
-#endif
-
 #define RELEASEP(x) if(x) {delete x; x = nullptr;}
 
 enum ScreenMode {

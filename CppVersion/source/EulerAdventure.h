@@ -18,7 +18,6 @@ namespace SCENES {
 	class Menu;
 }
 
-
 class EulerAdventure {
 public:
 	EulerAdventure();
@@ -39,6 +38,8 @@ public:
 	 **/
 	int Run();
 
+	static void ChangeGameState(GameState gs);
+
 private:
 	bool InitSystems();
 	bool InitContent();
@@ -53,5 +54,5 @@ private:
 	SCENES::Tuna* m_pTuna{ nullptr };
 	SCENES::Menu* m_pMenu{ nullptr };
 
-	GameState m_gameState{ RUNNING };
+	static GameState m_gameState;
 };

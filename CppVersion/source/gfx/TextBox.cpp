@@ -15,7 +15,7 @@ GFX::TextBox::TextBox(bool haveBackground, sf::Vector2f const& size, sf::Vector2
 {
 	i_renderText.setCharacterSize(m_characterSize);
 	i_renderText.setPosition({ i_position.x + m_leftPadding, i_position.y + m_topPadding });
-	if(haveBackground) m_pBox = new Box(i_size, i_position);
+	if(haveBackground) m_pBox = new Field(i_size, i_position);
 }
 
 void GFX::TextBox::Update(sf::Event const& event) {

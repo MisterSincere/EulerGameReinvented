@@ -5,7 +5,7 @@
 // FOREWARD DECLARATIONS //
 ///////////////////////////
 namespace GFX {
-	class Box;
+	class Field;
 }
 namespace sf {
 	template<typename T>
@@ -25,6 +25,6 @@ namespace SCENES {
 		void Draw();
 
 	private:
-		GFX::Box* m_pBackground;
+		GFX::Field* m_pBackground;
 	};
 }
