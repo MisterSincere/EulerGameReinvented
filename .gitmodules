@@ -1,3 +1,6 @@
 [submodule "EulerGameJava"]
 	path = EulerGameJava
 	url = git@github.com:MisterSincere/EulerGameJava.git
+[submodule "EulerEngine"]
+	path = EulerEngine
+	url = git@github.com:MisterSincere/EulerEngine.git
