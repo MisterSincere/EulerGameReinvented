@@ -6,6 +6,7 @@ cmake_install.cmake
 *.vcxproj.filters
 *.vcxproj.user
 *.sln
+*.lnk
 
 .vs/
 doc/
