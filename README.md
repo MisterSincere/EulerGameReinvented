@@ -1,5 +1,5 @@
 # EulerGameReinvented
-## How to setup the CppVersion
+## How to setup
 1. Download SFML https://www.sfml-dev.org/download/sfml/2.5.1/ and set an environmental variable named ```ECA_SFML_PATH``` to
    the root    directory of SFML
 3. Clone the repository recursively: ```git clone --recursive <ThisRepoLink>```.\
