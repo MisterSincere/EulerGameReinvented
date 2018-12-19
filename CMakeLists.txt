@@ -11,4 +11,6 @@ else()
     SET(EXECUTABLE_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin/Win32/")
 endif()
 
+add_subdirectory(EulerEngine/source)
+
 add_subdirectory(source)
