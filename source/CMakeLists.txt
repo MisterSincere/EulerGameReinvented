@@ -15,10 +15,10 @@ source_group ("SCENES" FILES ${SCENES})
 source_group ("" FILES ${EulerAdventure})
 
 # SFML Library
-link_directories ($ENV{ECA_SFML}/lib)
+link_directories ($ENV{ECA_SFML_PATH}/lib)
 
 # Includes
-include_directories ($ENV{ECA_SFML}/include)
+include_directories ($ENV{ECA_SFML_PATH}/include)
 include_directories (coretools)
 include_directories (eca)
 include_directories (gfx)
