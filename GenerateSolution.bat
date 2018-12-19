@@ -23,7 +23,7 @@ if not defined visualStudioVersion goto invalidVSVersionInput
 echo.
 echo Supported platforms: 32, 64 (bit)
 :invalidPlatformInput
-set /p archNumber=Use platfrom: 
+set /p archNumber=Use platform: 
 set archNumber=%archNumber:~0,2%
 if "%archNumber%"=="32" (
   set archDir=Win32
