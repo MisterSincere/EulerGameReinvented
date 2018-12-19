@@ -45,9 +45,9 @@ if exist vs\%archDir% (
 
 echo.
 :repeatDefaultLibSelection
-choice /C YN /N /M "Use default LIBRARIES_BASE_PATH [Yes/No]? "
-if %errorlevel%==1 echo OK, continue with default LIBRARIES_BASE_PATH.
-if %errorlevel%==2 set /p LIBRARIES_BASE_PATH=New LIBRARIES_BASE_PATH ^= 
+choice /C YN /N /M "Use default ECA_SFML [Yes/No]? "
+if %errorlevel%==1 echo OK, continue with default ECA_SFML.
+if %errorlevel%==2 set /p ECA_SFML=New ECA_SFML ^= 
 if %errorlevel%==0 goto repeatDefaultLibSelection
 
 echo.
