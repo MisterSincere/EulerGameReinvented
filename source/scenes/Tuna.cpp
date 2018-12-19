@@ -29,8 +29,8 @@ SCENES::Tuna::~Tuna() {
 bool SCENES::Tuna::StartInit()
 {
 	// Fonts
-	if (!m_arialFont.loadFromFile("assets/fonts/arial.ttf")) return false;
-	if (!m_squareFont.loadFromFile("assets/fonts/SquareFont.ttf")) return false;
+	if (!m_arialFont.loadFromFile(ASSETS_DIR + "fonts/arial.ttf")) return false;
+	if (!m_squareFont.loadFromFile(ASSETS_DIR + "fonts/SquareFont.ttf")) return false;
 
 	// Output box
 	m_pOutputBox = new GFX::TextBox;

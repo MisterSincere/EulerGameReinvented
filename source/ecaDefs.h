@@ -11,6 +11,8 @@
 # define MESSAGE(msg, ...)
 #endif
 
+// std string wrap for the assets path
+#define ASSETS_DIR std::string(ASSETS_PATH)
 
 #define RELEASEP(x) if(x) {delete x; x = nullptr;}
 

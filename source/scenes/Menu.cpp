@@ -21,8 +21,8 @@ SCENES::Menu::Menu(sf::Vector2u const& clientSize) {
 	// Fonts
 	m_pSquareFont = new sf::Font;
 	m_pArialFont = new sf::Font;
-	assert(m_pSquareFont->loadFromFile("assets/fonts/SquareFont.ttf"));
-	assert(m_pArialFont->loadFromFile("assets/fonts/arial.ttf"));
+	assert(m_pSquareFont->loadFromFile(ASSETS_DIR + "fonts/SquareFont.ttf"));
+	assert(m_pArialFont->loadFromFile(ASSETS_DIR + "fonts/arial.ttf"));
 
 	// Background
 	m_pBackground = new GFX::Field;
