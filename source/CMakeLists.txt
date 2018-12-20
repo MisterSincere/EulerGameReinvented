@@ -25,6 +25,12 @@ include_directories (gfx)
 include_directories (scenes)
 include_directories (${CMAKE_SOURCE_DIR}/source)
 
+
+# Defines
+add_definitions(-DSFML_STATIC)
+add_definitions("-DASSETS_PATH=\"${CMAKE_SOURCE_DIR}/assets/\"")
+
+
 # Add source files
 add_executable (EulerAdventure ${EulerAdventure} ${GFX} ${ECA} ${SCENES} ${CORETOOLS})
 
@@ -64,14 +70,3 @@ target_link_libraries (EulerAdventure general
 	vorbis.lib
 	ogg.lib
 	ws2_32.lib)
-
-
-# Define for sfml to use static libraries
-add_definitions(-DSFML_STATIC)
-
-# Define fors the assets path
-add_definitions("-DASSETS_PATH=\"${CMAKE_SOURCE_DIR}/assets/\"")
-
-
-
-
