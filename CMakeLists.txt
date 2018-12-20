@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.13.1)
 project (EulerAdventureReinvented)
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 if (CMAKE_GENERATOR MATCHES Win64)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/Win64/")
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/Win64/")
@@ -23,9 +25,11 @@ include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 
 # Euler Engine
 add_subdirectory(EulerEngine/source)
+set_property(TARGET EulerEngine PROPERTY FOLDER "Core")
 
 # Main Game
 add_subdirectory(source)
+set_property(TARGET EulerAdventure PROPERTY FOLDER "Project")
 
 # Vulkan and glfw library
 target_link_libraries (EulerEngine general vulkan-1.lib glfw3.lib)
