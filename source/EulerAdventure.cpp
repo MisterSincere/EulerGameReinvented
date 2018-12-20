@@ -5,7 +5,6 @@
 //////////////
 #include <iostream>
 #include <SFML/Window/Event.hpp>
-#include <eulerengine.h>
 
 /////////////////
 // MY INCLUDES //
@@ -41,20 +40,6 @@ bool EulerAdventure::InitSystems() {
 	// WINDOW
 	//
 	{
-		EEWindowCreateInfo windowCInfo;
-		windowCInfo.flags = 0;
-		windowCInfo.clientSize = { 1024, 768 };
-		windowCInfo.position = { 870, 300 };
-		windowCInfo.screenMode = EE_SCREEN_MODE_WINDOWED;
-		windowCInfo.title = "EulerEngineTest";
-		windowCInfo.icon = nullptr;
-		windowCInfo.mouseDisabled = false;
-
-		EEGraphicsCreateInfo gfx;
-		gfx.splitscreen = EE_SPLITSCREEN_MODE_NONE;
-		EEApplication app;
-		eeCreateApplication(app, &windowCInfo, &gfx);
-
 		int style = sf::Style::Default;
 		if (m_settings.screenMode == FAKE_FULLSCREEN) {
 			style = sf::Style::None;
