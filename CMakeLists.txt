@@ -14,3 +14,5 @@ endif()
 add_subdirectory(EulerEngine/source)
 
 add_subdirectory(source)
+
+add_dependencies(EulerAdventure EulerEngine)
