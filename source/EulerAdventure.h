@@ -4,6 +4,7 @@
 // INCLUDES //
 //////////////
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <applicationClass.h>
 
 /////////////////
 // MY INCLUDES //
@@ -52,6 +53,7 @@ private:
 
 private:
 	sf::RenderWindow m_window;
+	EE::Application m_application;
 	Settings m_settings;
 
 	CORETOOLS::Mouse* m_pMouse{ nullptr };

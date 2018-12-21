@@ -59,6 +59,18 @@ bool EulerAdventure::InitSystems() {
 		// In fullscreen acquire now the client size
 		m_settings.clientSize = m_window.getSize();
 	}
+	{
+		EEWindowCreateInfo windowCInfo;
+		windowCInfo.flags = EE_WINDOW_FLAGS_CENTER;
+		windowCInfo.clientSize = { 800u, 600u };
+		windowCInfo.position = { 0, 0 };
+		windowCInfo.screenMode = EE_SCREEN_MODE_WINDOWED;
+		windowCInfo.title = "EulerAdventure";
+		windowCInfo.icon = nullptr;
+		windowCInfo.mouseDisabled = EE_FALSE;
+
+		m_application.Create(windowCInfo);
+	}
 
 	//
 	// MOUSE REPRESENTATION
@@ -88,7 +100,7 @@ int EulerAdventure::Run() {
 
 	ChangeGameState(MENU);
 
-	while (m_gameState != EXIT) {
+	while (m_gameState != EXIT && !m_application.PollEvent()) {
 
 		Update();
 
