@@ -60,16 +60,17 @@ bool EulerAdventure::InitSystems() {
 		m_settings.clientSize = m_window.getSize();
 	}
 	{
-		EEWindowCreateInfo windowCInfo;
-		windowCInfo.flags = EE_WINDOW_FLAGS_CENTER;
-		windowCInfo.clientSize = { 800u, 600u };
-		windowCInfo.position = { 0, 0 };
-		windowCInfo.screenMode = EE_SCREEN_MODE_WINDOWED;
-		windowCInfo.title = "EulerAdventure";
-		windowCInfo.icon = nullptr;
-		windowCInfo.mouseDisabled = EE_FALSE;
-
-		m_application.Create(windowCInfo);
+		EEApplicationCreateInfo appCInfo;
+		appCInfo.flags = EE_WINDOW_FLAGS_CENTER;
+		appCInfo.clientSize = { 800u, 600u };
+		appCInfo.position = { 0,0 };
+		appCInfo.screenMode = EE_SCREEN_MODE_WINDOWED;
+		appCInfo.title = "EulerAdventure";
+		appCInfo.icon = nullptr;
+		appCInfo.mouseDisabled = EE_FALSE;
+		appCInfo.splitscreen = EE_SPLITSCREEN_MODE_NONE;
+		appCInfo.rendererType = EE_RENDER_TYPE_2D;
+		m_application.Create(appCInfo);
 	}
 
 	//

@@ -53,7 +53,7 @@ private:
 
 private:
 	sf::RenderWindow m_window;
-	EE::Application m_application;
+	EEApplication m_application;
 	Settings m_settings;
 
 	CORETOOLS::Mouse* m_pMouse{ nullptr };
