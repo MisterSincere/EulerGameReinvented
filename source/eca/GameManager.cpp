@@ -3,7 +3,7 @@
 //////////////
 // INCLUDES //
 //////////////
-#include <SFML/Graphics/RenderWindow.hpp>
+//#include <SFML/Graphics/RenderWindow.hpp>
 
 /////////////////
 // MY INCLUDES //
@@ -11,8 +11,8 @@
 #include "EulerAdventure.h"
 
 
-ECA::GameManager::GameManager(sf::RenderWindow* pWindow)
-	: ITextHandler(pWindow)
+ECA::GameManager::GameManager(/*sf::RenderWindow* pWindow*/)
+	: ITextHandler(/*pWindow*/)
 {
 	i_commands += "exit";
 	i_commands += "explore";

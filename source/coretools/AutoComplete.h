@@ -9,9 +9,9 @@
 ///////////////////////////
 // FOREWARD DECLARATIONS //
 ///////////////////////////
-namespace sf {
-	class String;
-}
+//namespace sf {
+//	class String;
+//}
 
 namespace CORETOOLS {
 	///////////////////////////
@@ -35,7 +35,7 @@ namespace CORETOOLS {
 		 *
 		 * @Deprectated Use MultiComplete
 		 **/
-		int Complete(sf::String const& toBeCompleted, sf::String& completioned);
+		int Complete(/*sf::String const& toBeCompleted, sf::String& completioned*/);
 
 		/**
 		 * Returns a list of commands that equal at least like desired the toBeCompleted string
@@ -46,7 +46,7 @@ namespace CORETOOLS {
 		 *
 		 * @return Vector of commands that are fullfilling the above criteria sorted by amount most characters
 		 **/
-		std::vector<Cmd> MultiComplete(sf::String const& toBeCompleted, unsigned int minimum = 1u);
+		std::vector<Cmd> MultiComplete(/*sf::String const& toBeCompleted, */unsigned int minimum = 1u);
 
 	private:
 		/**

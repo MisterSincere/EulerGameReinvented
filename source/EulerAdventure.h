@@ -3,7 +3,6 @@
 //////////////
 // INCLUDES //
 //////////////
-#include <SFML/Graphics/RenderWindow.hpp>
 #include <applicationClass.h>
 
 /////////////////
@@ -52,7 +51,6 @@ private:
 	void Draw();
 
 private:
-	sf::RenderWindow m_window;
 	EEApplication m_application;
 	Settings m_settings;
 

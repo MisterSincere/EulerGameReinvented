@@ -32,7 +32,7 @@ enum GameState {
 
 struct Settings {
 	ScreenMode		screenMode			{ WINDOWED };
-	sf::Vector2u	clientSize			{ 200u, 200u };
+	/*sf::Vector2u	clientSize			{ 200u, 200u };*/
 	unsigned int	antialisingCount{ 1u };
 	unsigned int	frameLimit			{ 60u };
 	bool					vsyncEnabled		{ false };

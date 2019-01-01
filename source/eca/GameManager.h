@@ -63,7 +63,7 @@ namespace ECA {
 
 	class GameManager : public CORETOOLS::ITextHandler {
 	public:
-		GameManager(sf::RenderWindow*);
+		GameManager(/*sf::RenderWindow**/);
 
 		void Handle(char const* text) override;
 		void init();

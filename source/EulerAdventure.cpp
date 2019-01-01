@@ -4,7 +4,7 @@
 // INCLUDES //
 //////////////
 #include <iostream>
-#include <SFML/Window/Event.hpp>
+//#include <SFML/Window/Event.hpp>
 
 /////////////////
 // MY INCLUDES //
@@ -18,7 +18,7 @@ GameState EulerAdventure::m_gameState = RUNNING;
 EulerAdventure::EulerAdventure() {
 	m_settings.screenMode = WINDOWED;
 	m_settings.frameLimit = 60u;
-	m_settings.clientSize = { 1100u, 700u };
+	/*m_settings.clientSize = { 1100u, 700u };*/
 }
 
 EulerAdventure::~EulerAdventure() {
@@ -40,24 +40,24 @@ bool EulerAdventure::InitSystems() {
 	// WINDOW
 	//
 	{
-		int style = sf::Style::Default;
-		if (m_settings.screenMode == FAKE_FULLSCREEN) {
-			style = sf::Style::None;
-			m_settings.clientSize = { sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height };
-		} else if (m_settings.screenMode == FULLSCREEN) {
-			style = sf::Style::Fullscreen;
-		}
+		//int style = sf::Style::Default;
+		//if (m_settings.screenMode == FAKE_FULLSCREEN) {
+		//	style = sf::Style::None;
+		//	m_settings.clientSize = { sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height };
+		//} else if (m_settings.screenMode == FULLSCREEN) {
+		//	style = sf::Style::Fullscreen;
+		//}
 
-		sf::ContextSettings settings;
-		settings.antialiasingLevel = m_settings.antialisingCount;
+		//sf::ContextSettings settings;
+		//settings.antialiasingLevel = m_settings.antialisingCount;
 
-		// Create window and set its settings
-		m_window.create(sf::VideoMode(m_settings.clientSize.x, m_settings.clientSize.y), m_settings.title, style, settings);
-		m_window.setFramerateLimit(m_settings.frameLimit);
-		m_window.setVerticalSyncEnabled(m_settings.vsyncEnabled);
+		//// Create window and set its settings
+		//m_window.create(sf::VideoMode(m_settings.clientSize.x, m_settings.clientSize.y), m_settings.title, style, settings);
+		//m_window.setFramerateLimit(m_settings.frameLimit);
+		//m_window.setVerticalSyncEnabled(m_settings.vsyncEnabled);
 
-		// In fullscreen acquire now the client size
-		m_settings.clientSize = m_window.getSize();
+		//// In fullscreen acquire now the client size
+		//m_settings.clientSize = m_window.getSize();
 	}
 	{
 		EEApplicationCreateInfo appCInfo;
@@ -76,21 +76,21 @@ bool EulerAdventure::InitSystems() {
 	//
 	// MOUSE REPRESENTATION
 	//
-	if (!CORETOOLS::Mouse::Create(&m_window)) {
+	/*if (!CORETOOLS::Mouse::Create(&m_window)) {
 		MESSAGE("> Mouse Creation failed!\n");
 		return false;
 	}
-	m_pMouse = CORETOOLS::Mouse::GetInstance();
+	m_pMouse = CORETOOLS::Mouse::GetInstance();*/
 
 	return true;
 }
 
 bool EulerAdventure::InitContent() {
 
-	m_pMenu = new SCENES::Menu(m_window.getSize());
+	m_pMenu = new SCENES::Menu(/*m_window.getSize()*/);
 	assert(m_pMenu);
 
-	m_pTuna = new SCENES::Tuna(&m_window);
+	m_pTuna = new SCENES::Tuna(/*&m_window*/);
 	m_pTuna->StartInit();
 	assert(m_pTuna);
 
@@ -105,55 +105,55 @@ int EulerAdventure::Run() {
 
 		Update();
 
-		m_window.clear(sf::Color(250, 250, 250));
+		/*m_window.clear(sf::Color(250, 250, 250));
 		Draw();
-		m_window.display();
+		m_window.display();*/
 	}
 
-	m_window.close();
+	/*m_window.close();*/
 
 	return 0;
 }
 
 void EulerAdventure::Update() {
-	static sf::Event event;
+	/*static sf::Event event;*/
 
-	while (m_window.pollEvent(event)) {
+	//while (m_window.pollEvent(event)) {
 
-		m_pMouse->Update(event);
+	//	m_pMouse->Update(event);
 
-		// EXIT BUTTON
-		if (event.type == sf::Event::Closed) {
-			ChangeGameState(EXIT);
+	//	// EXIT BUTTON
+	//	if (event.type == sf::Event::Closed) {
+	//		ChangeGameState(EXIT);
 
-		// KEY PRESSED
-		} else if (event.type == sf::Event::KeyPressed) {
+	//	// KEY PRESSED
+	//	} else if (event.type == sf::Event::KeyPressed) {
 
-			// ESCAPE
-			if (event.key.code == sf::Keyboard::Escape) {
-				if (m_gameState == MENU) {
-					ChangeGameState(INGAME);
-				} else {
-					ChangeGameState(MENU);
-				}
-			}
-		}
+	//		// ESCAPE
+	//		if (event.key.code == sf::Keyboard::Escape) {
+	//			if (m_gameState == MENU) {
+	//				ChangeGameState(INGAME);
+	//			} else {
+	//				ChangeGameState(MENU);
+	//			}
+	//		}
+	//	}
 
-		switch (m_gameState) {
-		case INGAME:
-			m_pTuna->Update(event);
-			break;
+	//	switch (m_gameState) {
+	//	case INGAME:
+	//		m_pTuna->Update(event);
+	//		break;
 
-		case MENU:
-			m_pMenu->Update(event);
-			break;
-		}
+	//	case MENU:
+	//		m_pMenu->Update(event);
+	//		break;
+	//	}
 
-	}
+	//}
 }
 
 void EulerAdventure::Draw() {
-	switch (m_gameState) {
+	/*switch (m_gameState) {
 	case INGAME:
 		m_pTuna->Draw();
 		break;
@@ -162,7 +162,7 @@ void EulerAdventure::Draw() {
 	case MENU:
 		m_pMenu->Draw(m_window);
 		break;
-	}
+	}*/
 }
 
 void EulerAdventure::ChangeGameState(GameState gs) {

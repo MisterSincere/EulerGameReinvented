@@ -3,7 +3,7 @@
 //////////////
 // INCLUDES //
 //////////////
-#include <SFML/System/Vector2.hpp>
+//#include <SFML/System/Vector2.hpp>
 
 ///////////////////////////
 // FOREWARD DECLARATIONS //
@@ -36,9 +36,9 @@ namespace CORETOOLS {
 		Mouse(sf::RenderWindow* rw);
 
 	private:
-		sf::RenderWindow* m_pWindow;
+		/*sf::RenderWindow* m_pWindow;
 
-		sf::Vector2i m_position;
+		sf::Vector2i m_position;*/
 		bool m_leftClicked{ false };
 		bool m_rightClicked{ false };
 		bool m_leftClickedPrev{ false };
