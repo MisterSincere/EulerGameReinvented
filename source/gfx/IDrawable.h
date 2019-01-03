@@ -17,11 +17,11 @@
 namespace GFX
 {
 
-	enum CenterFlags {
-		HORIZONTAL = 0x01,
-		VERTICAL = 0x02,
-		COMPLETE = HORIZONTAL | VERTICAL,
-	};
+	//enum CenterFlags {
+	//	HORIZONTAL = 0x01,
+	//	VERTICAL = 0x02,
+	//	COMPLETE = HORIZONTAL | VERTICAL,
+	//};
 
 	class IDrawable
 	{
@@ -33,7 +33,7 @@ namespace GFX
 
 
 		virtual void SetBounds(float x, float y, float w, float h) { SetPosition(x, y); SetSize(w, h); }
-		virtual void SetPositionAligned(CenterFlags f/*, sf::Vector2u const& size*/) { /*SetPosition((f&HORIZONTAL)?(size.x- i_size.x)/2.0f:i_position.x,(f&VERTICAL)?(size.y-i_size.y)/2.0f:i_position.y);*/}
+		virtual void SetPositionAligned(/*CenterFlags f, sf::Vector2u const& size*/) { /*SetPosition((f&HORIZONTAL)?(size.x- i_size.x)/2.0f:i_position.x,(f&VERTICAL)?(size.y-i_size.y)/2.0f:i_position.y);*/}
 		virtual void SetPosition(/*sf::Vector2f const& pos*/) { /*SetPosition(pos.x, pos.y);*/ }
 		virtual void SetPosition(float x, float y) { /*i_position = { x,y };*/ }
 		virtual void SetSize(/*sf::Vector2f const& size*/) { /*SetSize(size.x, size.y);*/ }

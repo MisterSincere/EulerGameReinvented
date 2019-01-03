@@ -4,6 +4,7 @@
 // INCLUDES //
 //////////////
 #include <EEApplication.h>
+#include <gfx/EERectangle.h>
 
 /////////////////
 // MY INCLUDES //
@@ -52,6 +53,7 @@ private:
 
 private:
 	EEApplication m_application;
+	GFX::EERectangle* m_pRect;
 	Settings m_settings;
 
 	CORETOOLS::Mouse* m_pMouse{ nullptr };
