@@ -105,6 +105,8 @@ int EulerAdventure::Run() {
 
 		Update();
 
+		m_application.Draw();
+
 		/*m_window.clear(sf::Color(250, 250, 250));
 		Draw();
 		m_window.display();*/
