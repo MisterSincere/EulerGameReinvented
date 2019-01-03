@@ -3,7 +3,7 @@
 //////////////
 // INCLUDES //
 //////////////
-#include <applicationClass.h>
+#include <EEApplication.h>
 
 /////////////////
 // MY INCLUDES //
