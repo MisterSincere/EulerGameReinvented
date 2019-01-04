@@ -44,13 +44,6 @@ if exist vs\%archDir% (
 )
 
 echo.
-:repeatDefaultLibSelection
-choice /C YN /N /M "Use default ECA_SFML [Yes/No]? "
-if %errorlevel%==1 echo OK, continue with default ECA_SFML.
-if %errorlevel%==2 set /p ECA_SFML=New ECA_SFML ^= 
-if %errorlevel%==0 goto repeatDefaultLibSelection
-
-echo.
 echo.
 echo ______________________________________________________________________________________
 echo.
@@ -73,6 +66,19 @@ if errorlevel 1 (
   pause
   exit
 )
+
+echo.
+echo.
+echo ______________________________________________________________________________________
+echo.
+echo    Compiling shader files in %archNumber% bit
+echo ______________________________________________________________________________________
+echo.
+echo.
+echo.
+pause
+
+call ..\..\EulerEngine\assets\shader\runCompiler64.bat
 
 echo.
 echo.
