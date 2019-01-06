@@ -54,6 +54,7 @@ private:
 private:
 	EEApplication m_application;
 	GFX::EERectangle* m_pRect;
+	GFX::EERectangle* m_pRect2;
 	Settings m_settings;
 
 	CORETOOLS::Mouse* m_pMouse{ nullptr };

@@ -73,6 +73,14 @@ bool EulerAdventure::InitSystems() {
 		m_application.Create(appCInfo);
 
 		m_pRect = new GFX::EERectangle(&m_application);
+		m_pRect->SetPosition({ 0.0f, 0.0f });
+		m_pRect->SetSize({200u, 200u});
+		m_pRect->SetBackgroundColor({ 0.0f, 1.0f, 0.0f, 1.0f });
+
+		m_pRect2 = new GFX::EERectangle(&m_application);
+		m_pRect2->SetPosition({ 100.0f, 100.0f });
+		m_pRect2->SetSize({ 200u, 200u });
+		m_pRect2->SetBackgroundColor({ 1.0f, 0.0f, 0.0f, .5f });
 	}
 
 	//
@@ -122,6 +130,7 @@ int EulerAdventure::Run() {
 void EulerAdventure::Update() {
 
 	m_pRect->Update();
+	m_pRect2->Update();
 	/*static sf::Event event;*/
 
 	//while (m_window.pollEvent(event)) {
