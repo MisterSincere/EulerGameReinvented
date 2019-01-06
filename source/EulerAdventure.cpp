@@ -69,7 +69,7 @@ bool EulerAdventure::InitSystems() {
 		appCInfo.icon = nullptr;
 		appCInfo.mouseDisabled = EE_FALSE;
 		appCInfo.splitscreen = EE_SPLITSCREEN_MODE_NONE;
-		appCInfo.rendererType = EE_RENDER_TYPE_2D;
+		appCInfo.rendererType = EE_RENDER_TYPE_BOTH;
 		m_application.Create(appCInfo);
 
 		m_pRect = new GFX::EERectangle(&m_application);
@@ -120,6 +120,8 @@ int EulerAdventure::Run() {
 }
 
 void EulerAdventure::Update() {
+
+	m_pRect->Update();
 	/*static sf::Event event;*/
 
 	//while (m_window.pollEvent(event)) {
