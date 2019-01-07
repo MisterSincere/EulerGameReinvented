@@ -131,6 +131,11 @@ void EulerAdventure::Update() {
 
 	m_pRect->Update();
 	m_pRect2->Update();
+	
+	if (m_application.KeyHit(EE_KEY_ESCAPE)) {
+		ChangeGameState(EXIT);
+	}
+
 	/*static sf::Event event;*/
 
 	//while (m_window.pollEvent(event)) {
