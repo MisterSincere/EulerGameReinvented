@@ -5,6 +5,7 @@
 //////////////
 #include <EEApplication.h>
 #include <gfx/EERectangle.h>
+#include <gfx/EEFontEngine.h>
 
 /////////////////
 // MY INCLUDES //
