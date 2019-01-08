@@ -58,6 +58,10 @@ private:
 	GFX::EERectangle* m_pRect2;
 	Settings m_settings;
 
+	GFX::EEFontEngine* m_pFontEngine;
+	GFX::EEFont m_arial;
+	GFX::EEText m_text;
+
 	CORETOOLS::Mouse* m_pMouse{ nullptr };
 
 	SCENES::Tuna* m_pTuna{ nullptr };
