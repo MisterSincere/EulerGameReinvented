@@ -16,12 +16,14 @@ endif()
 # Library paths
 link_directories ($ENV{EE_VULKAN_PATH}/Lib)
 link_directories ($ENV{EE_GLFW_PATH}/lib-vc2015)
+include_directories (${CMAKE_CURRENT_SOURCE_DIR}/EulerEngine/source/freetype/lib64)
 
 # Include paths
 include_directories ($ENV{EE_GLM_PATH})
 include_directories ($ENV{EE_VULKAN_PATH}/Include)
 include_directories ($ENV{EE_GLFW_PATH}/include)
 include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+include_directories (${CMAKE_CURRENT_SOURCE_DIR}/EulerEngine/source/freetype/include)
 
 # Euler Engine
 add_subdirectory(EulerEngine/source)
@@ -32,8 +34,8 @@ add_subdirectory(source)
 set_property(TARGET EulerAdventure PROPERTY FOLDER "Project")
 
 # Vulkan and glfw library
-target_link_libraries (EulerEngine general vulkan-1.lib glfw3.lib)
-target_link_libraries (EulerAdventure general vulkan-1.lib glfw3.lib)
+target_link_libraries (EulerEngine general vulkan-1.lib glfw3.lib freetype.lib)
+target_link_libraries (EulerAdventure general vulkan-1.lib glfw3.lib freetype.lib)
 
 # SFML library to Euler Engine to unresolve stbi
 # TODO When the sfml lib is no longer use include STB_IMPLENTATION define again
