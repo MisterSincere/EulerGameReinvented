@@ -83,9 +83,9 @@ bool EulerAdventure::InitSystems() {
 		m_pRect2->SetBackgroundColor({ 1.0f, 0.0f, 0.0f, .5f });
 
 		m_pFontEngine = new GFX::EEFontEngine(&m_application);
-		std::string arialFile = ECA_ASSETS_DIR("fonts/arial.ttf");
+		std::string arialFile = ECA_ASSETS_DIR("fonts/SquareFont.ttf");
 		m_arial = m_pFontEngine->CreateFont(arialFile.c_str());
-		m_text = m_pFontEngine->RenderText(m_arial, "60\nfps", { 80.0f, 70.0f }, 35.0f, { 0.0, 0.0f, 0.9f, 1.0f });
+		m_text = m_pFontEngine->RenderText(m_arial, "hallo again\nI am in a new line", { 80.0f, 70.0f }, 35.0f, { 0.0, 0.0f, 0.9f, .5f });
 	}
 
 	//
@@ -142,7 +142,7 @@ void EulerAdventure::Update() {
 		ChangeGameState(EXIT);
 	}
 	if (m_application.KeyHit(EE_KEY_T)) {
-		m_pFontEngine->ChangeText(m_text, "hallo");
+		m_pFontEngine->ChangeText(m_text, "hello!!");
 	}
 
 	/*static sf::Event event;*/
