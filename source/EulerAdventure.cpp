@@ -142,7 +142,11 @@ void EulerAdventure::Update() {
 		ChangeGameState(EXIT);
 	}
 	if (m_application.KeyHit(EE_KEY_T)) {
-		m_pFontEngine->ChangeText(m_text, "hello!!");
+		m_pFontEngine->ChangeText(m_text, "hello112!!");
+
+	}
+	if (m_application.KeyHit(EE_KEY_N)) {
+		m_pFontEngine->ChangeText(m_text, "tschuess!!");
 	}
 
 	/*static sf::Event event;*/
