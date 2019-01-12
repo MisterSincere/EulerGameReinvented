@@ -120,7 +120,7 @@ int EulerAdventure::Run() {
 
 		Update();
 
-		m_application.Draw();
+		m_application.Draw({ 0.8f, 0.3f, 0.5f, 1.0f });
 
 		/*m_window.clear(sf::Color(250, 250, 250));
 		Draw();
