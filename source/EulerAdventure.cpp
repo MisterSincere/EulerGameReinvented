@@ -121,13 +121,7 @@ int EulerAdventure::Run() {
 		Update();
 
 		m_application.Draw({ 0.8f, 0.3f, 0.5f, 1.0f });
-
-		/*m_window.clear(sf::Color(250, 250, 250));
-		Draw();
-		m_window.display();*/
 	}
-
-	/*m_window.close();*/
 
 	return 0;
 }
@@ -143,10 +137,14 @@ void EulerAdventure::Update() {
 	}
 	if (m_application.KeyHit(EE_KEY_T)) {
 		m_pFontEngine->ChangeText(m_text, "hello112!!");
-
 	}
 	if (m_application.KeyHit(EE_KEY_N)) {
 		m_pFontEngine->ChangeText(m_text, "tschuess!!");
+	}
+	static bool visible = false;
+	if (m_application.KeyHit(EE_KEY_M)) {
+		m_pRect->SetVisibility(visible);
+		visible = !visible;
 	}
 
 	/*static sf::Event event;*/
