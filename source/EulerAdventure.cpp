@@ -136,16 +136,21 @@ void EulerAdventure::Update() {
 		ChangeGameState(EXIT);
 	}
 	if (m_application.KeyHit(EE_KEY_T)) {
-		m_pFontEngine->ChangeText(m_text, "hello112!!");
+		m_pFontEngine->ChangeText(m_text, "hello!!");
 	}
 	if (m_application.KeyHit(EE_KEY_N)) {
-		m_pFontEngine->ChangeText(m_text, "tschuess!!");
+		m_pFontEngine->ChangeText(m_text, "");
 	}
 	static bool visible = false;
 	if (m_application.KeyHit(EE_KEY_M)) {
 		m_pRect->SetVisibility(visible);
 		visible = !visible;
 	}
+
+	EEPoint32F mousePos;
+	m_application.MousePosition(mousePos);
+	EE_PRINT(" >> %d\n", m_pRect->Intersect(mousePos));
+
 
 	/*static sf::Event event;*/
 
