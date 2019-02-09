@@ -89,8 +89,13 @@ bool EulerAdventure::InitSystems() {
 		m_font = m_pFontEngine->CreateFont(arialFile.c_str());
 
 		m_text = m_pFontEngine->RenderText(m_font, "hallo again\nI am in a new line", { 80.0f, 70.0f }, 35.0f, { 0.0, 0.0f, 0.9f, .5f });
-		m_text2 = m_pFontEngine->RenderText(m_font, "ich bin eine zweite test font", { 50.0f, 400.0f }, 30.0f, { 0.9f, .9f, .9f, 1.0f });
+		m_text2 = m_pFontEngine->RenderText(m_font, "ich bin eine zweite test font", { 50.0f, 410.0f }, 30.0f, { 0.9f, .9f, .9f, 1.0f });
 		
+		m_pTextBox = new GFX::EETextBox(m_pFontEngine, "ich bin in einer box und wrapped!", m_font);
+		m_pTextBox->SetPadding(10.0f, 10.0f, 10.0f, 10.0f);
+		m_pTextBox->SetPosition({ 400.0f, 250.0f });
+		m_pTextBox->SetSize({ 300u, 100u });
+		m_pTextBox->SetBackgroundColor({ .1f, .1f, .1f, 1.f });
 	}
 
 	return true;
@@ -126,30 +131,33 @@ void EulerAdventure::Update() {
 
 	m_pRect->Update();
 	m_pRect2->Update();
+	m_pTextBox->Update();
 	m_pFontEngine->Update();
 	
 	if (m_application.KeyHit(EE_KEY_ESCAPE)) {
 		ChangeGameState(EXIT);
 	}
-	if (m_application.KeyHit(EE_KEY_T)) {
-		m_pFontEngine->ChangeText(m_text, "hello!!");
+	if (m_application.KeyHit(EE_KEY_F1)) {
+		m_pFontEngine->ChangeText(m_text2, "hello!!");
 	}
-	if (m_application.KeyHit(EE_KEY_N)) {
-		m_pFontEngine->ChangeText(m_text, "");
+	if (m_application.KeyHit(EE_KEY_F2)) {
+		m_pFontEngine->ChangeText(m_text2, "");
 	}
+	if (m_application.KeyHit(EE_KEY_F3)) {
+		m_pFontEngine->ReleaseText(m_text);
+	}
+
 	static bool visible = false;
-	if (m_application.KeyHit(EE_KEY_M)) {
+	if (m_application.KeyHit(EE_KEY_F4)) {
 		m_pRect->SetVisibility(visible);
 		visible = !visible;
 	}
 
-	if (m_application.KeyHit(EE_KEY_F1)) {
-		m_pFontEngine->ReleaseText(m_text);
+	if (m_application.KeyHit(EE_KEY_F5)) {
+		m_pTextBox->SetText("ich bin der neue string in der box!");
 	}
-	
-	if (m_application.MouseHit(EE_MOUSE_BUTTON_LEFT)) {
-		bool hit = m_pRect->Intersect(m_application.MousePosition());
-		EE_PRINT(" >> intersect %d\n", hit);
+	if (m_application.KeyHit(EE_KEY_F6)) {
+		m_pTextBox->SetText("");
 	}
 
 

@@ -6,6 +6,7 @@
 #include <EEApplication.h>
 #include <gfx/EERectangle.h>
 #include <gfx/EEFontEngine.h>
+#include <gfx/EETextBox.h>
 
 /////////////////
 // MY INCLUDES //
@@ -56,6 +57,7 @@ private:
 	EEApplication m_application;
 	GFX::EERectangle* m_pRect;
 	GFX::EERectangle* m_pRect2;
+	GFX::EETextBox* m_pTextBox;
 	Settings m_settings;
 
 	GFX::EEFontEngine* m_pFontEngine;
