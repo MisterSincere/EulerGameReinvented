@@ -1,5 +1,10 @@
 #pragma once
 
+//////////////
+// INCLUDES //
+//////////////
+#include <vector>
+
 /////////////////
 // MY INCLUDES //
 /////////////////
@@ -17,10 +22,10 @@ namespace GFX {
 
 	class Button : public TextBox {
 	public:
-		Button(char const* text, sf::Font const& font, unsigned int charSize = 20u);
+		Button(char const* text, /*sf::Font const& font, */unsigned int charSize = 20u);
 		~Button();
 
-		void Update(sf::Event const&) override;
+		void Update(/*sf::Event const&*/) override;
 
 		void AddButtonHandler(CORETOOLS::IButtonHandler*);
 
@@ -31,7 +36,7 @@ namespace GFX {
 		std::vector<CORETOOLS::IButtonHandler*> m_handler;
 
 		CORETOOLS::Mouse* m_pMouse;
-		sf::FloatRect* m_pButtonBox;
+		/*sf::FloatRect* m_pButtonBox;*/
 
 		bool m_hovered{ false };
 		bool m_hoveredPrev{ false };

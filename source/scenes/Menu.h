@@ -11,7 +11,7 @@
 namespace GFX {
 	class Field;
 	class TextBox;
-}
+}/*
 namespace sf {
 	template<typename T>
 	class Vector2;
@@ -19,20 +19,20 @@ namespace sf {
 	class RenderWindow;
 	class Font;
 	class Event;
-}
+}*/
 
 namespace SCENES {
 
 	class Menu : public CORETOOLS::IButtonHandler {
 	public:
-		Menu(sf::Vector2u const& clientSize);
+		Menu(/*sf::Vector2u const& clientSize*/);
 		Menu(Menu&) = delete;
 		~Menu();
 
 		void Handle(CORETOOLS::ButtonEvent, GFX::Button*) override;
 
-		void Update(sf::Event const&);
-		void Draw(sf::RenderWindow& pWindow);
+		void Update(/*sf::Event const&*/);
+		void Draw(/*sf::RenderWindow& pWindow*/);
 
 	private:
 		GFX::Field* m_pBackground;
@@ -40,7 +40,7 @@ namespace SCENES {
 		GFX::Button* m_pExitButton;
 		GFX::Button* m_pStartButton;
 
-		sf::Font* m_pSquareFont;
-		sf::Font* m_pArialFont;
+		/*sf::Font* m_pSquareFont;
+		sf::Font* m_pArialFont;*/
 	};
 }

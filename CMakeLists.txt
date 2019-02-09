@@ -16,7 +16,7 @@ endif()
 # Library paths
 link_directories ($ENV{EE_VULKAN_PATH}/Lib)
 link_directories ($ENV{EE_GLFW_PATH}/lib-vc2015)
-include_directories (${CMAKE_CURRENT_SOURCE_DIR}/EulerEngine/source/freetype/lib64)
+link_directories (${CMAKE_CURRENT_SOURCE_DIR}/EulerEngine/source/freetype/lib64)
 
 # Include paths
 include_directories ($ENV{EE_GLM_PATH})

@@ -24,7 +24,7 @@ namespace CORETOOLS {
 	
 	class IButtonHandler : public IHandler<void, ButtonEvent, GFX::Button*> {
 	public:
-		IButtonHandler(sf::RenderWindow* rw = nullptr) : IHandler(rw) {}
+		IButtonHandler(/*sf::RenderWindow* rw = nullptr*/) : IHandler(/*rw*/) {}
 		virtual void Handle(ButtonEvent, GFX::Button*) override = 0;
 	};
 }

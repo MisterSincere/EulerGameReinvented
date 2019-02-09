@@ -36,11 +36,9 @@ include_directories (gfx)
 include_directories (scenes)
 include_directories (${CMAKE_SOURCE_DIR}/source)
 include_directories (${CMAKE_SOURCE_DIR}/EulerEngine/source)
-include_directories ($ENV{ECA_SFML_PATH}/include)
 
 
 # Defines
-add_definitions(-DSFML_STATIC)
 add_definitions("-DASSETS_PATH=\"${CMAKE_SOURCE_DIR}/assets/\"")
 
 
@@ -52,39 +50,3 @@ add_dependencies(EulerAdventure EulerEngine)
 target_link_libraries (EulerAdventure
 	debug Debug/EulerEngine
 	optimized Release/EulerEngine)
-
-# SFML libraries
-target_link_libraries (EulerAdventure
-	debug sfml-graphics-s-d.lib
-	optimized sfml-graphics-s.lib)
-
-target_link_libraries (EulerAdventure
-	debug sfml-window-s-d.lib
-	optimized sfml-window-s.lib)
-
-target_link_libraries (EulerAdventure
-	debug sfml-audio-s-d.lib
-	optimized sfml-audio-s.lib)
-
-target_link_libraries (EulerAdventure
-	debug sfml-network-s-d.lib
-	optimized sfml-network-s.lib)
-
-target_link_libraries (EulerAdventure
-	debug sfml-system-s-d.lib
-	optimized sfml-system-s.lib)
-
-
-# General libs
-target_link_libraries (EulerAdventure general
-	opengl32.lib
-	freetype.lib
-	winmm.lib
-	gdi32.lib
-	openal32.lib
-	flac.lib
-	vorbisenc.lib
-	vorbisfile.lib
-	vorbis.lib
-	ogg.lib
-	ws2_32.lib)

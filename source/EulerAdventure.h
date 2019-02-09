@@ -3,7 +3,10 @@
 //////////////
 // INCLUDES //
 //////////////
-#include <SFML/Graphics/RenderWindow.hpp>
+#include <EEApplication.h>
+#include <gfx/EERectangle.h>
+#include <gfx/EEFontEngine.h>
+#include <gfx/EETextBox.h>
 
 /////////////////
 // MY INCLUDES //
@@ -51,8 +54,16 @@ private:
 	void Draw();
 
 private:
-	sf::RenderWindow m_window;
+	EEApplication m_application;
+	GFX::EERectangle* m_pRect;
+	GFX::EERectangle* m_pRect2;
+	GFX::EETextBox* m_pTextBox;
 	Settings m_settings;
+
+	GFX::EEFontEngine* m_pFontEngine;
+	GFX::EEFont m_font;
+	GFX::EEText m_text;
+	GFX::EEText m_text2;
 
 	CORETOOLS::Mouse* m_pMouse{ nullptr };
 
