@@ -59,8 +59,9 @@ private:
 	Settings m_settings;
 
 	GFX::EEFontEngine* m_pFontEngine;
-	GFX::EEFont m_arial;
+	GFX::EEFont m_font;
 	GFX::EEText m_text;
+	GFX::EEText m_text2;
 
 	CORETOOLS::Mouse* m_pMouse{ nullptr };
 

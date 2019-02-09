@@ -76,6 +76,8 @@ bool EulerAdventure::InitSystems() {
 		m_pRect->SetPosition({ 0.0f, 0.0f });
 		m_pRect->SetSize({200u, 200u});
 		m_pRect->SetBackgroundColor({ 0.0f, 1.0f, 0.0f, 1.0f });
+		m_pRect->EnableHover({ 0.0f, 0.5f, 0.0f, 1.0f });
+		m_pRect->EnableActive({ 0.0f, 0.3f, 0.0f, 1.0f });
 
 		m_pRect2 = new GFX::EERectangle(&m_application);
 		m_pRect2->SetPosition({ 100.0f, 100.0f });
@@ -84,18 +86,12 @@ bool EulerAdventure::InitSystems() {
 
 		m_pFontEngine = new GFX::EEFontEngine(&m_application);
 		std::string arialFile = ECA_ASSETS_DIR("fonts/SquareFont.ttf");
-		m_arial = m_pFontEngine->CreateFont(arialFile.c_str());
-		m_text = m_pFontEngine->RenderText(m_arial, "hallo again\nI am in a new line", { 80.0f, 70.0f }, 35.0f, { 0.0, 0.0f, 0.9f, .5f });
-	}
+		m_font = m_pFontEngine->CreateFont(arialFile.c_str());
 
-	//
-	// MOUSE REPRESENTATION
-	//
-	/*if (!CORETOOLS::Mouse::Create(&m_window)) {
-		MESSAGE("> Mouse Creation failed!\n");
-		return false;
+		m_text = m_pFontEngine->RenderText(m_font, "hallo again\nI am in a new line", { 80.0f, 70.0f }, 35.0f, { 0.0, 0.0f, 0.9f, .5f });
+		m_text2 = m_pFontEngine->RenderText(m_font, "ich bin eine zweite test font", { 50.0f, 400.0f }, 30.0f, { 0.9f, .9f, .9f, 1.0f });
+		
 	}
-	m_pMouse = CORETOOLS::Mouse::GetInstance();*/
 
 	return true;
 }
@@ -147,9 +143,14 @@ void EulerAdventure::Update() {
 		visible = !visible;
 	}
 
-	EEPoint32F mousePos;
-	m_application.MousePosition(mousePos);
-	EE_PRINT(" >> %d\n", m_pRect->Intersect(mousePos));
+	if (m_application.KeyHit(EE_KEY_F1)) {
+		m_pFontEngine->ReleaseText(m_text);
+	}
+	
+	if (m_application.MouseHit(EE_MOUSE_BUTTON_LEFT)) {
+		bool hit = m_pRect->Intersect(m_application.MousePosition());
+		EE_PRINT(" >> intersect %d\n", hit);
+	}
 
 
 	/*static sf::Event event;*/
