@@ -2,89 +2,101 @@
 
 //////////////
 // INCLUDES //
-////////////////
-//#include <SFML/System/Vector2.hpp>
-//#include <SFML/Graphics/Color.hpp>
-//#include <SFML/Graphics/RenderWindow.hpp>
-//#include <SFML/Graphics/Font.hpp>
+//////////////
+#include <EEApplication.h>
+#include <gfx/EETextBox.h>
 #include <assert.h>
 
 /////////////////
 // MY INCLUDES //
 /////////////////
-#include "Button.h"
-#include "ecaDefs.h"
 #include "EulerAdventure.h"
 
 
-SCENES::Menu::Menu(/*sf::Vector2u const& clientSize*/) {
-	//// Fonts
-	//m_pSquareFont = new sf::Font;
-	//m_pArialFont = new sf::Font;
-	//assert(m_pSquareFont->loadFromFile(ASSETS_DIR + "fonts/SquareFont.ttf"));
-	//assert(m_pArialFont->loadFromFile(ASSETS_DIR + "fonts/arial.ttf"));
+SCENES::Menu::Menu(GFX::EEFontEngine* pFontEngine)
+	: m_pFontEngine(pFontEngine)
+{
+	assert(m_pFontEngine);
 
-	//// Background
-	//m_pBackground = new GFX::Field;
-	//m_pBackground->SetBackgroundColor(sf::Color(70, 70, 90));
-	//m_pBackground->SetBounds(0.0f, 0.0f, float(clientSize.x), float(clientSize.y));
+	// Store application
+	m_pApp = m_pFontEngine->GetApplication();
 
-	//// Title
-	//m_pTitle = new GFX::TextBox("Euler Coffee Adventure", *m_pSquareFont, 50);
-	//m_pTitle->SetPositionAligned(GFX::HORIZONTAL, clientSize);
+	// Fonts
+	std::string fontFile = ECA_ASSETS_DIR("fonts/SquareFont.ttf");
+	m_font = m_pFontEngine->CreateFont(fontFile.c_str());
 
-	//// Start
-	//m_pStartButton = new GFX::Button("Lets get so cool xoxo", *m_pArialFont, 29);
-	//m_pStartButton->SetPosition(0.0f, 200.0f);
-	//m_pStartButton->SetPositionAligned(GFX::HORIZONTAL, clientSize);
-	//m_pStartButton->SetBackgroundColor(sf::Color(40, 40, 60));
-	//m_pStartButton->SetPadding(10.0f, 10.0f, 10.0f, 10.0f, true);
-	//m_pStartButton->AddButtonHandler(this);
+	EERect32U windowExtent = m_pApp->GetWindowExtent();
+
+	// Title
+	GFX::EETextBoxCreateInfo cinfo;
+	cinfo.font = m_font;
+	cinfo.text = "Euler Coffee Adventure";
+	cinfo.characterSize = 50.f;
+	cinfo.boxInfo.position = { 0.f, 30.f };
+	cinfo.boxInfo.positionFlags = GFX::HORIZONTAL;
+	cinfo.boxInfo.visibility = false;
+	cinfo.boxInfo.backgroundColor = { 0.f, 0.f, 0.f, 0.f };
+	m_pTitle = new GFX::EETextBox(m_pFontEngine, cinfo);
+
+	// Start
+	cinfo.text										= "Lets get so cool xoxo";
+	cinfo.characterSize						= 29.f;
+	cinfo.padding									= { 10.f, 10.f, 10.f, 10.f };
+	cinfo.boxInfo.position				= { 0.f, 200.f };
+	cinfo.boxInfo.positionFlags		= GFX::HORIZONTAL;
+	cinfo.boxInfo.visibility			= false;
+	cinfo.boxInfo.backgroundColor = { 40/255.f, 40/255.0f, 60/255.0f, 1.f };
+	cinfo.boxInfo.enableHover			= true;
+	cinfo.boxInfo.hoverColor			= { 0.f, 0.f, 0.f, 1.f };
+	m_pStartButton = new GFX::EETextBox(m_pFontEngine, cinfo);
 
 	//// EXIT
-	//m_pExitButton = new GFX::Button("Fck this shit, im out", *m_pArialFont, 29);
-	//m_pExitButton->SetPosition(0.0f, clientSize.y - 150.0f);
-	//m_pExitButton->SetPositionAligned(GFX::HORIZONTAL, clientSize);
-	//m_pExitButton->SetBackgroundColor(sf::Color(40, 40, 60));
-	//m_pExitButton->SetPadding(10.0f, 10.0f, 10.0f, 10.0f, true);
-	//m_pExitButton->AddButtonHandler(this);
+	cinfo.text = "Fck this shit, im out";
+	cinfo.characterSize = 29.f;
+	cinfo.padding = { 10.f, 10.f, 10.f, 10.f };
+	cinfo.boxInfo.position = { 0.f, windowExtent.height - 150.0f };
+	cinfo.boxInfo.positionFlags = GFX::HORIZONTAL;
+	cinfo.boxInfo.visibility = false;
+	cinfo.boxInfo.backgroundColor = { 40 / 255.f, 40 / 255.0f, 60 / 255.0f, 1.f };
+	cinfo.boxInfo.enableHover = true;
+	cinfo.boxInfo.hoverColor = { 0.f, 0.f, 0.f, 1.f };
+	m_pExitButton = new GFX::EETextBox(m_pFontEngine, cinfo);
 }
 
 SCENES::Menu::~Menu() {
-	/*RELEASEP(m_pBackground);
-	RELEASEP(m_pTitle);
-	RELEASEP(m_pExitButton);
-	RELEASEP(m_pStartButton);
-	RELEASEP(m_pSquareFont);
-	RELEASEP(m_pArialFont);*/
+	
 }
 
-void SCENES::Menu::Handle(CORETOOLS::ButtonEvent event, GFX::Button* button)
+void SCENES::Menu::Update(EulerAdventure* pAdv) {
+	if (m_pExitButton->Clicked(EE_MOUSE_BUTTON_LEFT)) {
+		pAdv->ChangeGameState(EXIT);
+
+	} else if (m_pStartButton->Clicked(EE_MOUSE_BUTTON_LEFT)) {
+		pAdv->ChangeGameState(INGAME);
+	}
+
+	m_pTitle->Update();
+	m_pExitButton->Update();
+	m_pStartButton->Update();
+}
+
+void SCENES::Menu::Draw() {
+	m_pApp->Draw({ 70/255.f, 70/255.f, 90/255.f, 1.f });
+}
+
+void SCENES::Menu::SetVisibility(bool isVisible)
 {
-	//// EXIT
-	//if (button == m_pExitButton) {
-	//	if (event == CORETOOLS::CLICK) EulerAdventure::ChangeGameState(EXIT);
-	//	if(event == CORETOOLS::RELEASE) m_pExitButton->SetBackgroundColor(sf::Color(40, 40, 60));
-	//	if(event == CORETOOLS::HOVER) m_pExitButton->SetBackgroundColor(sf::Color(0, 0, 0));
+	if (m_isVisible == isVisible) return;
+	m_isVisible = isVisible;
 
-	//// START GAME
-	//} else if (button == m_pStartButton) {
-	//	if (event == CORETOOLS::CLICK) EulerAdventure::ChangeGameState(INGAME);
-	//	if (event == CORETOOLS::RELEASE) m_pStartButton->SetBackgroundColor(sf::Color(40, 40, 60));
-	//	if (event == CORETOOLS::HOVER) m_pStartButton->SetBackgroundColor(sf::Color(0, 0, 0));
-	//}
+	m_pTitle->SetVisibility(m_isVisible);
+	m_pExitButton->SetVisibility(m_isVisible);
+	m_pStartButton->SetVisibility(m_isVisible);
+
+	EE_PRINT("[MENU] Visibility set to %d\n", m_isVisible);
 }
 
-void SCENES::Menu::Update(/*sf::Event const& event*/) {
-	/*m_pBackground->Update(event);
-	m_pTitle->Update(event);
-	m_pExitButton->Update(event);
-	m_pStartButton->Update(event);*/
-}
-
-void SCENES::Menu::Draw(/*sf::RenderWindow& rw*/) {
-	/*m_pBackground->Draw(rw);
-	m_pTitle->Draw(rw);
-	m_pStartButton->Draw(rw);
-	m_pExitButton->Draw(rw);*/
+bool SCENES::Menu::IsVisible()
+{
+	return m_isVisible;
 }

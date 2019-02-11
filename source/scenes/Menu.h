@@ -1,46 +1,40 @@
 #pragma once
 
-/////////////////
-// MY INCLUDES //
-/////////////////
-#include "IButtonHandler.h"
+#include <gfx/EEFontEngine.h>
 
 ///////////////////////////
 // FOREWARD DECLARATIONS //
 ///////////////////////////
 namespace GFX {
-	class Field;
-	class TextBox;
-}/*
-namespace sf {
-	template<typename T>
-	class Vector2;
-	typedef Vector2<unsigned int> Vector2u;
-	class RenderWindow;
-	class Font;
-	class Event;
-}*/
+	class EETextBox;
+}
+class EulerAdventure;
 
 namespace SCENES {
 
-	class Menu : public CORETOOLS::IButtonHandler {
+	class Menu {
 	public:
-		Menu(/*sf::Vector2u const& clientSize*/);
-		Menu(Menu&) = delete;
+		Menu(GFX::EEFontEngine* pFontEngine);
+		Menu(Menu const&) = delete;
+		Menu(Menu&&) = delete;
 		~Menu();
 
-		void Handle(CORETOOLS::ButtonEvent, GFX::Button*) override;
+		void Update(EulerAdventure* pAdv);
+		void Draw();
 
-		void Update(/*sf::Event const&*/);
-		void Draw(/*sf::RenderWindow& pWindow*/);
+		void SetVisibility(bool isVisible);
+		bool IsVisible();
 
 	private:
-		GFX::Field* m_pBackground;
-		GFX::TextBox* m_pTitle;
-		GFX::Button* m_pExitButton;
-		GFX::Button* m_pStartButton;
+		EEApplication* m_pApp;
+		GFX::EEFontEngine* m_pFontEngine;
 
-		/*sf::Font* m_pSquareFont;
-		sf::Font* m_pArialFont;*/
+		GFX::EETextBox* m_pTitle;
+		GFX::EETextBox* m_pExitButton;
+		GFX::EETextBox* m_pStartButton;
+
+		GFX::EEFont m_font;
+
+		bool m_isVisible{ false };
 	};
 }

@@ -20,9 +20,6 @@ namespace SCENES {
 	class Tuna;
 	class Menu;
 }
-namespace CORETOOLS {
-	class Mouse;
-}
 
 class EulerAdventure {
 public:
@@ -44,7 +41,7 @@ public:
 	 **/
 	int Run();
 
-	static void ChangeGameState(GameState gs);
+	void ChangeGameState(GameState gs);
 
 private:
 	bool InitSystems();
@@ -55,17 +52,7 @@ private:
 
 private:
 	EEApplication m_application;
-	GFX::EERectangle* m_pRect;
-	GFX::EERectangle* m_pRect2;
-	GFX::EETextBox* m_pTextBox;
-	Settings m_settings;
-
 	GFX::EEFontEngine* m_pFontEngine;
-	GFX::EEFont m_font;
-	GFX::EEText m_text;
-	GFX::EEText m_text2;
-
-	CORETOOLS::Mouse* m_pMouse{ nullptr };
 
 	SCENES::Tuna* m_pTuna{ nullptr };
 	SCENES::Menu* m_pMenu{ nullptr };

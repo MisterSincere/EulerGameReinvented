@@ -19,8 +19,6 @@ source_group ("ECA" FILES ${ECA})
 source_group ("SCENES" FILES ${SCENES})
 source_group ("" FILES ${EulerAdventure})
 
-# SFML Library
-link_directories ($ENV{ECA_SFML_PATH}/lib)
 
 # EulerEngine library
 if (CMAKE_GENERATOR MATCHES Win64)

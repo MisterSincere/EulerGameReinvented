@@ -36,9 +36,3 @@ set_property(TARGET EulerAdventure PROPERTY FOLDER "Project")
 # Vulkan and glfw library
 target_link_libraries (EulerEngine general vulkan-1.lib glfw3.lib freetype.lib)
 target_link_libraries (EulerAdventure general vulkan-1.lib glfw3.lib freetype.lib)
-
-# SFML library to Euler Engine to unresolve stbi
-# TODO When the sfml lib is no longer use include STB_IMPLENTATION define again
-target_link_libraries (EulerEngine
-	debug sfml-graphics-s-d.lib
-	optimized sfml-graphics-s.lib)

@@ -3,69 +3,69 @@
 //////////////
 // INCLUDES //
 //////////////
-//#include <SFML/Graphics/RenderWindow.hpp>
-//#include <SFML/Window/Event.hpp>
+#include <EEApplication.h>
+#include <gfx/EETextBox.h>
+#include <assert.h>
 
 /////////////////
 // MY INCLUDES //
 /////////////////
-#include "ecaDefs.h"
+#include "EulerAdventure.h"
 
 
-SCENES::Tuna::Tuna(/*sf::RenderWindow* rw*/)
-	/*: m_pWindow(rw)*/
+SCENES::Tuna::Tuna(GFX::EEFontEngine* pFontEngine)
+	: m_pFontEngine(pFontEngine)
 {
-}
+	assert(m_pFontEngine);
 
+	// Store application
+	m_pApp = m_pFontEngine->GetApplication();
+
+	// Fonts
+	std::string squareFile = ECA_ASSETS_DIR("fonts/SquareFont.ttf");
+	m_square = m_pFontEngine->CreateFont(squareFile.c_str());
+	std::string arialFile = ECA_ASSETS_DIR("fonts/arial.ttf");
+	m_arial = m_pFontEngine->CreateFont(arialFile.c_str());
+
+	// Title
+	EERect32U windowExtent = m_pApp->GetWindowExtent();
+	GFX::EETextBoxCreateInfo cinfo;
+	cinfo.text = "Sehr geehrter Herr Euler,\nes ist 8 Uhr morgens und du stehst in deinem Büro der Universität(Lehrer Etage).In deinem Büro ist mittig ein überfüllter Schreibtisch[desk] an dem ein Scott Chefsessel aus original Kunstleder im Wert von 500€ steht[chair].Außerdem stehen zwei Schränke in jeweils einer Ecke des Raumes. Von hier aus kannst du in den Korridor[corridor] gehen.Generell gilt : Um woanders hinzugehen gibst du ein : go <Raum>.Für <Raum> setzt du den englischen Namen deines Ziels ein, because you need to learn English.";
+	cinfo.characterSize = 18.f;
+	cinfo.font = m_arial;
+	cinfo.textColor = { 1.f, 1.f, 1.f,1.f };
+	cinfo.padding = {3.0f, 3.0f, 3.0f, 3.0f};
+	cinfo.adjustBoxSize = false;
+	cinfo.boxInfo.position = { 5.0f, 5.0f };
+	cinfo.boxInfo.size = {windowExtent.width - 10.0f, windowExtent.height - 77.0f};
+	cinfo.boxInfo.backgroundColor = { 64 / 255.f, 64 / 255.f, 64 / 255.f, 1.f };
+	cinfo.boxInfo.visibility = false;
+	m_pTestBox = new GFX::EETextBox(m_pFontEngine, cinfo);
+}
 
 SCENES::Tuna::~Tuna() {
-	RELEASEP(m_pOutputBox);
-	RELEASEP(m_pInputBox);
-	RELEASEP(m_pGameManager);
+
 }
 
-
-
-bool SCENES::Tuna::StartInit()
-{
-	//// Fonts
-	//if (!m_arialFont.loadFromFile(ASSETS_DIR + "fonts/arial.ttf")) return false;
-	//if (!m_squareFont.loadFromFile(ASSETS_DIR + "fonts/SquareFont.ttf")) return false;
-
-	//// Output box
-	//m_pOutputBox = new GFX::TextBox;
-	//m_pOutputBox->SetFont(m_arialFont);
-	//m_pOutputBox->SetPadding(3.0f, 3.0f);
-	//m_pOutputBox->SetTextColor(sf::Color(255, 255, 255));
-	//m_pOutputBox->SetBackgroundColor(sf::Color(64, 64, 64));
-	//m_pOutputBox->SetCharacterSize(18);
-	//m_pOutputBox->SetString("Sehr geehrter Herr Euler,\nes ist 8 Uhr morgens und du stehst in deinem Büro der Universität(Lehrer Etage).In deinem Büro ist mittig ein überfüllter Schreibtisch[desk] an dem ein Scott Chefsessel aus original Kunstleder im Wert von 500€ steht[chair].Außerdem stehen zwei Schränke in jeweils einer Ecke des Raumes. Von hier aus kannst du in den Korridor[corridor] gehen.Generell gilt : Um woanders hinzugehen gibst du ein : go <Raum>.Für <Raum> setzt du den englischen Namen deines Ziels ein, because you need to learn English.");
-
-	//// Input box
-	//m_pInputBox = new GFX::InputBox;
-	//m_pInputBox->SetFont(m_arialFont);
-	//m_pInputBox->SetTextColor(sf::Color::Black);
-	//m_pInputBox->SetCharacterSize(22u);
-	//m_pInputBox->AddHandler(m_pGameManager);
-	//m_pInputBox->SetAutoCompleter(m_pGameManager->AcquireAutoComplete());
-
-	//// Adjust positions and sizes
-	//SetStyleRelative(m_pWindow->getSize());
-
-	return true;
-}
-
-void SCENES::Tuna::Update(/*sf::Event const& event*/) {
-	m_pOutputBox->Update(/*event*/);
-	m_pInputBox->Update(/*event*/);
+void SCENES::Tuna::Update(EulerAdventure* pAdv) {
+	m_pTestBox->Update();
 }
 
 void SCENES::Tuna::Draw() {
-	/*m_pOutputBox->Draw(*m_pWindow);
-	m_pInputBox->Draw(*m_pWindow);*/
+	m_pApp->Draw({ .9f, .9f, .9f, 1.f });
 }
 
-void SCENES::Tuna::SetStyleRelative(/*sf::Vector2u const& newSize*/) {
-	/*m_pOutputBox->SetBounds(5.0f, 5.0f, newSize.x - 10.0f, newSize.y - 77.0f);
-	m_pInputBox->SetBounds(5.0f, newSize.y - 50.0f, 250, 22);*/
+void SCENES::Tuna::SetVisibility(bool isVisible)
+{
+	if (m_isVisible == isVisible) return;
+	m_isVisible = isVisible;
+
+	m_pTestBox->SetVisibility(m_isVisible);
+
+	EE_PRINT("[Tuna] Visibility set to %d\n", m_isVisible);
+}
+
+bool SCENES::Tuna::IsVisible()
+{
+	return m_isVisible;
 }

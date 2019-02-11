@@ -29,7 +29,7 @@ ECA::GameManager::GameManager(/*sf::RenderWindow* pWindow*/)
 
 void ECA::GameManager::Handle(char const* text) {
 	if (i_commands["exit"] == text) {
-		EulerAdventure::ChangeGameState(MENU);
+		//EulerAdventure::ChangeGameState(MENU);
 	}
 }
 

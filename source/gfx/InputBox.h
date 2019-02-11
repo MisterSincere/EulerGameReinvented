@@ -8,7 +8,7 @@
 /////////////////
 // MY INCLUDES //
 /////////////////
-#include "TextBox.h"
+//#include "TextBox.h"
 #include "command.h"
 
 //////////////////////////
@@ -22,12 +22,12 @@ namespace CORETOOLS {
 
 namespace GFX
 {
-	class InputBox : public TextBox
+	class InputBox /*: public TextBox*/
 	{
 	public:
 		InputBox(bool haveBackground = false, /*sf::Vector2f const& size = { 0.0f, 0.0f }, sf::Vector2f const& position = { 0.0f,0.0f }, */unsigned int charSize = 20.0f);
 
-		void Update(/*sf::Event const&*/) override;
+		void Update(/*sf::Event const&*/) /*override*/;
 
 		void AddHandler(CORETOOLS::ITextHandler*);
 		void SetAutoCompleter(CORETOOLS::AutoComplete*);

@@ -1,50 +1,40 @@
 #pragma once
 
-//////////////
-// INCLUDES //
-////////////////
-//#include <SFML/Graphics/Font.hpp>
-
-/////////////////
-// MY INCLUDES //
-/////////////////
-#include "InputBox.h"
-#include "GameManager.h"
+#include <gfx/EEFontEngine.h>
 
 ///////////////////////////
 // FOREWARD DECLARATIONS //
 ///////////////////////////
-//namespace sf {
-//	class RenderWindow;
-//	class Event;
-//}
+namespace GFX {
+	class EETextBox;
+	class EERectangle;
+}
+class EulerAdventure;
 
 namespace SCENES {
 
 	class Tuna {
 	public:
-		Tuna(/*sf::RenderWindow* pWindow*/);
-		Tuna(Tuna&) = delete;
+		Tuna(GFX::EEFontEngine* pFontEngine);
+		Tuna(Tuna const&) = delete;
+		Tuna(Tuna&&) = delete;
 		~Tuna();
 
-		bool StartInit();
-
-		void Update(/*sf::Event const& event*/);
+		void Update(EulerAdventure* pAdv);
 		void Draw();
 
-		void SetStyleRelative(/*sf::Vector2u const& newSize*/);
-
+		void SetVisibility(bool isVisible);
+		bool IsVisible();
 
 	private:
-		/*sf::RenderWindow* m_pWindow;*/ //< Initializer list
+		EEApplication* m_pApp;
+		GFX::EEFontEngine* m_pFontEngine;
 
-		/*sf::Font m_arialFont;
-		sf::Font m_squareFont;*/
+		GFX::EETextBox* m_pTestBox;
 
-		ECA::GameManager* m_pGameManager{ new ECA::GameManager(/*m_pWindow*/) };
+		GFX::EEFont m_square;
+		GFX::EEFont m_arial;
 
-		GFX::TextBox*		m_pOutputBox{ nullptr };
-		GFX::InputBox*	m_pInputBox{ nullptr };
+		bool m_isVisible{ false };
 	};
-
 }
