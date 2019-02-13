@@ -30,16 +30,16 @@ SCENES::Tuna::Tuna(GFX::EEFontEngine* pFontEngine)
 	// Title
 	EERect32U windowExtent = m_pApp->GetWindowExtent();
 	GFX::EETextBoxCreateInfo cinfo;
-	cinfo.text = "Sehr geehrter Herr Euler,\nes ist 8 Uhr morgens und du stehst in deinem Büro der Universität(Lehrer Etage).In deinem Büro ist mittig ein überfüllter Schreibtisch[desk] an dem ein Scott Chefsessel aus original Kunstleder im Wert von 500€ steht[chair].Außerdem stehen zwei Schränke in jeweils einer Ecke des Raumes. Von hier aus kannst du in den Korridor[corridor] gehen.Generell gilt : Um woanders hinzugehen gibst du ein : go <Raum>.Für <Raum> setzt du den englischen Namen deines Ziels ein, because you need to learn English.";
-	cinfo.characterSize = 18.f;
-	cinfo.font = m_arial;
-	cinfo.textColor = { 1.f, 1.f, 1.f,1.f };
-	cinfo.padding = {3.0f, 3.0f, 3.0f, 3.0f};
-	cinfo.adjustBoxSize = false;
-	cinfo.boxInfo.position = { 5.0f, 5.0f };
-	cinfo.boxInfo.size = {windowExtent.width - 10.0f, windowExtent.height - 77.0f};
-	cinfo.boxInfo.backgroundColor = { 64 / 255.f, 64 / 255.f, 64 / 255.f, 1.f };
-	cinfo.boxInfo.visibility = false;
+	cinfo.text						= "Sehr geehrter Herr Euler,\nes ist 8 Uhr morgens und du stehst in deinem Büro der Universität(Lehrer Etage).In deinem Büro ist mittig ein überfüllter Schreibtisch[desk] an dem ein Scott Chefsessel aus original Kunstleder im Wert von 500€ steht[chair].Außerdem stehen zwei Schränke in jeweils einer Ecke des Raumes. Von hier aus kannst du in den Korridor[corridor] gehen.Generell gilt : Um woanders hinzugehen gibst du ein : go <Raum>.Für <Raum> setzt du den englischen Namen deines Ziels ein, because you need to learn English.";
+	cinfo.characterSize		= 18.f;
+	cinfo.font						= m_arial;
+	cinfo.textColor				= { 1.f, 1.f, 1.f, 1.f };
+	cinfo.padding					= {3.0f, 3.0f, 3.0f, 3.0f};
+	cinfo.adjustBoxSize		= false;
+	cinfo.position				= { 5.0f, 5.0f };
+	cinfo.size						= { windowExtent.width - 10.0f, windowExtent.height - 77.0f };
+	cinfo.backgroundColor = { 64 / 255.f, 64 / 255.f, 64 / 255.f, 1.f };
+	cinfo.visibility			= false;
 	m_pTestBox = new GFX::EETextBox(m_pFontEngine, cinfo);
 }
 

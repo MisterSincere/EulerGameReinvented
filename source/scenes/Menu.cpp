@@ -29,37 +29,37 @@ SCENES::Menu::Menu(GFX::EEFontEngine* pFontEngine)
 
 	// Title
 	GFX::EETextBoxCreateInfo cinfo;
-	cinfo.font = m_font;
-	cinfo.text = "Euler Coffee Adventure";
-	cinfo.characterSize = 50.f;
-	cinfo.boxInfo.position = { 0.f, 30.f };
-	cinfo.boxInfo.positionFlags = GFX::HORIZONTAL;
-	cinfo.boxInfo.visibility = false;
-	cinfo.boxInfo.backgroundColor = { 0.f, 0.f, 0.f, 0.f };
+	cinfo.font						= m_font;
+	cinfo.text						= "Euler Coffee Adventure";
+	cinfo.characterSize		= 50.f;
+	cinfo.position				= { 0.f, 30.f };
+	cinfo.positionFlags		= GFX::HORIZONTAL;
+	cinfo.visibility			= false;
+	cinfo.backgroundColor = { 0.f, 0.f, 0.f, 0.f };
 	m_pTitle = new GFX::EETextBox(m_pFontEngine, cinfo);
 
 	// Start
-	cinfo.text										= "Lets get so cool xoxo";
-	cinfo.characterSize						= 29.f;
-	cinfo.padding									= { 10.f, 10.f, 10.f, 10.f };
-	cinfo.boxInfo.position				= { 0.f, 200.f };
-	cinfo.boxInfo.positionFlags		= GFX::HORIZONTAL;
-	cinfo.boxInfo.visibility			= false;
-	cinfo.boxInfo.backgroundColor = { 40/255.f, 40/255.0f, 60/255.0f, 1.f };
-	cinfo.boxInfo.enableHover			= true;
-	cinfo.boxInfo.hoverColor			= { 0.f, 0.f, 0.f, 1.f };
+	cinfo.text						= "Lets get so cool xoxo";
+	cinfo.characterSize		= 29.f;
+	cinfo.padding					= { 10.f, 10.f, 10.f, 10.f };
+	cinfo.position				= { 0.f, 200.f };
+	cinfo.positionFlags		= GFX::HORIZONTAL;
+	cinfo.visibility			= false;
+	cinfo.backgroundColor = { 40/255.f, 40/255.0f, 60/255.0f, 1.f };
+	cinfo.enableHover			= true;
+	cinfo.hoverColor			= { 0.f, 0.f, 0.f, 1.f };
 	m_pStartButton = new GFX::EETextBox(m_pFontEngine, cinfo);
 
-	//// EXIT
-	cinfo.text = "Fck this shit, im out";
-	cinfo.characterSize = 29.f;
-	cinfo.padding = { 10.f, 10.f, 10.f, 10.f };
-	cinfo.boxInfo.position = { 0.f, windowExtent.height - 150.0f };
-	cinfo.boxInfo.positionFlags = GFX::HORIZONTAL;
-	cinfo.boxInfo.visibility = false;
-	cinfo.boxInfo.backgroundColor = { 40 / 255.f, 40 / 255.0f, 60 / 255.0f, 1.f };
-	cinfo.boxInfo.enableHover = true;
-	cinfo.boxInfo.hoverColor = { 0.f, 0.f, 0.f, 1.f };
+	// EXIT
+	cinfo.text						= "Fck this shit, im out";
+	cinfo.characterSize		= 29.f;
+	cinfo.padding					= { 10.f, 10.f, 10.f, 10.f };
+	cinfo.position				= { 0.f, windowExtent.height - 150.0f };
+	cinfo.positionFlags		= GFX::HORIZONTAL;
+	cinfo.visibility			= false;
+	cinfo.backgroundColor = { 40 / 255.f, 40 / 255.0f, 60 / 255.0f, 1.f };
+	cinfo.enableHover			= true;
+	cinfo.hoverColor			= { 0.f, 0.f, 0.f, 1.f };
 	m_pExitButton = new GFX::EETextBox(m_pFontEngine, cinfo);
 }
 
