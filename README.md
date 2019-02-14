@@ -1,9 +1,8 @@
 # EulerGameReinvented
 ## How to setup
 1. Download the following third party libraries and set it to the specified environmental variable.
-   1. ```ECA_SFML_PATH```: https://www.sfml-dev.org/download/sfml/2.5.1/
-   2. ```EE_VULKAN_PATH```: https://vulkan.lunarg.com/sdk/home
-   3. ```EE_GLFW_PATH```: https://www.glfw.org/
+   1. ```EE_VULKAN_PATH```: https://vulkan.lunarg.com/sdk/home
+   2. ```EE_GLFW_PATH```: https://www.glfw.org/
 3. Clone the repository recursively: ```git clone --recursive <ThisRepoLink>```.\
    If you already have a cloned version without the submodules at all or they remain empty,\
    try ```git submodule update --init``` or ```git pull --recurse-submodule``` .
