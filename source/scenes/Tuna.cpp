@@ -4,7 +4,7 @@
 // INCLUDES //
 //////////////
 #include <EEApplication.h>
-#include <gfx/EETextBox.h>
+#include <gfx/EEInputBox.h>
 #include <assert.h>
 
 /////////////////
@@ -34,13 +34,26 @@ SCENES::Tuna::Tuna(GFX::EEFontEngine* pFontEngine)
 	cinfo.characterSize		= 18.f;
 	cinfo.font						= m_arial;
 	cinfo.textColor				= { 1.f, 1.f, 1.f, 1.f };
-	cinfo.padding					= {3.0f, 3.0f, 3.0f, 3.0f};
+	cinfo.padding					= {3.f, 3.f, 3.f, 3.f};
 	cinfo.adjustBoxSize		= false;
-	cinfo.position				= { 5.0f, 5.0f };
-	cinfo.size						= { windowExtent.width - 10.0f, windowExtent.height - 77.0f };
+	cinfo.position				= { 5.f, 5.f };
+	cinfo.size						= { windowExtent.width - 10.f, windowExtent.height - 77.f };
 	cinfo.backgroundColor = { 64 / 255.f, 64 / 255.f, 64 / 255.f, 1.f };
 	cinfo.visibility			= false;
-	m_pTestBox = new GFX::EETextBox(m_pFontEngine, cinfo);
+	m_pOutputBox = new GFX::EETextBox(m_pFontEngine, cinfo);
+
+	GFX::EEInputBoxCreateInfo inputCInfo;
+	inputCInfo.prefix						= "> ";
+	inputCInfo.text							= "";
+	inputCInfo.characterSize		= 22.f;
+	inputCInfo.font							= m_arial;
+	inputCInfo.textColor				= { 0.f, 0.f, 0.f, 1.f };
+	inputCInfo.adjustBoxSize		= false;
+	inputCInfo.position					= { 5.f, windowExtent.height - 50.f };
+	inputCInfo.size							= { 250.f, 22.f };
+	inputCInfo.backgroundColor	= { 0.f, 0.f, 0.f, 0.f };
+	inputCInfo.visibility				= false;
+	m_pInputBox = new GFX::EEInputBox(m_pFontEngine, inputCInfo);
 }
 
 SCENES::Tuna::~Tuna() {
@@ -48,7 +61,8 @@ SCENES::Tuna::~Tuna() {
 }
 
 void SCENES::Tuna::Update(EulerAdventure* pAdv) {
-	m_pTestBox->Update();
+	m_pOutputBox->Update();
+	m_pInputBox->Update();
 }
 
 void SCENES::Tuna::Draw() {
@@ -60,7 +74,8 @@ void SCENES::Tuna::SetVisibility(bool isVisible)
 	if (m_isVisible == isVisible) return;
 	m_isVisible = isVisible;
 
-	m_pTestBox->SetVisibility(m_isVisible);
+	m_pOutputBox->SetVisibility(m_isVisible);
+	m_pInputBox->SetVisibility(m_isVisible);
 
 	EE_PRINT("[Tuna] Visibility set to %d\n", m_isVisible);
 }

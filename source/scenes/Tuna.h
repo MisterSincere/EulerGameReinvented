@@ -7,6 +7,7 @@
 ///////////////////////////
 namespace GFX {
 	class EETextBox;
+	class EEInputBox;
 	class EERectangle;
 }
 class EulerAdventure;
@@ -30,7 +31,8 @@ namespace SCENES {
 		EEApplication* m_pApp;
 		GFX::EEFontEngine* m_pFontEngine;
 
-		GFX::EETextBox* m_pTestBox;
+		GFX::EETextBox* m_pOutputBox;
+		GFX::EEInputBox* m_pInputBox;
 
 		GFX::EEFont m_square;
 		GFX::EEFont m_arial;
