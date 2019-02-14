@@ -5,21 +5,26 @@
 //////////////
 #include <EEApplication.h>
 #include <gfx/EEInputBox.h>
+#include <vkcore/vulkanTools.h>
 #include <assert.h>
 
 /////////////////
 // MY INCLUDES //
 /////////////////
 #include "EulerAdventure.h"
+#include "GameManager.h"
 
 
-SCENES::Tuna::Tuna(GFX::EEFontEngine* pFontEngine)
-	: m_pFontEngine(pFontEngine)
+SCENES::Tuna::Tuna(EulerAdventure* pAdv)
+	: m_pAdv(pAdv)
 {
-	assert(m_pFontEngine);
+	m_pFontEngine = pAdv->GetFontEngine();
+	m_pApp = pAdv->GetApplication();
+	assert(m_pFontEngine && m_pApp);
 
-	// Store application
-	m_pApp = m_pFontEngine->GetApplication();
+	// Create the game manager
+	m_pGameManager = new ECA::GameManager(m_pAdv);
+	m_pGameManager->Init();
 
 	// Fonts
 	std::string squareFile = ECA_ASSETS_DIR("fonts/SquareFont.ttf");
@@ -43,6 +48,7 @@ SCENES::Tuna::Tuna(GFX::EEFontEngine* pFontEngine)
 	m_pOutputBox = new GFX::EETextBox(m_pFontEngine, cinfo);
 
 	GFX::EEInputBoxCreateInfo inputCInfo;
+	inputCInfo.cmdList					= m_pGameManager->GetCommands();
 	inputCInfo.prefix						= "> ";
 	inputCInfo.text							= "";
 	inputCInfo.characterSize		= 22.f;
@@ -55,23 +61,13 @@ SCENES::Tuna::Tuna(GFX::EEFontEngine* pFontEngine)
 	inputCInfo.visibility				= false;
 	m_pInputBox = new GFX::EEInputBox(m_pFontEngine, inputCInfo);
 
-	::CORETOOLS::CmdList i_commands;
-	i_commands += "exit";
-	i_commands += "explore";
-	i_commands += "examine";
-	i_commands += "examine inv";
-	i_commands += "interact";
-	i_commands += "interact inv";
-	i_commands += "go";
-	i_commands += "load";
-	i_commands += "save";
-	i_commands += "back";
-	i_commands += "inventar";
-	m_pInputBox->SetCommandList(i_commands);
+	m_pInputBox->AddHandler(m_pGameManager);
 }
 
 SCENES::Tuna::~Tuna() {
-
+	RELEASE_S(m_pInputBox);
+	RELEASE_S(m_pOutputBox);
+	RELEASE_S(m_pGameManager);
 }
 
 void SCENES::Tuna::Update(EulerAdventure* pAdv) {
@@ -91,7 +87,7 @@ void SCENES::Tuna::SetVisibility(bool isVisible)
 	m_pOutputBox->SetVisibility(m_isVisible);
 	m_pInputBox->SetVisibility(m_isVisible);
 
-	EE_PRINT("[Tuna] Visibility set to %d\n", m_isVisible);
+	EE_INFO("[Tuna] Visibility set to %d\n", m_isVisible);
 }
 
 bool SCENES::Tuna::IsVisible()

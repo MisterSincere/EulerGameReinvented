@@ -39,20 +39,18 @@ bool EulerAdventure::InitSystems() {
 	//
 	// WINDOW
 	//
-	{
-		EEApplicationCreateInfo appCInfo;
-		appCInfo.flags = EE_WINDOW_FLAGS_CENTER;
-		appCInfo.clientSize = { 1100, 700u };
-		appCInfo.position = { 0,0 };
-		appCInfo.screenMode = EE_SCREEN_MODE_WINDOWED;
-		appCInfo.title = "EulerAdventure";
-		appCInfo.icon = nullptr;
-		appCInfo.mouseDisabled = EE_FALSE;
-		appCInfo.splitscreen = EE_SPLITSCREEN_MODE_NONE;
-		appCInfo.rendererType = EE_RENDER_TYPE_BOTH;
+	EEApplicationCreateInfo appCInfo;
+	appCInfo.flags = EE_WINDOW_FLAGS_CENTER;
+	appCInfo.clientSize = { 1100, 700u };
+	appCInfo.position = { 0,0 };
+	appCInfo.screenMode = EE_SCREEN_MODE_WINDOWED;
+	appCInfo.title = "EulerAdventure";
+	appCInfo.icon = nullptr;
+	appCInfo.mouseDisabled = EE_FALSE;
+	appCInfo.splitscreen = EE_SPLITSCREEN_MODE_NONE;
+	appCInfo.rendererType = EE_RENDER_TYPE_BOTH;
 
-		if (!m_application.Create(appCInfo)) return false;
-	}
+	if (!m_application.Create(appCInfo)) return false;
 
 	m_pFontEngine = new GFX::EEFontEngine(&m_application);
 
@@ -64,7 +62,7 @@ bool EulerAdventure::InitContent() {
 	m_pMenu = new SCENES::Menu(m_pFontEngine);
 	assert(m_pMenu);
 
-	m_pTuna = new SCENES::Tuna(m_pFontEngine);
+	m_pTuna = new SCENES::Tuna(this);
 	assert(m_pTuna);
 
 	return true;
@@ -74,8 +72,8 @@ int EulerAdventure::Run() {
 
 	ChangeGameState(MENU);
 
-	while (m_gameState != EXIT && !m_application.PollEvent()) {
-
+	while (m_gameState != EXIT && !m_application.PollEvent())
+	{
 		Update();
 
 		Draw();

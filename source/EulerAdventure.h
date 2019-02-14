@@ -9,9 +9,7 @@
 // INCLUDES //
 //////////////
 #include <EEApplication.h>
-#include <gfx/EERectangle.h>
 #include <gfx/EEFontEngine.h>
-#include <gfx/EETextBox.h>
 
 /////////////////
 // MY INCLUDES //
@@ -45,6 +43,9 @@ public:
 	 * @return Error code for windows
 	 **/
 	int Run();
+
+	EEApplication* GetApplication() { return &m_application; }
+	GFX::EEFontEngine* GetFontEngine() { return m_pFontEngine; }
 
 	void ChangeGameState(GameState gs);
 

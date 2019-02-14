@@ -62,7 +62,7 @@ namespace ECA
 	public:
 		GameManager(EulerAdventure* pAdv);
 
-		void Handle(char const* text) override;
+		bool Handle(char const* text) override;
 		void Init();
 
 	private:

@@ -10,13 +10,16 @@ namespace GFX {
 	class EEInputBox;
 	class EERectangle;
 }
+namespace ECA {
+	class GameManager;
+}
 class EulerAdventure;
 
 namespace SCENES {
 
 	class Tuna {
 	public:
-		Tuna(GFX::EEFontEngine* pFontEngine);
+		Tuna(EulerAdventure* pAdv);
 		Tuna(Tuna const&) = delete;
 		Tuna(Tuna&&) = delete;
 		~Tuna();
@@ -28,8 +31,11 @@ namespace SCENES {
 		bool IsVisible();
 
 	private:
+		EulerAdventure* m_pAdv;
 		EEApplication* m_pApp;
 		GFX::EEFontEngine* m_pFontEngine;
+
+		ECA::GameManager* m_pGameManager;
 
 		GFX::EETextBox* m_pOutputBox;
 		GFX::EEInputBox* m_pInputBox;

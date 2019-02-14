@@ -5,6 +5,7 @@
 //////////////
 #include <EEApplication.h>
 #include <gfx/EETextBox.h>
+#include <vkcore/vulkanTools.h>
 #include <assert.h>
 
 /////////////////
@@ -93,7 +94,7 @@ void SCENES::Menu::SetVisibility(bool isVisible)
 	m_pExitButton->SetVisibility(m_isVisible);
 	m_pStartButton->SetVisibility(m_isVisible);
 
-	EE_PRINT("[MENU] Visibility set to %d\n", m_isVisible);
+	EE_INFO("[MENU] Visibility set to %d\n", m_isVisible);
 }
 
 bool SCENES::Menu::IsVisible()

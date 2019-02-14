@@ -28,13 +28,17 @@ ECA::GameManager::GameManager(EulerAdventure* pAdv)
 	i_commands += "inventar";
 }
 
-void ECA::GameManager::Handle(char const* text) {
+bool ECA::GameManager::Handle(char const* text) {
 	if (i_commands["exit"] == text) {
 		m_pAdv->ChangeGameState(MENU);
+		return true;
 
 	} else if (i_commands["close"] == text) {
 		m_pAdv->ChangeGameState(EXIT);
+		return true;
 	}
+
+	return false;
 }
 
 void ECA::GameManager::Init() {
