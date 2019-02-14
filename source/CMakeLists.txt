@@ -6,13 +6,11 @@
 
 
 # Source files
-file (GLOB CORETOOLS "coretools/*.h" "coretools/*.cpp")
 file (GLOB ECA "eca/*.h" "eca/*.cpp")
 file (GLOB SCENES "scenes/*.h" "scenes/*.cpp")
 file (GLOB EulerAdventure "*.h" "*.cpp")
 
 # Filter
-source_group ("CORETOOLS" FILES ${CORETOOLS})
 source_group ("ECA" FILES ${ECA})
 source_group ("SCENES" FILES ${SCENES})
 source_group ("" FILES ${EulerAdventure})

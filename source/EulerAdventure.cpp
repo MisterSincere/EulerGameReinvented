@@ -1,3 +1,8 @@
+/////////////////////////////////////////////////////////////////////
+// Filename: EulerAdventure.cpp
+//
+// (C) Copyright 2019 Madness Studio. All Rights Reserved
+/////////////////////////////////////////////////////////////////////
 #include "EulerAdventure.h"
 
 //////////////
@@ -10,7 +15,6 @@
 /////////////////
 #include "Tuna.h"
 #include "Menu.h"
-#include "Mouse.h"
 
 GameState EulerAdventure::m_gameState = RUNNING;
 

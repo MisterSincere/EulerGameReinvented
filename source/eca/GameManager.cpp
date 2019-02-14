@@ -1,23 +1,24 @@
+/////////////////////////////////////////////////////////////////////
+// Filename: GameManager.cpp
+//
+// (C) Copyright 2019 Madness Studio. All Rights Reserved
+/////////////////////////////////////////////////////////////////////
 #include "GameManager.h"
 
-//////////////
-// INCLUDES //
-//////////////
-//#include <SFML/Graphics/RenderWindow.hpp>
-
-/////////////////
-// MY INCLUDES //
-/////////////////
 #include "EulerAdventure.h"
 
 
-ECA::GameManager::GameManager(/*sf::RenderWindow* pWindow*/)
-	: ITextHandler(/*pWindow*/)
+ECA::GameManager::GameManager(EulerAdventure* pAdv)
+	: m_pAdv(pAdv)
 {
+	assert(pAdv);
+
+	// Setup supported commands
 	i_commands += "exit";
 	i_commands += "explore";
 	i_commands += "examine";
 	i_commands += "examine inv";
+	i_commands += "close";
 	i_commands += "interact";
 	i_commands += "interact inv";
 	i_commands += "go";
@@ -29,11 +30,14 @@ ECA::GameManager::GameManager(/*sf::RenderWindow* pWindow*/)
 
 void ECA::GameManager::Handle(char const* text) {
 	if (i_commands["exit"] == text) {
-		//EulerAdventure::ChangeGameState(MENU);
+		m_pAdv->ChangeGameState(MENU);
+
+	} else if (i_commands["close"] == text) {
+		m_pAdv->ChangeGameState(EXIT);
 	}
 }
 
-void ECA::GameManager::init() {
+void ECA::GameManager::Init() {
 	Description description;
 	Location location;
 	Student student;
@@ -128,7 +132,7 @@ void ECA::GameManager::init() {
 		//students
 		students
 	};
-	locations[location.id] = &location;
+	m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Korridor obere Etage
@@ -206,7 +210,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 	
 	//--------------------------------------------------------------------------
 	//Tödlicher Kaffeeraum
@@ -279,7 +283,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Lehrerzimmer
@@ -335,7 +339,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Kammer der Leere
@@ -390,7 +394,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Ventilationsraum
@@ -445,7 +449,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Damen Toiletten obere Etage
@@ -500,7 +504,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Herren Toiletten obere Etage
@@ -538,7 +542,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Schulleiterraum
@@ -576,7 +580,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Fahrstuhl
@@ -648,7 +652,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Treppenhaus
@@ -687,7 +691,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Korridor untere Etage
@@ -734,7 +738,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Hörsaal 1
@@ -785,7 +789,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Hörsaal 2
@@ -836,7 +840,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Hörsaal 3
@@ -887,7 +891,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Hörsaal 4
@@ -938,7 +942,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Sprindraum
@@ -1027,7 +1031,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Abstellraum
@@ -1082,7 +1086,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Damen Toiletten untere Etage
@@ -1120,7 +1124,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Herren Toiletten untere Etage
@@ -1175,7 +1179,7 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 
 	//--------------------------------------------------------------------------
 	//Fahrstuhlschacht
@@ -1228,5 +1232,5 @@ void ECA::GameManager::init() {
 			//students
 			students
 		};
-		locations[location.id] = &location;
+		m_locations[location.id] = &location;
 }
