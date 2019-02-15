@@ -31,8 +31,8 @@ SCENES::Menu::Menu(GFX::EEFontEngine* pFontEngine)
 	// Title
 	GFX::EETextBoxCreateInfo cinfo;
 	cinfo.font						= m_font;
-	cinfo.text						= "Euler Coffee Adventure";
-	cinfo.characterSize		= 50.f;
+	cinfo.text						= L"Euler Coffee Adventure";
+	cinfo.characterSize		= 60.f;
 	cinfo.position				= { 0.f, 30.f };
 	cinfo.positionFlags		= GFX::HORIZONTAL;
 	cinfo.visibility			= false;
@@ -40,8 +40,8 @@ SCENES::Menu::Menu(GFX::EEFontEngine* pFontEngine)
 	m_pTitle = new GFX::EETextBox(m_pFontEngine, cinfo);
 
 	// Start
-	cinfo.text						= "Lets get so cool xoxo";
-	cinfo.characterSize		= 29.f;
+	cinfo.text						= L"Lets get so cool xoxo";
+	cinfo.characterSize		= 40.f;
 	cinfo.padding					= { 10.f, 10.f, 10.f, 10.f };
 	cinfo.position				= { 0.f, 200.f };
 	cinfo.positionFlags		= GFX::HORIZONTAL;
@@ -52,8 +52,8 @@ SCENES::Menu::Menu(GFX::EEFontEngine* pFontEngine)
 	m_pStartButton = new GFX::EETextBox(m_pFontEngine, cinfo);
 
 	// EXIT
-	cinfo.text						= "Fck this shit, im out";
-	cinfo.characterSize		= 29.f;
+	cinfo.text						= L"Fck this shit, im out";
+	cinfo.characterSize		= 40.f;
 	cinfo.padding					= { 10.f, 10.f, 10.f, 10.f };
 	cinfo.position				= { 0.f, windowExtent.height - 150.0f };
 	cinfo.positionFlags		= GFX::HORIZONTAL;

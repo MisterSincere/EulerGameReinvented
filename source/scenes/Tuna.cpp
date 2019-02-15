@@ -35,7 +35,7 @@ SCENES::Tuna::Tuna(EulerAdventure* pAdv)
 	// Title
 	EERect32U windowExtent = m_pApp->GetWindowExtent();
 	GFX::EETextBoxCreateInfo cinfo;
-	cinfo.text						= "Sehr geehrter Herr Euler,\nes ist 8 Uhr morgens und du stehst in deinem Büro der Universität(Lehrer Etage).In deinem Büro ist mittig ein überfüllter Schreibtisch[desk] an dem ein Scott Chefsessel aus original Kunstleder im Wert von 500€ steht[chair].Außerdem stehen zwei Schränke in jeweils einer Ecke des Raumes. Von hier aus kannst du in den Korridor[corridor] gehen.Generell gilt : Um woanders hinzugehen gibst du ein : go <Raum>.Für <Raum> setzt du den englischen Namen deines Ziels ein, because you need to learn English.";
+	cinfo.text						= L"Sehr geehrter Herr Euler,\nes ist 8 Uhr morgens und du stehst in deinem Büro der Universität(Lehrer Etage).In deinem Büro ist mittig ein überfüllter Schreibtisch[desk] an dem ein Scott Chefsessel aus original Kunstleder im Wert von 500€ steht[chair].Außerdem stehen zwei Schränke in jeweils einer Ecke des Raumes. Von hier aus kannst du in den Korridor[corridor] gehen.Generell gilt : Um woanders hinzugehen gibst du ein : go <Raum>.Für <Raum> setzt du den englischen Namen deines Ziels ein, because you need to learn English.";
 	cinfo.characterSize		= 18.f;
 	cinfo.font						= m_arial;
 	cinfo.textColor				= { 1.f, 1.f, 1.f, 1.f };
@@ -49,8 +49,8 @@ SCENES::Tuna::Tuna(EulerAdventure* pAdv)
 
 	GFX::EEInputBoxCreateInfo inputCInfo;
 	inputCInfo.cmdList					= m_pGameManager->GetCommands();
-	inputCInfo.prefix						= "> ";
-	inputCInfo.text							= "";
+	inputCInfo.prefix						= L"> ";
+	inputCInfo.text							= L"";
 	inputCInfo.characterSize		= 22.f;
 	inputCInfo.font							= m_arial;
 	inputCInfo.textColor				= { 0.f, 0.f, 0.f, 1.f };

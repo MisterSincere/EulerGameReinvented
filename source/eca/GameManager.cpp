@@ -14,26 +14,26 @@ ECA::GameManager::GameManager(EulerAdventure* pAdv)
 	assert(pAdv);
 
 	// Setup supported commands
-	i_commands += "exit";
-	i_commands += "explore";
-	i_commands += "examine";
-	i_commands += "examine inv";
-	i_commands += "close";
-	i_commands += "interact";
-	i_commands += "interact inv";
-	i_commands += "go";
-	i_commands += "load";
-	i_commands += "save";
-	i_commands += "back";
-	i_commands += "inventar";
+	i_commands += L"exit";
+	i_commands += L"explore";
+	i_commands += L"examine";
+	i_commands += L"examine inv";
+	i_commands += L"close";
+	i_commands += L"interact";
+	i_commands += L"interact inv";
+	i_commands += L"go";
+	i_commands += L"load";
+	i_commands += L"save";
+	i_commands += L"back";
+	i_commands += L"inventar";
 }
 
-bool ECA::GameManager::Handle(char const* text) {
-	if (i_commands["exit"] == text) {
+bool ECA::GameManager::Handle(wchar_t const* text) {
+	if (i_commands[L"exit"] == text) {
 		m_pAdv->ChangeGameState(MENU);
 		return true;
 
-	} else if (i_commands["close"] == text) {
+	} else if (i_commands[L"close"] == text) {
 		m_pAdv->ChangeGameState(EXIT);
 		return true;
 	}
