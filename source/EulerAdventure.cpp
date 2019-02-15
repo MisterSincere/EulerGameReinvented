@@ -9,6 +9,7 @@
 // INCLUDES //
 //////////////
 #include <iostream>
+#include <chrono>
 
 /////////////////
 // MY INCLUDES //
@@ -43,12 +44,13 @@ bool EulerAdventure::InitSystems() {
 	appCInfo.flags = EE_WINDOW_FLAGS_CENTER;
 	appCInfo.clientSize = { 1100, 700u };
 	appCInfo.position = { 0,0 };
-	appCInfo.screenMode = EE_SCREEN_MODE_WINDOWED;
+	appCInfo.screenMode = EE_SCREEN_MODE_MAXIMIZED;
 	appCInfo.title = "EulerAdventure";
 	appCInfo.icon = nullptr;
 	appCInfo.mouseDisabled = EE_FALSE;
 	appCInfo.splitscreen = EE_SPLITSCREEN_MODE_NONE;
 	appCInfo.rendererType = EE_RENDER_TYPE_BOTH;
+
 
 	if (!m_application.Create(appCInfo)) return false;
 

@@ -34,7 +34,7 @@ SCENES::Menu::Menu(GFX::EEFontEngine* pFontEngine)
 	cinfo.text						= L"Euler Coffee Adventure";
 	cinfo.characterSize		= 60.f;
 	cinfo.position				= { 0.f, 30.f };
-	cinfo.positionFlags		= GFX::HORIZONTAL;
+	cinfo.positionFlags		= EE_CENTER_HORIZONTAL;
 	cinfo.visibility			= false;
 	cinfo.backgroundColor = { 0.f, 0.f, 0.f, 0.f };
 	m_pTitle = new GFX::EETextBox(m_pFontEngine, cinfo);
@@ -44,7 +44,7 @@ SCENES::Menu::Menu(GFX::EEFontEngine* pFontEngine)
 	cinfo.characterSize		= 40.f;
 	cinfo.padding					= { 10.f, 10.f, 10.f, 10.f };
 	cinfo.position				= { 0.f, 200.f };
-	cinfo.positionFlags		= GFX::HORIZONTAL;
+	cinfo.positionFlags		= EE_CENTER_HORIZONTAL;
 	cinfo.visibility			= false;
 	cinfo.backgroundColor = { 40/255.f, 40/255.0f, 60/255.0f, 1.f };
 	cinfo.enableHover			= true;
@@ -56,7 +56,7 @@ SCENES::Menu::Menu(GFX::EEFontEngine* pFontEngine)
 	cinfo.characterSize		= 40.f;
 	cinfo.padding					= { 10.f, 10.f, 10.f, 10.f };
 	cinfo.position				= { 0.f, windowExtent.height - 150.0f };
-	cinfo.positionFlags		= GFX::HORIZONTAL;
+	cinfo.positionFlags		= EE_CENTER_HORIZONTAL;
 	cinfo.visibility			= false;
 	cinfo.backgroundColor = { 40 / 255.f, 40 / 255.0f, 60 / 255.0f, 1.f };
 	cinfo.enableHover			= true;
