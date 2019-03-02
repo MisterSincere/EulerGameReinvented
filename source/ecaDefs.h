@@ -54,7 +54,9 @@ enum LocationEnum {
 	GENTLEMENS_TOILET_DOWN,
 	LOCKER_ROOM,
 	STORE_ROOM,
-	ELEVATOR_SHAFT
+	ELEVATOR_SHAFT,
+
+	NONE
 };
 
 enum ItemEnum {
@@ -78,5 +80,45 @@ enum ItemEnum {
 	DESK,
 	LOCKER,
 	SHINY_LOCKER,
-	TIMETABLE
+	TIMETABLE,
+
+	NONE
+};
+
+struct Description {
+	// all set in GameManager::Init()
+	char const* default;
+	char const* explore;
+	char const* alreadyExplored;
+};
+
+struct Item {
+	// all set in GameManager::Init()
+	ItemEnum		id;
+	char const* name;
+	char const* description;
+	char const* interactDescription;
+	bool				visible;
+	bool				collected{ false };
+};
+
+struct Student {
+	// all set in GameManager::Init()
+	char const* name;
+	char const* question;
+	char const* answer;
+	char const* hint;
+	bool				defeated{ false };
+};
+
+struct Location {
+	//all set in GameManager::Init()
+	LocationEnum							id					{ LocationEnum::NONE };
+	std::vector<Item*>				items				{ nullptr };	// may still be nullptr after GameManager:Init()
+	std::vector<LocationEnum> exits				{};						// may still be empty after GameManager::Init()
+	std::vector<Student*>			students		{ nullptr };	// may still be nullptr after GameManager::Init()
+	char const*								name				{ nullptr };
+	Description*							description	{ nullptr };
+	bool											visible			{ false };
+	bool											explored		{ false };
 };
