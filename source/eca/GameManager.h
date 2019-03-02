@@ -26,6 +26,8 @@ namespace ECA
 		bool Handle(wchar_t const* text) override;
 		void Init();
 
+		void PrintCurrentState();
+
 	private:
 		EulerAdventure* m_pAdv;
 
