@@ -23,7 +23,7 @@ namespace ECA
 	public:
 		GameManager(EulerAdventure* pAdv);
 
-		bool Handle(wchar_t const* text) override;
+		bool Handle(EEcstr text) override;
 		void Init();
 
 		void PrintCurrentState();

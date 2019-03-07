@@ -14,26 +14,26 @@ ECA::GameManager::GameManager(EulerAdventure* pAdv)
 	assert(pAdv);
 
 	// Setup supported commands
-	i_commands += L"exit";
-	i_commands += L"explore";
-	i_commands += L"examine";
-	i_commands += L"examine inv";
-	i_commands += L"close";
-	i_commands += L"interact";
-	i_commands += L"interact inv";
-	i_commands += L"go";
-	i_commands += L"load";
-	i_commands += L"save";
-	i_commands += L"back";
-	i_commands += L"inventar";
+	i_commands += STR("exit");
+	i_commands += STR("explore");
+	i_commands += STR("examine");
+	i_commands += STR("examine inv");
+	i_commands += STR("close");
+	i_commands += STR("interact");
+	i_commands += STR("interact inv");
+	i_commands += STR("go");
+	i_commands += STR("load");
+	i_commands += STR("save");
+	i_commands += STR("back");
+	i_commands += STR("inventar");
 }
 
-bool ECA::GameManager::Handle(wchar_t const* text) {
-	if (i_commands[L"exit"] == text) {
+bool ECA::GameManager::Handle(EEcstr text) {
+	if (i_commands[STR("exit")] == text) {
 		m_pAdv->ChangeGameState(MENU);
 		return true;
 
-	} else if (i_commands[L"close"] == text) {
+	} else if (i_commands[STR("close")] == text) {
 		m_pAdv->ChangeGameState(EXIT);
 		return true;
 	}
@@ -407,7 +407,7 @@ void ECA::GameManager::Init() {
 	// Staircase
 	//--------------------------------------------------------------------------
 	description.default = "Ein Treppenhaus...       es brennt!";
-	description.explore = "Das Feuer ist echt eine Unverschämtheit! Es blockiert dir doch tatsächlich den Weg in den ersten Stock [floor 1]. Was bildet es sich eigentlich ein?!";
+	description.explore = "Das Feuer ist echt unverschämt! Es blockiert dir doch tatsächlich den Weg in den ersten Stock [floor 1]. Was bildet es sich eigentlich ein?!";
 	description.alreadyExplored = "Das Feuer blockiert dir immer noch den Weg in den ersten Stock [floor 1]!";
 
 	items = std::vector<Item*>();
@@ -745,5 +745,7 @@ void ECA::GameManager::Init() {
 
 void ECA::GameManager::PrintCurrentState()
 {
-
+	for (const auto& curLocation : m_locations) {
+		
+	}
 }

@@ -26,12 +26,14 @@ include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/EulerEngine/source/freetype/include)
 
 # Euler Engine
+add_definitions("-DEE_USE_UNICODE")
 add_subdirectory(EulerEngine/source)
 set_property(TARGET EulerEngine PROPERTY FOLDER "Core")
 
 # Main Game
 add_subdirectory(source)
 set_property(TARGET EulerAdventure PROPERTY FOLDER "Project")
+
 
 # Vulkan and glfw library
 target_link_libraries (EulerEngine general vulkan-1.lib glfw3.lib freetype.lib)

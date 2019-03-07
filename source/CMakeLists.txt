@@ -34,7 +34,6 @@ include_directories (${CMAKE_SOURCE_DIR}/EulerEngine/source)
 # Defines
 add_definitions("-DASSETS_PATH=\"${CMAKE_SOURCE_DIR}/assets/\"")
 
-
 # Add source files
 add_executable (EulerAdventure ${EulerAdventure} ${ECA} ${SCENES} ${CORETOOLS})
 add_dependencies(EulerAdventure EulerEngine)
