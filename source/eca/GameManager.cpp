@@ -1,9 +1,13 @@
-/////////////////////////////////////////////////////////////////////
+ï»¿/////////////////////////////////////////////////////////////////////
 // Filename: GameManager.cpp
 //
 // (C) Copyright 2019 Madness Studio. All Rights Reserved
 /////////////////////////////////////////////////////////////////////
 #include "GameManager.h"
+
+#include <Windows.h>
+#include <io.h>
+#include <fcntl.h>
 
 #include "EulerAdventure.h"
 
@@ -46,86 +50,87 @@ void ECA::GameManager::Init() {
 	Location location;
 	Student student;
 	Item item;
-	std::vector<Item*> items;
-	std::vector<Student*> students;
+	std::vector<Item> items;
+	std::vector<Student> students;
 	std::vector<LocationEnum> exits;
 
 	//--------------------------------------------------------------------------
 	// Office
 	//--------------------------------------------------------------------------
-	description.default = "In deinem Büro ist mittig ein überfüllter Schreibtisch [desk] an dem ein Scott Chefsessel mit original Kunstleder im Wert von 500€ steht [chair]. Außerdem stehen zwei Schränke in jeweils einer Ecke des Raumes.";
-	description.explore = "Das Büro ist nicht besonders groß, aber du bist trotzdem stolz auf deinen Chefsessel. Außerdem steht eine Vitrine in dem Raum, in der deine Preise und Trophäen stehen.";
-	description.alreadyExplored = "Der Raum ist nicht besonders groß, aber auf deinen Chefsessel bist du trotzdem stolz und natürlich auf deine Preis und Trophäen in deiner Vitrine.";
+	description.default					= STR("In deinem BÃ¼ro ist mittig ein Ã¼berfÃ¼llter Schreibtisch [desk] an dem ein Scott Chefsessel mit original Kunstleder im Wert von 500â‚¬ steht [chair]. AuÃŸerdem stehen zwei SchrÃ¤nke in jeweils einer Ecke des Raumes.");
+	description.explore					= STR("Das BÃ¼ro ist nicht besonders groÃŸ, aber du bist trotzdem stolz auf deinen Chefsessel. AuÃŸerdem steht eine Vitrine in dem Raum, in der deine Preise und TrophÃ¤en stehen.");
+	description.alreadyExplored	= STR("Der Raum ist nicht besonders groÃŸ, aber auf deinen Chefsessel bist du trotzdem stolz und natÃ¼rlich auf deine Preis und TrophÃ¤en in deiner Vitrine.");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	// Chair
-	item.id = ITEM_CHAIR;
-	item.name = "Stuhl [chair]";
-	item.description = "Ein Scott Chefsessel aus original Kunstleder im Wert von 500€, der nur dir gehört.";
-	item.interactDescription = "Du setzt dich auf deinen Stuhl.\nEs macht knack und du sitzt auf'm Boden... Das Steak zum Frühstück war wohl doch zu viel.";
-	item.visible = true;
-	item.collected = false;
-	items.push_back(&item);
+	item.id									 = ITEM_CHAIR;
+	item.name								 = STR("Stuhl [chair]");
+	item.description				 = STR("Ein Scott Chefsessel aus original Kunstleder im Wert von 500â‚¬, der nur dir gehÃ¶rt.");
+	item.interactDescription = STR("Du setzt dich auf deinen Stuhl.\nEs macht knack und du sitzt auf'm Boden... Das Steak zum FrÃ¼hstÃ¼ck war wohl doch zu viel.");
+	item.visible						 = true;
+	item.collected					 = false;
+	items.push_back(item);
 
 	// Working desk
-	item.id = ITEM_DESK;
-	item.name = "Schreibtisch [desk]";
-	item.description = "Dieser Schreibtisch braucht eine neue Lackierung. Achso, und ein Putzkommando!\nTrotz der Unordnung fällt dir ein vollgekritzeltes Papier [paper] auf, auf dem du dein letztes Meisterwerk, das Ergebnis der unendlichen Summe, niedergeschrieben hast!";
+	item.id									 = ITEM_DESK;
+	item.name								 = STR("Schreibtisch [desk]");
+	item.description				 = STR("Dieser Schreibtisch braucht eine neue Lackierung. Achso, und ein Putzkommando!\nTrotz der Unordnung fÃ¤llt dir ein vollgekritzeltes Papier [paper] auf, auf dem du dein letztes Meisterwerk, das Ergebnis der unendlichen Summe, niedergeschrieben hast!");
 	item.interactDescription = nullptr;	// TODO
-	item.visible = true;
-	item.collected = false;
-	items.push_back(&item);
+	item.visible						 = true;
+	item.collected					 = false;
+	items.push_back(item);
 
 	// Riddle solution paper
-	item.id = ITEM_PAPER;
-	item.name = "Rätsellösung [paper]";
-	item.description = "Du hast hier die Summe der Unendlichkeit errechnet. Sie lautet -1/12!";
-	item.interactDescription = nullptr; // TODO
-	item.visible = false;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_PAPER;
+	item.name									= STR("RÃ¤tsellÃ¶sung [paper]");
+	item.description					= STR("Du hast hier die Summe der Unendlichkeit errechnet. Sie lautet -1/12!");
+	item.interactDescription	= nullptr; // TODO
+	item.visible							= false;
+	item.collected						= false;
+	items.push_back(item);
 
 	exits.push_back(LOCATION_CORRIDOR_UP);
-	location.id = LOCATION_OFFICE;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Büro [office]";
-	location.description = &description;
-	location.explored = false;
-	location.visible = true;
-	m_locations[location.id] = &location;
+
+	location.id						= LOCATION_OFFICE;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("BÃ¼ro [office]");
+	location.description	= description;
+	location.explored			= false;
+	location.visible			= true;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Korridor obere Etage
 	//--------------------------------------------------------------------------
-	description.default = "Im Korridor angekommen siehst du mehrere Räume.";
-	description.explore = "Was willste wissen? Es ist nur ein typischer langweiliger Korridor, mit einem Kaffeelöscherkasten [extinguisher box], wie man's in Uni's gewohnt ist!";
-	description.alreadyExplored = "Ein typischer Korridor mit einem Kaffeelöscherkasten [extinguisher box]. Ist halt 'ne Uni!";
+	description.default					= STR("Im Korridor angekommen siehst du mehrere RÃ¤ume.");
+	description.explore					= STR("Was willste wissen? Es ist nur ein typischer langweiliger Korridor, mit einem KaffeelÃ¶scherkasten [extinguisher box], wie man's in Uni's gewohnt ist!");
+	description.alreadyExplored = STR("Ein typischer Korridor mit einem KaffeelÃ¶scherkasten [extinguisher box]. Ist halt 'ne Uni!");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	// Coffee extinguisher box
-	item.id = ITEM_COFFEE_EXTINGUISHER_BOX;
-	item.name = "Kaffeelöscherkasten [coffee extinguisher box]";
-	item.description = "Dieser Kasten beinhaltet einen Kaffeelöscher [coffee extinguisher], dieser ist der (un)natürlichste Bestandteil einer Feuerwehrausrüstung! Der Kasten ist durch ein elektronisches Sicherheitsschloss gesichert!";
-	item.visible = false;
-	item.collected = false;
-	items.push_back(&item);
+	item.id						= ITEM_COFFEE_EXTINGUISHER_BOX;
+	item.name					= STR("KaffeelÃ¶scherkasten [coffee extinguisher box]");
+	item.description	= STR("Dieser Kasten beinhaltet einen KaffeelÃ¶scher [coffee extinguisher], dieser ist der (un)natÃ¼rlichste Bestandteil einer FeuerwehrausrÃ¼stung! Der Kasten ist durch ein elektronisches Sicherheitsschloss gesichert!");
+	item.visible			= false;
+	item.collected		= false;
+	items.push_back(item);
 
 	// Coffee extinguisher
-	item.id = ITEM_COFFEE_EXTINGUISHER;
-	item.name = "Kaffeelöscher [coffee extinguisher]";
-	item.description = "Ein Feuerlöscher mit komisch riechendem Kaffee gefüllt.";
-	item.interactDescription = "Jetzt bist du ein wahrer Feuerwerhmann.... Naja, nicht ganz, aber fast.\nDer Wille zählt!";
-	item.visible = false;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_COFFEE_EXTINGUISHER;
+	item.name									= STR("KaffeelÃ¶scher [coffee extinguisher]");
+	item.description					= STR("Ein FeuerlÃ¶scher mit komisch riechendem Kaffee gefÃ¼llt.");
+	item.interactDescription	= STR("Jetzt bist du ein wahrer Feuerwerhmann.... Naja, nicht ganz, aber fast.\nDer Wille zÃ¤hlt!");
+	item.visible							= false;
+	item.collected						= false;
+	items.push_back(item);
 
 	exits.push_back(LOCATION_OFFICE);
 	exits.push_back(LOCATION_COFFEE_ROOM);
@@ -135,308 +140,308 @@ void ECA::GameManager::Init() {
 	exits.push_back(LOCATION_STAIRWELL);
 	exits.push_back(LOCATION_ELEVATOR);
 
-	location.id = LOCATION_CORRIDOR_UP;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Korridor [corridor]";
-	location.description = &description;
-	location.explored = false;
-	location.visible = true;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_CORRIDOR_UP;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("Korridor [corridor]");
+	location.description	= description;
+	location.explored			= false;
+	location.visible			= true;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Lethal coffee room
 	//--------------------------------------------------------------------------
-	description.default = "Dies ist der Kaffee- und Kuchenraum der Lehrer.\nDu siehst eine neumodische Ikea Küche, mit vielen Küchenschränken [cupboards] auf denen eine uralte verrostete vermutlich aus dem 1. Weltkrieg stammende Kaffeemaschine [coffeemachine] und eine Mikrowelle steht!";
-	description.explore = "Du fragst dich, ws in den ganzen Küchenschränken [cupboards] sein könnte und warum der Boden hier höher ist!";
-	description.alreadyExplored = "Weißt du noch als du dich gefragt hast was in den ganzen Küchenschränken sein könnte und warum der Boden hier höher ist?";
+	description.default					= STR("Dies ist der Kaffee- und Kuchenraum der Lehrer.\nDu siehst eine neumodische Ikea KÃ¼che, mit vielen KÃ¼chenschrÃ¤nken [cupboards] auf denen eine uralte verrostete vermutlich aus dem 1. Weltkrieg stammende Kaffeemaschine [coffeemachine] und eine Mikrowelle steht!");
+	description.explore					= STR("Du fragst dich, ws in den ganzen KÃ¼chenschrÃ¤nken [cupboards] sein kÃ¶nnte und warum der Boden hier hÃ¶her ist!");
+	description.alreadyExplored = STR("WeiÃŸt du noch als du dich gefragt hast was in den ganzen KÃ¼chenschrÃ¤nken sein kÃ¶nnte und warum der Boden hier hÃ¶her ist?");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	// Coffee machine
-	item.id = ITEM_COFFEE_MACHINE;
-	item.name = "Kaffeemaschine [coffee machine]";
-	item.description = "Eine hochwertige billige Kaffeemaschine, die nicht funktioniert. Irgendwer muss wohl das Stromkabel rausgezogen haben.";
-	item.interactDescription = "Du willst den Stecker in die Steckdose stecken, aber die Steckdose will das nun halt nicht und gibt dir deswegen einen tödlichen Stromschlag.";
-	item.visible = true;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_COFFEE_MACHINE;
+	item.name									= STR("Kaffeemaschine [coffee machine]");
+	item.description					= STR("Eine hochwertige billige Kaffeemaschine, die nicht funktioniert. Irgendwer muss wohl das Stromkabel rausgezogen haben.");
+	item.interactDescription	= STR("Du willst den Stecker in die Steckdose stecken, aber die Steckdose will das nun halt nicht und gibt dir deswegen einen tÃ¶dlichen Stromschlag.");
+	item.visible							= true;
+	item.collected						= false;
+	items.push_back(item);
 
 	// Kitchen cupboards
-	item.id = ITEM_CUPBOARDS;
-	item.name = "Küchenschränke [cupboards]";
-	item.description = "Unter einem der Schränke ist ein Hohlraum, welcher unter dem ganzen Kaffeeraum hindurch führt zu einem geheimen Raum [chamber].";
-	item.interactDescription = nullptr; // TODO
-	item.visible = true;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_CUPBOARDS;
+	item.name									= STR("KÃ¼chenschrÃ¤nke [cupboards]");
+	item.description					= STR("Unter einem der SchrÃ¤nke ist ein Hohlraum, welcher unter dem ganzen Kaffeeraum hindurch fÃ¼hrt zu einem geheimen Raum [chamber].");
+	item.interactDescription  = nullptr; // TODO
+	item.visible							= true;
+	item.collected						= false;
+	items.push_back(item);
 
 	exits.push_back(LOCATION_CORRIDOR_UP);
 	exits.push_back(LOCATION_CONFERENCE_ROOM);
 
-	location.id = LOCATION_COFFEE_ROOM;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Kaffeeraum [coffeeroom]";
-	location.description = &description;
-	location.explored = false;
-	location.visible = true;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_COFFEE_ROOM;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("Kaffeeraum [coffeeroom]");
+	location.description	= description;
+	location.explored			= false;
+	location.visible			= true;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Teacher's room
 	//--------------------------------------------------------------------------
-	description.default = "In diesem Raum werden Konferenzen zu wichtigen Themen abgehalten und unwichtigen, aber die betreffen dich ja eh nicht!\nEinem Konferenzraum entsprechend befindet sich in der Mitte ein Tisch in der Form eines U's. Außerdem hängt an der Wand ein Stundenplan und ein Schrank mit den Fächern für die Lehrer.";
-	description.explore = "Die Lehrer starren dich aus großen Augen an. Du bist wohl mitten in eine Versammlung reingeplatzt. Kann dir auch egal sein, ist keine Konferenz von der du weißt. Dir fällt der Ventilationsschact [ventilation shaft] auf, bei dem das Gitter nur noch an den Schacht gelehnt ist.";
-	description.alreadyExplored = "Die Konferenz wird wohl nie enden. Der Ventilationsschacht [ventilation shaft] ist auch echt auffällig.";
+	description.default					= STR("In diesem Raum werden Konferenzen zu wichtigen Themen abgehalten und unwichtigen, aber die betreffen dich ja eh nicht!\nEinem Konferenzraum entsprechend befindet sich in der Mitte ein Tisch in der Form eines U's. AuÃŸerdem hÃ¤ngt an der Wand ein Stundenplan und ein Schrank mit den FÃ¤chern fÃ¼r die Lehrer.");
+	description.explore					= STR("Die Lehrer starren dich aus groÃŸen Augen an. Du bist wohl mitten in eine Versammlung reingeplatzt. Kann dir auch egal sein, ist keine Konferenz von der du weiÃŸt. Dir fÃ¤llt der Ventilationsschact [ventilation shaft] auf, bei dem das Gitter nur noch an den Schacht gelehnt ist.");
+	description.alreadyExplored = STR("Die Konferenz wird wohl nie enden. Der Ventilationsschacht [ventilation shaft] ist auch echt auffÃ¤llig.");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	// Ventilation shaft
-	item.id = ITEM_VENTILATION_SHAFT;
-	item.name = "Lüftungsschacht [ventilation shaft]";
-	item.description = "Du entdeckst einen Geheimraum [ventilationroom].";
-	item.interactDescription = nullptr; // TODO
-	item.visible = false;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_VENTILATION_SHAFT;
+	item.name									= STR("LÃ¼ftungsschacht [ventilation shaft]");
+	item.description					= STR("Du entdeckst einen Geheimraum [ventilationroom].");
+	item.interactDescription	= nullptr; // TODO
+	item.visible							= false;
+	item.collected						= false;
+	items.push_back(item);
 
 	exits.push_back(LOCATION_CORRIDOR_UP);
 	exits.push_back(LOCATION_COFFEE_ROOM);
 
-	location.id = LOCATION_CONFERENCE_ROOM;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Konferenzraum [conference room]";
-	location.description = &description;
-	location.explored = false;
-	location.visible = true;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_CONFERENCE_ROOM;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("Konferenzraum [conference room]");
+	location.description	= description;
+	location.explored			= false;
+	location.visible			= true;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Chamber of the void
 	//--------------------------------------------------------------------------
-	description.default = "Dieser Raum sieht aus als wenn hier seit Jahren niemand mehr drin gewesen wäre.";
-	description.explore = "Du siehst eine deiner Notizen [note] zwischen zwei Kartons gequetscht. Keine Ahnung wie der Windstoß das verursachen konnte...";
-	description.alreadyExplored = "Eine deiner Notizen [note] liegt zwischen zwei Kartons.";
+	description.default					= STR("Dieser Raum sieht aus als wenn hier seit Jahren niemand mehr drin gewesen wÃ¤re.");
+	description.explore					= STR("Du siehst eine deiner Notizen [note] zwischen zwei Kartons gequetscht. Keine Ahnung wie der WindstoÃŸ das verursachen konnte...");
+	description.alreadyExplored = STR("Eine deiner Notizen [note] liegt zwischen zwei Kartons.");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	// Note
-	item.id = ITEM_NOTE_1;
-	item.name = "Notiz [note]";
-	item.description = nullptr; // TODO
-	item.interactDescription = nullptr; // TODO
-	item.visible = false;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_NOTE_1;
+	item.name									= STR("Notiz [note]");
+	item.description					= nullptr; // TODO
+	item.interactDescription	= nullptr; // TODO
+	item.visible							= false;
+	item.collected						= false;
+	items.push_back(item);
 
 	exits.push_back(LOCATION_COFFEE_ROOM);
 
-	location.id = LOCATION_CHAMBER;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Kammer der Leere [chamber]";
-	location.description = &description;
-	location.explored = false;
-	location.visible = false;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_CHAMBER;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("Kammer der Leere [chamber]");
+	location.description	= description;
+	location.explored			=	false;
+	location.visible			= false;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Ventilation room
 	//--------------------------------------------------------------------------
-	description.default = "Ein Ventilationsraum. Alt, veranzt und staubig. Gelüftet wurde hier schon seit Jahren nicht mehr!";
-	description.explore = "Du siehst eine deiner Notizen [note].";
-	description.alreadyExplored = "Aber immerhin liegt hier eine deiner Notizen.";
+	description.default					= STR("Ein Ventilationsraum. Alt, veranzt und staubig. GelÃ¼ftet wurde hier schon seit Jahren nicht mehr!");
+	description.explore					= STR("Du siehst eine deiner Notizen [note].");
+	description.alreadyExplored = STR("Aber immerhin liegt hier eine deiner Notizen.");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	// Note
-	item.id = ITEM_NOTE_2;
-	item.name = "Notiz [note]";
-	item.description = nullptr; // TODO
-	item.interactDescription = nullptr; // TODO
-	item.visible = false;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_NOTE_2;
+	item.name									= STR("Notiz [note]");
+	item.description					= nullptr; // TODO
+	item.interactDescription	= nullptr; // TODO
+	item.visible							= false;
+	item.collected						= false;
+	items.push_back(item);
 
 	exits.push_back(LOCATION_CONFERENCE_ROOM);
 
-	location.id = LOCATION_VENTILATION_ROOM;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Ventilationsraum [ventilationroom]";
-	location.description = &description;
-	location.explored = false;
-	location.visible = false;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_VENTILATION_ROOM;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("Ventilationsraum [ventilationroom]");
+	location.description	= description;
+	location.explored			= false;
+	location.visible			= false;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Ladies' toilets upper level
 	//--------------------------------------------------------------------------
-	description.default = "In der Damentoilette angekommen, sieht Kollegin Stelz dich irritiert an und geht mit den Worten: \"Sie überraschen mir immer wieder\" raus.\nBeschreibung: Warst du noch nie in einer Damentoilette?!";
-	description.explore = "Jetzt bloß nicht spülen. Es sei denn du magst keine Skilbooks... [skillbook]. Bei diesem Skillbook scheinst du deine Beamfähigkeit erlernen zu können.";
-	description.alreadyExplored = "Naja, hier liegt halt noch so ein lahmes Skillbook [skillbook].";
+	description.default					= STR("In der Damentoilette angekommen, sieht Kollegin Stelz dich irritiert an und geht mit den Worten: \"Sie Ã¼berraschen mir immer wieder\" raus.\nBeschreibung: Warst du noch nie in einer Damentoilette?!");
+	description.explore					= STR("Jetzt bloÃŸ nicht spÃ¼len. Es sei denn du magst keine Skilbooks... [skillbook]. Bei diesem Skillbook scheinst du deine BeamfÃ¤higkeit erlernen zu kÃ¶nnen.");
+	description.alreadyExplored = STR("Naja, hier liegt halt noch so ein lahmes Skillbook [skillbook].");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	// Skillbook
-	item.id = ITEM_SKILL_BOOK;
-	item.name = "Skillbook [skillbook]";
-	item.description = "Dies ist das verstaubte Skillbook des toten Beammeisters.";
-	item.interactDescription = "Du kannst dich nun beamen!";
-	item.visible = false;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_SKILL_BOOK;
+	item.name									= STR("Skillbook [skillbook]");
+	item.description					= STR("Dies ist das verstaubte Skillbook des toten Beammeisters.");
+	item.interactDescription  = STR("Du kannst dich nun beamen!");
+	item.visible							= false;
+	item.collected						= false;
+	items.push_back(item);
 
 	exits.push_back(LOCATION_CORRIDOR_UP);
 
-	location.id = LOCATION_LADIES_TOILET_UP;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Damentoilette [ladiestoilet]";
-	location.description = &description;
-	location.explored = false;
-	location.visible = false;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_LADIES_TOILET_UP;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("Damentoilette [ladiestoilet]");
+	location.description	= description;
+	location.explored			= false;
+	location.visible			= false;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Mens' toilet upper level
 	//--------------------------------------------------------------------------
-	description.default = "Als du die Herrentoilette betrittst, weht dir ein animalischer Duft entgegen, welchen du dem ebenfalls \"leicht\" animalischen Direktor zuordnest!";
-	description.explore = "Der Geruch ist wirklich unerträglich. Lange wirst du es hier nicht mehr aushalten können.";
-	description.alreadyExplored = "Der Geruch ist wirklich unerträglich. Lange wirst du es hier nicht mehr aushalten können.";
+	description.default					= STR("Als du die Herrentoilette betrittst, weht dir ein animalischer Duft entgegen, welchen du dem ebenfalls \"leicht\" animalischen Direktor zuordnest!");
+	description.explore					= STR("Der Geruch ist wirklich unertrÃ¤glich. Lange wirst du es hier nicht mehr aushalten kÃ¶nnen.");
+	description.alreadyExplored = STR("Der Geruch ist wirklich unertrÃ¤glich. Lange wirst du es hier nicht mehr aushalten kÃ¶nnen.");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	exits.push_back(LOCATION_CORRIDOR_UP);
 
-	location.id = LOCATION_GENTLEMENS_TOILET_UP;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Herrentoilette [gentlemenstoilet]";
-	location.description = &description;
-	location.explored = false;
-	location.visible = true;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_GENTLEMENS_TOILET_UP;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("Herrentoilette [gentlemenstoilet]");
+	location.description	= description;
+	location.explored			= false;
+	location.visible			= true;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Principals' room
 	//--------------------------------------------------------------------------
-	description.default = "Das Büro des Direktors ist ähnlich wie deines, über den vermüllten Schreibtisch schaut dich ein grimmiger Haufen Kalorien an. Dies müsste deiner mathematisch hoch komplexen Überlegungen nach der Direktor sein.";
-	description.explore = "Meisterhaft in Inneneinrichtung hat der Direktor hier einen braunen Tisch, zwei graue Stühle und eine Ansammlung von an Krawatten erhängten Skeletten.\nEr ist damit beschäftigt, Frederic Chopin's neunte Death Metal Komposition zu hören.";
-	description.alreadyExplored = "Der Direktor hört noch immer laute Musik von Frederic Chopin.";
+	description.default					= STR("Das BÃ¼ro des Direktors ist Ã¤hnlich wie deines, Ã¼ber den vermÃ¼llten Schreibtisch schaut dich ein grimmiger Haufen Kalorien an. Dies mÃ¼sste deiner mathematisch hoch komplexen Ãœberlegungen nach der Direktor sein.");
+	description.explore					= STR("Meisterhaft in Inneneinrichtung hat der Direktor hier einen braunen Tisch, zwei graue StÃ¼hle und eine Ansammlung von an Krawatten erhÃ¤ngten Skeletten.\nEr ist damit beschÃ¤ftigt, Frederic Chopin's neunte Death Metal Komposition zu hÃ¶ren.");
+	description.alreadyExplored = STR("Der Direktor hÃ¶rt noch immer laute Musik von Frederic Chopin.");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	exits.push_back(LOCATION_CORRIDOR_UP);
 
-	location.id = LOCATION_PRINCIPALS_ROOM;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Schulleiterraum [principalsroom]";
-	location.description = &description;
-	location.explored = false;
-	location.visible = true;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_PRINCIPALS_ROOM;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("Schulleiterraum [principalsroom]");
+	location.description	= description;
+	location.explored			= false;
+	location.visible			= true;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Elevator
 	//--------------------------------------------------------------------------
-	description.default = "An einer der blank geputzten grauen Fahrstuhlwände steht:\"Im Brandfall nicht benutzbar!\".";
-	description.explore = "Erst jetzt fällt dir der Gully [gully] auf dem Boden auf. Wo der wohl hinführt...\nUm das herauszufinden wirst du definitiv so etwas wie einen Hebel benötigen.\nDie Feueraxt [fire ax] ist dir eigentlich schon vorher aufgefallen, doch vielleicht wird sie jetzt wichtig?";
-	description.alreadyExplored = "Auch ein Gullideckel ist hier noch. #normal";
+	description.default					= STR("An einer der blank geputzten grauen FahrstuhlwÃ¤nde steht:\"Im Brandfall nicht benutzbar!\".");
+	description.explore					= STR("Erst jetzt fÃ¤llt dir der Gully [gully] auf dem Boden auf. Wo der wohl hinfÃ¼hrt...\nUm das herauszufinden wirst du definitiv so etwas wie einen Hebel benÃ¶tigen.\nDie Feueraxt [fire ax] ist dir eigentlich schon vorher aufgefallen, doch vielleicht wird sie jetzt wichtig?");
+	description.alreadyExplored = STR("Auch ein Gullideckel ist hier noch. #normal");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	// Fire axe
-	item.id = ITEM_FIRE_AXE;
-	item.name = "Feueraxt [fire ax]";
-	item.description = "Es ist eine Feueraxt!";
-	item.interactDescription = "Diese Axt gehört zur Grundausstattung eines Feuerbekämpfers.";
-	item.visible = true;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_FIRE_AXE;
+	item.name									= STR("STR(Feueraxt [fire ax]");
+	item.description					= STR("Es ist eine Feueraxt!");
+	item.interactDescription	= STR("Diese Axt gehÃ¶rt zur Grundausstattung eines FeuerbekÃ¤mpfers.");
+	item.visible							= true;
+	item.collected						= false;
+	items.push_back(item);
 
 	// Gully
-	item.id = ITEM_GULLY;
-	item.name = "Gulli [gully]";
-	item.description = "Ein Gullideckel... er ist eckig, er ist halt auch ein Individuum.\nDu brauchst irgendeinen Trick um den Gullideckel anheben zu können.";
-	item.interactDescription = nullptr; // TODO
-	item.visible = false;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_GULLY;
+	item.name									= STR("Gulli [gully]");
+	item.description					= STR("Ein Gullideckel... er ist eckig, er ist halt auch ein Individuum.\nDu brauchst irgendeinen Trick um den Gullideckel anheben zu kÃ¶nnen.");
+	item.interactDescription	= nullptr; // TODO
+	item.visible							= false;
+	item.collected						= false;
+	items.push_back(item);
 
 	exits.push_back(LOCATION_CORRIDOR_UP);
 
-	location.id = LOCATION_ELEVATOR;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Fahrstuhl [elevator]";
-	location.description = &description;
-	location.explored = false;
-	location.visible = true;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_ELEVATOR;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("Fahrstuhl [elevator]");
+	location.description	= description;
+	location.explored			= false;
+	location.visible			= true;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Staircase
 	//--------------------------------------------------------------------------
-	description.default = "Ein Treppenhaus...       es brennt!";
-	description.explore = "Das Feuer ist echt unverschämt! Es blockiert dir doch tatsächlich den Weg in den ersten Stock [floor 1]. Was bildet es sich eigentlich ein?!";
-	description.alreadyExplored = "Das Feuer blockiert dir immer noch den Weg in den ersten Stock [floor 1]!";
+	description.default					= STR("Ein Treppenhaus...       es brennt!");
+	description.explore					= STR("Das Feuer ist echt unverschÃ¤mt! Es blockiert dir doch tatsÃ¤chlich den Weg in den ersten Stock [floor 1]. Was bildet es sich eigentlich ein?!");
+	description.alreadyExplored = STR("Das Feuer blockiert dir immer noch den Weg in den ersten Stock [floor 1]!");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	exits.push_back(LOCATION_CORRIDOR_UP);
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id = LOCATION_STAIRWELL;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Treppenhaus [stairwell]";
-	location.description = &description;
-	location.explored = false;
-	location.visible = true;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_STAIRWELL;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("Treppenhaus [stairwell]");
+	location.description	= description;
+	location.explored			= false;
+	location.visible			= true;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Corridor lower level
 	//--------------------------------------------------------------------------
-	description.default = "Ein langer Korridor...\nAn ihm liegen vier vom Aufbau her identische Hörsäle, jedoch gehört der erste den musischen Wissenschaften, der zweite zu den literarischen, der dritte zu den gesellschaftlichen und als letztes kommt endlich der naturwissenschaftliche Hörsal.";
-	description.explore = "Grau. Und unspektakulär. Der Mülleimer muss unbedingt mal geleert werden.";
-	description.alreadyExplored = "Grau. Und unspektakulär.";
+	description.default					= STR("Ein langer Korridor...\nAn ihm liegen vier vom Aufbau her identische HÃ¶rsÃ¤le, jedoch gehÃ¶rt der erste den musischen Wissenschaften, der zweite zu den literarischen, der dritte zu den gesellschaftlichen und als letztes kommt endlich der naturwissenschaftliche HÃ¶rsal.");
+	description.explore					= STR("Grau. Und unspektakulÃ¤r. Der MÃ¼lleimer muss unbedingt mal geleert werden.");
+	description.alreadyExplored = STR("Grau. Und unspektakulÃ¤r.");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	exits.push_back(LOCATION_LECTURE_HALL_1);
 	exits.push_back(LOCATION_LECTURE_HALL_2);
@@ -449,303 +454,356 @@ void ECA::GameManager::Init() {
 	exits.push_back(LOCATION_ELEVATOR);
 	exits.push_back(LOCATION_STAIRWELL);
 
-	location.id = LOCATION_CORRIDOR_DOWN;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Schüleretage [studentsfloor]";
-	location.description = &description;
-	location.explored = false;
-	location.visible = true;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_CORRIDOR_DOWN;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("SchÃ¼leretage [studentsfloor]");
+	location.description	= description;
+	location.explored			= false;
+	location.visible			= true;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Lecture hall 1
 	//--------------------------------------------------------------------------
-	description.default = "Man darf sich bekanntlich nicht mehr fragen, ob musische Wissenschaften überhaupt als eine Wissenschaft gelten, da Künstler und Freidenker sich sonst angegriffen fühlen, aber ein Naturwissenschaftler wie du hat wohl besseres verdient!";
-	description.explore = "Der Professor liegt in ziemlich bizarren Posen auf dem Tisch und erklärt den Studenten(und Studentinnen), welche Pose welche Wirkung hat.\nDu kannst das Geld, dass für jede Pose gezahlt wird, förmlich von dem Direktor in die Tasche des Professors wandern sehen.\nHier steht noch Maribelle [student], obwohl sie wesentlich kleiner ist, schaut sie hochnäsig auf dich herab.";
-	description.alreadyExplored = "Maribelle [student] stolziert hier immer noch herum.";
+	description.default					= STR("Man darf sich bekanntlich nicht mehr fragen, ob musische Wissenschaften Ã¼berhaupt als eine Wissenschaft gelten, da KÃ¼nstler und Freidenker sich sonst angegriffen fÃ¼hlen, aber ein Naturwissenschaftler wie du hat wohl besseres verdient!");
+	description.explore					= STR("Der Professor liegt in ziemlich bizarren Posen auf dem Tisch und erklÃ¤rt den Studenten(und Studentinnen), welche Pose welche Wirkung hat.\nDu kannst das Geld, dass fÃ¼r jede Pose gezahlt wird, fÃ¶rmlich von dem Direktor in die Tasche des Professors wandern sehen.\nHier steht noch Maribelle [student], obwohl sie wesentlich kleiner ist, schaut sie hochnÃ¤sig auf dich herab.");
+	description.alreadyExplored = STR("Maribelle [student] stolziert hier immer noch herum.");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
-	student.name = "Maribelle";
-	student.defeated = false;
-	student.question = "Ahh, Sie lassen sich also hier blicken, Herr Euler! Beantworten Sie mir doch, wie Chopin mit Vornamen hieß.";
-	student.answer = "Frederic";
-	student.hint = "Ahh, woher wissen Sie denn das. Als ich das letzte Mal im Konferenzraum war, war die Luft so stickig!\nJemand müsste mal den Lüftungsschacht untersuchen.";
+	// Maribelle
+	student.name			= STR("Maribelle");
+	student.defeated	= false;
+	student.question	= STR("Ahh, Sie lassen sich also hier blicken, Herr Euler! Beantworten Sie mir doch, wie Chopin mit Vornamen hieÃŸ.");
+	student.answer		= STR("Frederic");
+	student.hint			= STR("Ahh, woher wissen Sie denn das. Als ich das letzte Mal im Konferenzraum war, war die Luft so stickig!\nJemand mÃ¼sste mal den LÃ¼ftungsschacht untersuchen.");
+	students.push_back(student);
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id = LOCATION_LECTURE_HALL_1;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Hörsaal 1 [lecture hall 1]";
-	location.description = &description;
-	location.visible = true;
-	location.explored = false;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_LECTURE_HALL_1;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("HÃ¶rsaal 1 [lecture hall 1]");
+	location.description	= description;
+	location.visible			= true;
+	location.explored			= false;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Lecture hall 2
 	//--------------------------------------------------------------------------
-	description.default = "Im vorderen Teil liest der Professor aus einem Buch einen Text in einer Sprache, die du nicht verstehst, während im hinteren Teil sich Schüler mit Käsekästchen, Schere-Stein-Papier und Battlefield die Zeit vertreiben.";
-	description.explore = "Schon wieder eine Runde 4-1 KD, der Schüler ist wirklich gut darin, Minen im richtigen Moment hochzujagen. Der Professer liest weiterhin monoton aus dem Buch vor.\nJochen [student] ist so gelangweilt, dass er deinen Schritten Aufmerksamkeit schenkt.";
-	description.alreadyExplored = "Der Professer liest noch immer aus dem Buch vor, während dir Jochen noch immer hinterher starrt.";
+	description.default					= STR("Im vorderen Teil liest der Professor aus einem Buch einen Text in einer Sprache, die du nicht verstehst, wÃ¤hrend im hinteren Teil sich SchÃ¼ler mit KÃ¤sekÃ¤stchen, Schere-Stein-Papier und Battlefield die Zeit vertreiben.");
+	description.explore					= STR("Schon wieder eine Runde 4-1 KD, der SchÃ¼ler ist wirklich gut darin, Minen im richtigen Moment hochzujagen. Der Professer liest weiterhin monoton aus dem Buch vor.\nJochen [student] ist so gelangweilt, dass er deinen Schritten Aufmerksamkeit schenkt.");
+	description.alreadyExplored = STR("Der Professer liest noch immer aus dem Buch vor, wÃ¤hrend dir Jochen noch immer hinterher starrt.");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
-	student.name = "Jochen";
-	student.defeated = false;
-	student.question = "Greetings Mate! Is english DLC working right know?";
-	student.answer = "No";
-	student.hint = "Oh, I see. Do you think locker 42 is somewhat special? Because I do think so!";
+	// Jochen
+	student.name			= STR("Jochen");
+	student.defeated	= false;
+	student.question	= STR("Greetings Mate! Is english DLC working right know?");
+	student.answer		= STR("No");
+	student.hint			= STR("Oh, I see. Do you think locker 42 is somewhat special? Because I do think so!");
+	students.push_back(student);
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id = LOCATION_LECTURE_HALL_2;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Hörsaal 2 [lecture hall 2]";
-	location.description = &description;
-	location.visible = true;
-	location.explored = false;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_LECTURE_HALL_2;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("HÃ¶rsaal 2 [lecture hall 2]");
+	location.description	= description;
+	location.visible			= true;
+	location.explored			= false;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Lecture hall 3
 	//--------------------------------------------------------------------------
-	description.default = "Der Lehrende zeigt aufgeregt auf eine Karte, welchen Schwerpunkt diese Vorlesung auch immer hat, eine Karte macht alles spannender! Sein Gegenspieler gewinnt in dem Pokerduell und jubelt laut auf!";
-	description.explore = "Alle Studierenden sind inzwischen wieder drin, während der Professor eine Runde in der Ecke schmollt.\nOh-oh, da kommt Anthon [student]";
-	description.alreadyExplored = "Anthon [student] bemerkt dich sofort, als du den Raum betrittst.";
+	description.default					= STR("Der Lehrende zeigt aufgeregt auf eine Karte, welchen Schwerpunkt diese Vorlesung auch immer hat, eine Karte macht alles spannender! Sein Gegenspieler gewinnt in dem Pokerduell und jubelt laut auf!");
+	description.explore					= STR("Alle Studierenden sind inzwischen wieder drin, wÃ¤hrend der Professor eine Runde in der Ecke schmollt.\nOh-oh, da kommt Anthon [student]");
+	description.alreadyExplored = STR("Anthon [student] bemerkt dich sofort, als du den Raum betrittst.");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
-	student.name = "Anthon";
-	student.defeated = false;
-	student.question = "Ehehe Euler, was sind Dreipacken minus Zweipacken?";
-	student.answer = "Einpacken"; // Really... feels dump to even write this one down!
-	student.hint = "Ihihi, fürchte dich vor Kaffe, der ist Tödlich!";
+	// Anthon
+	student.name			= STR("Anthon");
+	student.defeated	= false;
+	student.question	= STR("Ehehe Euler, was sind Dreipacken minus Zweipacken?");
+	student.answer		= STR("Einpacken"); // Really... feels dump to even write this one down!
+	student.hint			= STR("Ihihi, fÃ¼rchte dich vor Kaffe, der ist TÃ¶dlich!");
+	students.push_back(student);
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id = LOCATION_LECTURE_HALL_3;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Hörsaal 3 [lecture hall 3]";
-	location.description = &description;
-	location.visible = true;
-	location.explored = false;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_LECTURE_HALL_3;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("HÃ¶rsaal 3 [lecture hall 3]");
+	location.description	= description;
+	location.visible			= true;
+	location.explored			= false;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Lecture hall 4
 	//--------------------------------------------------------------------------
-	description.default = "Dein Reich ist gerade von einem Chemieprofessor belegt. Dieser ist grade dabei mit peinlicher Sorgfalt den Tisch in alle vier Himmelsrichtungen gleichzeitig zu katapultieren!";
-	description.explore = "Die Frau braucht wieder einmal zu lange, du musst den Vortrag wohl beginnen, während sie noch Chemikalien mischt.\nGerhard [student], dein persöhnlicher Fanboy, starrt dich mit großen Augen an.";
-	description.alreadyExplored = "Gerhards Blick bleibt sofort auf dir haften, als du in Raum gehst.";
+	description.default					= STR("Dein Reich ist gerade von einem Chemieprofessor belegt. Dieser ist grade dabei mit peinlicher Sorgfalt den Tisch in alle vier Himmelsrichtungen gleichzeitig zu katapultieren!");
+	description.explore					= STR("Die Frau braucht wieder einmal zu lange, du musst den Vortrag wohl beginnen, wÃ¤hrend sie noch Chemikalien mischt.\nGerhard [student], dein persÃ¶hnlicher Fanboy, starrt dich mit groÃŸen Augen an.");
+	description.alreadyExplored = STR("Gerhards Blick bleibt sofort auf dir haften, als du in Raum gehst.");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
-
-	student.name = "Gerhard";
-	student.defeated = false;
-	student.question = "Moin Euler, sagen Sie doch mal Ihre Summe des Unendlichen!";
-	student.answer = "-1/12";
-	student.hint = "Boah, darauf wäre ich nicht gekommen!\nWissen Sie, warum der Boden im Kaffeeraum so hoch ist? Na, egal...";
+	items.clear();
+	students.clear();
+	exits.clear();
+	
+	// Gerhard
+	student.name			= STR("Gerhard");
+	student.defeated	= false;
+	student.question	= STR("Moin Euler, sagen Sie doch mal Ihre Summe des Unendlichen!");
+	student.answer		= STR("-1/12");
+	student.hint			= STR("Boah, darauf wÃ¤re ich nicht gekommen!\nWissen Sie, warum der Boden im Kaffeeraum so hoch ist? Na, egal...");
+	students.push_back(student);
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id = LOCATION_LECTURE_HALL_4;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Hörsaal 4 [lecture hall 4]";
-	location.description = &description;
-	location.visible = true;
-	location.explored = false;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_LECTURE_HALL_4;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("HÃ¶rsaal 4 [lecture hall 4]");
+	location.description	= description;
+	location.visible			= true;
+	location.explored			= false;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Locker room
 	//--------------------------------------------------------------------------
-	description.default = "Modrig steigt der Geruch ranziger Käsebrote durch die Lüftungsschlitze einiger Schließfächer, welche jedoch alle durch Algen in einem schönen Armee-Grünton gehalten werden. Alle? Nein, nicht alle! Eine glanzpolierte Marmorvariante, die dem Hausmeister gehört, koexistiert tatsächlich noch in diesem Raum.";
-	description.explore = "So viele Schließfächer [locker], und alle sind nummeriert. Verhindert wird jedoch eine genaue Identifikation des Hausmeisterfaches [shiny locker], da die Nummer wegpoliert wurde.";
-	description.alreadyExplored = "Jedoch sind sowohl die Normalen [locker] als auch der Besondere [shiny locker] relativ uninteressant.";
+	description.default					= STR("Modrig steigt der Geruch ranziger KÃ¤sebrote durch die LÃ¼ftungsschlitze einiger SchlieÃŸfÃ¤cher, welche jedoch alle durch Algen in einem schÃ¶nen Armee-GrÃ¼nton gehalten werden. Alle? Nein, nicht alle! Eine glanzpolierte Marmorvariante, die dem Hausmeister gehÃ¶rt, koexistiert tatsÃ¤chlich noch in diesem Raum.");
+	description.explore					= STR("So viele SchlieÃŸfÃ¤cher [locker], und alle sind nummeriert. Verhindert wird jedoch eine genaue Identifikation des Hausmeisterfaches [shiny locker], da die Nummer wegpoliert wurde.");
+	description.alreadyExplored = STR("Jedoch sind sowohl die Normalen [locker] als auch der Besondere [shiny locker] relativ uninteressant.");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	// Locker
-	item.id = ITEM_LOCKER;
-	item.name = "Spind [locker]";
-	item.description = nullptr; // TODO
-	item.interactDescription = nullptr; // TODO
-	item.visible = false;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_LOCKER;
+	item.name									= STR("Spind [locker]");
+	item.description					= nullptr; // TODO
+	item.interactDescription	= nullptr; // TODO
+	item.visible							= false;
+	item.collected						= false;
+	items.push_back(item);
 
 	// Locker 42
-	item.id = ITEM_SHINY_LOCKER;
-	item.name = "Spind 42 [shiny locker]";
-	item.description = nullptr; // TODO
-	item.interactDescription = nullptr; // TODO
-	item.visible = false;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_SHINY_LOCKER;
+	item.name									= STR("Spind 42 [shiny locker]");
+	item.description					= nullptr; // TODO
+	item.interactDescription	= nullptr; // TODO
+	item.visible							= false;
+	item.collected						= false;
+	items.push_back(item);
 
 	// Note
-	item.id = ITEM_NOTE_3;
-	item.name = "Notiz [note]";
-	item.description = nullptr; // TODO
-	item.interactDescription = nullptr; // TODO
-	item.visible = false;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_NOTE_3;
+	item.name									= STR("Notiz [note]");
+	item.description					= nullptr; // TODO
+	item.interactDescription	= nullptr; // TODO
+	item.visible							= false;
+	item.collected						= false;
+	items.push_back(item);
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id = LOCATION_LOCKER_ROOM;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Spindraum [lockerroom]";
-	location.description = &description;
-	location.visible = true;
-	location.explored = false;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_LOCKER_ROOM;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("Spindraum [lockerroom]");
+	location.description	= description;
+	location.visible			= true;
+	location.explored			= false;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Storage room
 	//--------------------------------------------------------------------------
-	description.default = "Ein Mob, ein Eimer, ein Feuchttuch.... dich verwundert es, wie der Hausmeister nur mit diesen Sachen zumindest sein Revier so poliert";
-	description.explore = "Dir fällt ein Spachtel [spatula] auf, der eindeutig aus der Chemiesammlung genommen wurde. Hol zurück, was dir gehört!";
-	description.alreadyExplored = "Hier liegt ein Spachtel [spatula], der eindeutig aus der Chemiesammlung genommen wurde.";
+	description.default					= STR("Ein Mob, ein Eimer, ein Feuchttuch.... dich verwundert es, wie der Hausmeister nur mit diesen Sachen zumindest sein Revier so poliert");
+	description.explore					= STR("Dir fÃ¤llt ein Spachtel [spatula] auf, der eindeutig aus der Chemiesammlung genommen wurde. Hol zurÃ¼ck, was dir gehÃ¶rt!");
+	description.alreadyExplored = STR("Hier liegt ein Spachtel [spatula], der eindeutig aus der Chemiesammlung genommen wurde.");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	// Spatula
-	item.id = ITEM_SPATULA;
-	item.name = "Spachtel [spatula]";
-	item.description = "Du wolltest ihn eigentlich der Chemiesammlung wiedergeben, aber er glänzt so schön.";
-	item.interactDescription = nullptr; // TODO
-	item.visible = false;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_SPATULA;
+	item.name									= STR("Spachtel [spatula]");
+	item.description					= STR("Du wolltest ihn eigentlich der Chemiesammlung wiedergeben, aber er glÃ¤nzt so schÃ¶n.");
+	item.interactDescription	= nullptr; // TODO
+	item.visible							= false;
+	item.collected						= false;
+	items.push_back(item);
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id = LOCATION_STORE_ROOM;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Abstellraum [storeroom]";
-	location.description = &description;
-	location.visible = true;
-	location.explored = false;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_STORE_ROOM;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("Abstellraum [storeroom]");
+	location.description	= description;
+	location.visible			= true;
+	location.explored			= false;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Ladies' toilet lower level
 	//--------------------------------------------------------------------------
-	description.default = "Es riecht herrlich nach Einhorn und Regenbogen, und nach dem alkohoisierten Hausmeister, der dabei ist den Lippenstift vom Spiegel zu entfernen und dich nicht bemerkt.";
-	description.explore = "Es ist ein Graus, Steven hat sich von Rebecca getrennt, und Grün ist das neue Schwarz, zumindest nach den Tratschtanten auf dem Klo.";
-	description.alreadyExplored = "Die Tratschtanten reden noch immer.";
+	description.default					= STR("Es riecht herrlich nach Einhorn und Regenbogen, und nach dem alkohoisierten Hausmeister, der dabei ist den Lippenstift vom Spiegel zu entfernen und dich nicht bemerkt.");
+	description.explore					= STR("Es ist ein Graus, Steven hat sich von Rebecca getrennt, und GrÃ¼n ist das neue Schwarz, zumindest nach den Tratschtanten auf dem Klo.");
+	description.alreadyExplored = STR("Die Tratschtanten reden noch immer.");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id = LOCATION_LADIES_TOILET_DOWN;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Damentoilette [ladiestoilet]";
-	location.description = &description;
-	location.visible = true;
-	location.explored = false;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_LADIES_TOILET_DOWN;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("Damentoilette [ladiestoilet]");
+	location.description	= description;
+	location.visible			= true;
+	location.explored			= false;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Mens' toilet lower level
 	//--------------------------------------------------------------------------
-	description.default = "Das Putzfrauenspecialcorps hat sich gestern zur Aufgabe gemacht den grünen Schleim von der Wand zu entfernen... Nur noch ein wenig Neutralreiniger auf dem Boden und eine Cap, mit dem Wort \"Obey\", schaukelnd an einer Lampe, sind noch übrig geblieben.";
-	description.explore = "Der Schleim heißt Wilhelm von Kaiser [wilhelm] und verkauft während der Pausen Katzenbabys für diejenigen in Not, ein sehr angenehmer Geselle.";
-	description.alreadyExplored = "Wilhelm von Kaiser [wilhelm] schleimt noch immer hier rum.";
+	description.default					= STR("Das Putzfrauenspecialcorps hat sich gestern zur Aufgabe gemacht den grÃ¼nen Schleim von der Wand zu entfernen... Nur noch ein wenig Neutralreiniger auf dem Boden und eine Cap, mit dem Wort \"Obey\", schaukelnd an einer Lampe, sind noch Ã¼brig geblieben.");
+	description.explore					= STR("Der Schleim heiÃŸt Wilhelm von Kaiser [wilhelm] und verkauft wÃ¤hrend der Pausen Katzenbabys fÃ¼r diejenigen in Not, ein sehr angenehmer Geselle.");
+	description.alreadyExplored = STR("Wilhelm von Kaiser [wilhelm] schleimt noch immer hier rum.");
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	// Note
-	item.id = ITEM_NOTE_4;
-	item.name = "Notiz [note]";
-	item.description = nullptr;
-	item.interactDescription = nullptr;
-	item.visible = true;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_NOTE_4;
+	item.name									= STR("Notiz [note]");
+	item.description					= nullptr;
+	item.interactDescription	= nullptr;
+	item.visible							= true;
+	item.collected						= false;
+	items.push_back(item);
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id = LOCATION_GENTLEMENS_TOILET_DOWN;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Herrentoilette [gentlemenstoilet]";
-	location.description = &description;
-	location.visible = true;
-	location.explored = false;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_GENTLEMENS_TOILET_DOWN;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("Herrentoilette [gentlemenstoilet]");
+	location.description	= description;
+	location.visible			= true;
+	location.explored			= false;
+	m_locations[location.id] = location;
 
 	//--------------------------------------------------------------------------
 	// Elevator shaft
 	//--------------------------------------------------------------------------
-	description.default = "Im Raum angekommen fällt dir sofort die ganze Elektronik hier unten auf. Ob hier noch mehr ist?";
-	description.explore = "Hier liegt eine Kaffeetasse mit, wer hätte es gedacht, heißem Kaffee [cup coffee] drin.";
-	description.alreadyExplored = "FANCY DESCRIPTION"; // TODO
+	description.default					= STR("Im Raum angekommen fÃ¤llt dir sofort die ganze Elektronik hier unten auf. Ob hier noch mehr ist?");
+	description.explore					= STR("Hier liegt eine Kaffeetasse mit, wer hÃ¤tte es gedacht, heiÃŸem Kaffee [cup coffee] drin.");
+	description.alreadyExplored = STR("FANCY DESCRIPTION"); // TODO
 
-	items = std::vector<Item*>();
-	students = std::vector<Student*>();
-	exits = std::vector<LocationEnum>();
+	items.clear();
+	students.clear();
+	exits.clear();
 
 	// Cup of coffee
-	item.id = ITEM_CUP_COFFEE;
-	item.name = "Kaffeetasse [cup coffee]";
-	item.description = "Frischer Kaffee... Yammy";
-	item.interactDescription = "Bei dem Versuch die Kaffeetasse hochzuheben, schmeißt du sie um, wodurch du einen schönen Kurzschluss verursachst. Wenn du Glück hast, hast du nur dich damit getötet und nicht gleich die ganze Welt!";
-	item.visible = false;
-	item.collected = false;
-	items.push_back(&item);
+	item.id										= ITEM_CUP_COFFEE;
+	item.name									= STR("Kaffeetasse [cup coffee]");
+	item.description					= STR("Frischer Kaffee... Yammy");
+	item.interactDescription	= STR("Bei dem Versuch die Kaffeetasse hochzuheben, schmeiÃŸt du sie um, wodurch du einen schÃ¶nen Kurzschluss verursachst. Wenn du GlÃ¼ck hast, hast du nur dich damit getÃ¶tet und nicht gleich die ganze Welt!");
+	item.visible							= false;
+	item.collected						= false;
+	items.push_back(item);
 
-	location.id = LOCATION_ELEVATOR_SHAFT;
-	location.items = items;
-	location.exits = exits;
-	location.students = students;
-	location.name = "Fahrstuhlschacht [elevator shaft]";
-	location.description = &description;
-	location.visible = false;
-	location.explored = false;
-	m_locations[location.id] = &location;
+	location.id						= LOCATION_ELEVATOR_SHAFT;
+	location.items				= items;
+	location.exits				= exits;
+	location.students			= students;
+	location.name					= STR("Fahrstuhlschacht [elevator shaft]");
+	location.description	= description;
+	location.visible			= false;
+	location.explored			= false;
+	m_locations[location.id] = location;
 }
 
 void ECA::GameManager::PrintCurrentState()
 {
+	_setmode(_fileno(stdout), _O_U16TEXT);
+	EE_PRINTW("\n||GAME_STATE||");
 	for (const auto& curLocation : m_locations) {
-		
+		EE_PRINTW("\n\n| \033[1;32m%s\033[0m | E:%s V:%s | \033[1;35m%02d\033[0m\n",
+							curLocation.second.name,
+							(curLocation.second.explored)	? L"â– " : L"â–¡",
+							(curLocation.second.visible)	? L"â– " : L"â–¡",
+							curLocation.second.id);
+		EE_PRINTW("|â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾â€¾\n", );
+		// Descriptions
+		EE_PRINTW("| \033[1;35mDESCRIPTIONS\033[0m:\n")
+		EE_PRINTW("| | \033[0;35mDEFAULT:\033[0m %s\n", curLocation.second.description.default);
+		EE_PRINTW("| | \033[0;35mEXPLORE:\033[0m %s\n", curLocation.second.description.explore);
+		EE_PRINTW("| | \033[0;35mEXPLORED:\033[0m %s\n", curLocation.second.description.alreadyExplored);
+		// Items
+		if (!curLocation.second.items.empty()) {
+			EE_PRINTW("|\n");
+			EE_PRINTW("| \033[1;35mITEMS:\033[0m\n");
+			for (const Item& curItem : curLocation.second.items) {
+				EE_PRINTW("| | \033[1;35m%02d Â» \033[0m\033[0;35m%s\033[0m %svisible\033[0m %scollected\033[0m\n",
+					curItem.id,
+					curItem.name,
+					(curItem.visible)		?	L"\033[1;32m" : L"\033[1;31m",
+					(curItem.collected)	? L"\033[1;32m" : L"\033[1;31m");
+				EE_PRINTW("| | | \033[0;35mD:\033[0m %s\n", curItem.description);
+				EE_PRINTW("| | | \033[0;35mI:\033[0m %s\n", curItem.interactDescription);
+			}
+		}
+		// Students
+		if (!curLocation.second.students.empty()) {
+			EE_PRINTW("|\n");
+			EE_PRINTW("| \033[1;35mSTUDENTS:\033[0m\n");
+			for (const Student& curStud : curLocation.second.students) {
+				EE_PRINTW("| | \033[1;35m%s %s\033[0m\t\n",
+					(curStud.defeated) ? L"â– " : L"â–¡",
+					curStud.name);
+			}
+		}
+		// Exits
+		if (!curLocation.second.exits.empty()) {
+			EE_PRINTW("|\n");
+			EE_PRINTW("| \033[1;35mEXITS:\033[0m ");
+			for (LocationEnum loc : curLocation.second.exits) EE_PRINTW("%02d ", loc);
+			EE_PRINTW("\n");
+		}
+
+		EE_PRINTW("|________________________________________________________________________________________________\n");
 	}
 }

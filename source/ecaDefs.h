@@ -87,38 +87,38 @@ enum ItemEnum {
 
 struct Description {
 	// all set in GameManager::Init()
-	char const* default;
-	char const* explore;
-	char const* alreadyExplored;
+	EEcstr default;
+	EEcstr explore;
+	EEcstr alreadyExplored;
 };
 
 struct Item {
 	// all set in GameManager::Init()
 	ItemEnum		id;
-	char const* name;
-	char const* description;
-	char const* interactDescription;
+	EEcstr		  name;
+	EEcstr		  description;
+	EEcstr		  interactDescription;
 	bool				visible;
 	bool				collected{ false };
 };
 
 struct Student {
 	// all set in GameManager::Init()
-	char const* name;
-	char const* question;
-	char const* answer;
-	char const* hint;
-	bool				defeated{ false };
+	EEcstr name;
+	EEcstr question;
+	EEcstr answer;
+	EEcstr hint;
+	bool	 defeated{ false };
 };
 
 struct Location {
 	//all set in GameManager::Init()
 	LocationEnum							id					{ LocationEnum::LOCATION_NONE };
-	std::vector<Item*>				items				{ nullptr };	// may still be nullptr after GameManager:Init()
-	std::vector<LocationEnum> exits				{};						// may still be empty after GameManager::Init()
-	std::vector<Student*>			students		{ nullptr };	// may still be nullptr after GameManager::Init()
-	char const*								name				{ nullptr };
-	Description*							description	{ nullptr };
+	std::vector<Item>					items				{};	// may still be empty after GameManager::Init()
+	std::vector<LocationEnum> exits				{};	// may still be empty after GameManager::Init()
+	std::vector<Student>			students		{};	// may still be empty after GameManager::Init()
+	EEcstr										name				{ nullptr };
+	Description								description	{ nullptr };
 	bool											visible			{ false };
 	bool											explored		{ false };
 };

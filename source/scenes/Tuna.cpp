@@ -73,6 +73,10 @@ SCENES::Tuna::~Tuna() {
 void SCENES::Tuna::Update(EulerAdventure* pAdv) {
 	m_pOutputBox->Update();
 	m_pInputBox->Update();
+
+	if (m_pApp->KeyHit(EE_KEY_F1)) {
+		m_pGameManager->PrintCurrentState();
+	}
 }
 
 void SCENES::Tuna::Draw() {

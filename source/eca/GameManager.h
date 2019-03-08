@@ -31,6 +31,6 @@ namespace ECA
 	private:
 		EulerAdventure* m_pAdv;
 
-		std::map<LocationEnum, Location*> m_locations; //set in Init()
+		std::map<LocationEnum, Location> m_locations; //set in Init()
 	};
 }
