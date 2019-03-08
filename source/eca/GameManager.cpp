@@ -33,13 +33,23 @@ ECA::GameManager::GameManager(EulerAdventure* pAdv)
 }
 
 bool ECA::GameManager::Handle(EEcstr text) {
-	if (i_commands[STR("exit")] == text) {
+	CORETOOLS::SpecificCmd cmd(text);
+
+	if (cmd == STR("exit")) {
 		m_pAdv->ChangeGameState(MENU);
 		return true;
 
-	} else if (i_commands[STR("close")] == text) {
+	} else if (cmd == STR("close")) {
 		m_pAdv->ChangeGameState(EXIT);
 		return true;
+
+	} else if (cmd == STR("examine")) {
+		if (cmd(STR("inv"), 0u)) {
+			EE_PRINT("inv an stelle 0\n");
+		}
+		if (cmd(STR("inv"))) {
+			EE_PRINT("inv irgendwo\n");
+		}
 	}
 
 	return false;
