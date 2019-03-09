@@ -18,22 +18,27 @@ ECA::GameManager::GameManager(EulerAdventure* pAdv)
 	assert(pAdv);
 
 	// Setup supported commands
-	i_commands += STR("exit");
-	i_commands += STR("explore");
-	i_commands += STR("examine");
-	i_commands += STR("examine inv");
-	i_commands += STR("close");
-	i_commands += STR("interact");
-	i_commands += STR("interact inv");
-	i_commands += STR("go");
-	i_commands += STR("load");
-	i_commands += STR("save");
-	i_commands += STR("back");
-	i_commands += STR("inventar");
+	i_commands({
+		STR("exit"),
+		STR("explore"),
+		STR("examine"),
+		STR("examine inv"),
+		STR("close"),
+		STR("interact"),
+		STR("interact inv"),
+		STR("go"),
+		STR("load"),
+		STR("save"),
+		STR("back"),
+		STR("inventar"),
+		});
 }
 
 bool ECA::GameManager::Handle(EEcstr text) {
 	CORETOOLS::SpecificCmd cmd(text);
+	if (i_commands < cmd) {
+		EE_PRINT("[GAME_MANAGER] Input is not part of autocomplete cmd list!\n");
+	}
 
 	if (cmd == STR("exit")) {
 		m_pAdv->ChangeGameState(MENU);
@@ -43,13 +48,9 @@ bool ECA::GameManager::Handle(EEcstr text) {
 		m_pAdv->ChangeGameState(EXIT);
 		return true;
 
-	} else if (cmd == STR("examine")) {
-		if (cmd(STR("inv"), 0u)) {
-			EE_PRINT("inv an stelle 0\n");
-		}
-		if (cmd(STR("inv"))) {
-			EE_PRINT("inv irgendwo\n");
-		}
+	// Movement
+	} else if (cmd == STR("go")) {
+		
 	}
 
 	return false;
@@ -302,7 +303,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Ladies' toilets upper level
 	//--------------------------------------------------------------------------
-	description.default					= STR("In der Damentoilette angekommen, sieht Kollegin Stelz dich irritiert an und geht mit den Worten: \"Sie überraschen mir immer wieder\" raus.\nBeschreibung: Warst du noch nie in einer Damentoilette?!");
+	description.default					= STR("In der Damentoilette angekommen, sieht Kollegin Stelz dich irritiert an und geht mit den Worten: \"Sie überraschen mich immer wieder\" raus.\nBeschreibung: Warst du noch nie in einer Damentoilette?!");
 	description.explore					= STR("Jetzt bloß nicht spülen. Es sei denn du magst keine Skilbooks... [skillbook]. Bei diesem Skillbook scheinst du deine Beamfähigkeit erlernen zu können.");
 	description.alreadyExplored = STR("Naja, hier liegt halt noch so ein lahmes Skillbook [skillbook].");
 
