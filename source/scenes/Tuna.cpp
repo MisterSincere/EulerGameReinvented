@@ -23,8 +23,9 @@ SCENES::Tuna::Tuna(EulerAdventure* pAdv)
 	assert(m_pFontEngine && m_pApp);
 
 	// Create the game manager
-	m_pGameManager = new ECA::GameManager(m_pAdv);
+	m_pGameManager = new ECA::GameManager(m_pAdv, this);
 	m_pGameManager->Init();
+
 
 	// Fonts
 	std::string squareFile = ECA_ASSETS_DIR("fonts/SquareFont.ttf");
@@ -81,6 +82,16 @@ void SCENES::Tuna::Update(EulerAdventure* pAdv) {
 
 void SCENES::Tuna::Draw() {
 	m_pApp->Draw({ .9f, .9f, .9f, 1.f });
+}
+
+void SCENES::Tuna::SetOutputText(EEstring text)
+{
+	m_pOutputBox->SetText(text);
+}
+
+void SCENES::Tuna::AddOutputText(EEstring text)
+{
+	m_pOutputBox->SetText(m_pOutputBox->GetText() + STR("\n> ") + text);
 }
 
 void SCENES::Tuna::SetVisibility(bool isVisible)

@@ -27,6 +27,9 @@ namespace SCENES {
 		void Update(EulerAdventure* pAdv);
 		void Draw();
 
+		void SetOutputText(EEstring text);
+		void AddOutputText(EEstring text);
+
 		void SetVisibility(bool isVisible);
 		bool IsVisible();
 

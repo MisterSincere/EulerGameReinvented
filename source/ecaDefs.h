@@ -10,20 +10,18 @@
 //////////////
 #include <cstdio>
 #include <string>
+#include <vector>
 
 #include <eedefs.h>
-
-#ifdef _DEBUG
-# define MESSAGE(msg, ...) printf(msg, __VA_ARGS__);
-#else
-# define MESSAGE(msg, ...)
-#endif
 
 // std string wrap for the assets path
 #define ECA_ASSETS_DIR(path) (std::string(ASSETS_PATH) + path)
 
 #define RELEASEP(x) if(x) {delete x; x = nullptr;}
 
+#define LOCATION_ID(room, env)	(LocationID)(env | room << 4)
+#define ROOM_ID(id)							(RoomID)(id >> 4)
+#define ENVIRONMENT_ID(id)			(EnvironmentID)(id & ENVIRONMENT_MAX)
 
 enum GameState {
 	RUNNING,
@@ -33,30 +31,61 @@ enum GameState {
 	EXIT,
 };
 
-enum LocationEnum {
-	LOCATION_OFFICE,
-	LOCATION_CORRIDOR_UP,
-	LOCATION_COFFEE_ROOM,
-	LOCATION_CONFERENCE_ROOM,
-	LOCATION_CHAMBER,
-	LOCATION_VENTILATION_ROOM,
-	LOCATION_LADIES_TOILET_UP,
-	LOCATION_GENTLEMENS_TOILET_UP,
-	LOCATION_PRINCIPALS_ROOM,
-	LOCATION_ELEVATOR,
-	LOCATION_STAIRWELL,
-	LOCATION_CORRIDOR_DOWN,
-	LOCATION_LECTURE_HALL_1,
-	LOCATION_LECTURE_HALL_2,
-	LOCATION_LECTURE_HALL_3,
-	LOCATION_LECTURE_HALL_4,
-	LOCATION_LADIES_TOILET_DOWN,
-	LOCATION_GENTLEMENS_TOILET_DOWN,
-	LOCATION_LOCKER_ROOM,
-	LOCATION_STORE_ROOM,
-	LOCATION_ELEVATOR_SHAFT,
+enum RoomID {
+	ROOM_OFFICE,
+	ROOM_CORRIDOR,
+	ROOM_COFFEE_ROOM,
+	ROOM_CONFERENCE_ROOM,
+	ROOM_CHAMBER,
+	ROOM_VENTILATION_ROOM,
+	ROOM_LADIES_TOILET,
+	ROOM_GENTLEMENS_TOILET,
+	ROOM_PRINCIPALS_ROOM,
+	ROOM_ELEVATOR,
+	ROOM_STAIRWELL,
+	ROOM_LECTURE_HALL_1,
+	ROOM_LECTURE_HALL_2,
+	ROOM_LECTURE_HALL_3,
+	ROOM_LECTURE_HALL_4,
+	ROOM_LOCKER_ROOM,
+	ROOM_STORAGE_ROOM,
+	ROOM_ELEVATOR_SHAFT,
 
-	LOCATION_NONE
+	ROOM_NONE
+};
+
+enum EnvironmentID {
+	ENVIRONMENT_UPPER_LEVEL,
+	ENVIRONMENT_LOWER_LEVEL,
+
+	ENVIRONMENT_MAX = 0x0F
+};
+
+enum LocationID {
+	LOCATION_OFFICE									= LOCATION_ID(ROOM_OFFICE,							ENVIRONMENT_UPPER_LEVEL),
+	LOCATION_CORRIDOR_UP						= LOCATION_ID(ROOM_CORRIDOR,						ENVIRONMENT_UPPER_LEVEL),
+	LOCATION_COFFEE_ROOM						= LOCATION_ID(ROOM_COFFEE_ROOM,					ENVIRONMENT_UPPER_LEVEL),
+	LOCATION_CONFERENCE_ROOM				= LOCATION_ID(ROOM_CONFERENCE_ROOM,			ENVIRONMENT_UPPER_LEVEL),
+	LOCATION_CHAMBER								= LOCATION_ID(ROOM_CHAMBER,							ENVIRONMENT_UPPER_LEVEL),
+	LOCATION_VENTILATION_ROOM				= LOCATION_ID(ROOM_VENTILATION_ROOM,		ENVIRONMENT_UPPER_LEVEL),
+	LOCATION_LADIES_TOILET_UP				= LOCATION_ID(ROOM_LADIES_TOILET,				ENVIRONMENT_UPPER_LEVEL),
+	LOCATION_GENTLEMENS_TOILET_UP		= LOCATION_ID(ROOM_GENTLEMENS_TOILET,		ENVIRONMENT_UPPER_LEVEL),
+	LOCATION_PRINCIPALS_ROOM				= LOCATION_ID(ROOM_PRINCIPALS_ROOM,			ENVIRONMENT_UPPER_LEVEL),
+	LOCATION_ELEVATOR								= LOCATION_ID(ROOM_ELEVATOR,						ENVIRONMENT_UPPER_LEVEL),
+	LOCATION_STAIRWELL							= LOCATION_ID(ROOM_STAIRWELL,						ENVIRONMENT_UPPER_LEVEL),
+	LOCATION_CORRIDOR_DOWN					= LOCATION_ID(ROOM_CORRIDOR,						ENVIRONMENT_LOWER_LEVEL),
+	LOCATION_LECTURE_HALL_1					= LOCATION_ID(ROOM_LECTURE_HALL_1,			ENVIRONMENT_LOWER_LEVEL),
+	LOCATION_LECTURE_HALL_2					= LOCATION_ID(ROOM_LECTURE_HALL_2,			ENVIRONMENT_LOWER_LEVEL),
+	LOCATION_LECTURE_HALL_3					= LOCATION_ID(ROOM_LECTURE_HALL_3,			ENVIRONMENT_LOWER_LEVEL),
+	LOCATION_LECTURE_HALL_4					= LOCATION_ID(ROOM_LECTURE_HALL_4,			ENVIRONMENT_LOWER_LEVEL),
+	LOCATION_LADIES_TOILET_DOWN			= LOCATION_ID(ROOM_LADIES_TOILET,				ENVIRONMENT_LOWER_LEVEL),
+	LOCATION_GENTLEMENS_TOILET_DOWN	= LOCATION_ID(ROOM_GENTLEMENS_TOILET,		ENVIRONMENT_LOWER_LEVEL),
+	LOCATION_LOCKER_ROOM						= LOCATION_ID(ROOM_LOCKER_ROOM,					ENVIRONMENT_LOWER_LEVEL),
+	LOCATION_STORAGE_ROOM						= LOCATION_ID(ROOM_STORAGE_ROOM,				ENVIRONMENT_LOWER_LEVEL),
+	LOCATION_ELEVATOR_SHAFT					= LOCATION_ID(ROOM_ELEVATOR_SHAFT,			ENVIRONMENT_UPPER_LEVEL),
+
+	LOCATION_NONE										= LOCATION_ID(ROOM_NONE,								ENVIRONMENT_MAX),
+	LOCATION_INVALID
 };
 
 enum ItemEnum {
@@ -90,6 +119,7 @@ struct Description {
 	EEcstr default;
 	EEcstr explore;
 	EEcstr alreadyExplored;
+	EEcstr enter;
 };
 
 struct Item {
@@ -113,12 +143,12 @@ struct Student {
 
 struct Location {
 	//all set in GameManager::Init()
-	LocationEnum							id					{ LocationEnum::LOCATION_NONE };
-	std::vector<Item>					items				{};	// may still be empty after GameManager::Init()
-	std::vector<LocationEnum> exits				{};	// may still be empty after GameManager::Init()
-	std::vector<Student>			students		{};	// may still be empty after GameManager::Init()
-	EEcstr										name				{ nullptr };
-	Description								description	{ nullptr };
-	bool											visible			{ false };
-	bool											explored		{ false };
+	LocationID							id					{ LocationID::LOCATION_NONE };
+	std::vector<Item>				items				{};	// may still be empty after GameManager::Init()
+	std::vector<LocationID> exits				{};	// may still be empty after GameManager::Init()
+	std::vector<Student>		students		{};	// may still be empty after GameManager::Init()
+	EEcstr									name				{ nullptr };
+	Description							description	{ nullptr };
+	bool										visible			{ false };
+	bool										explored		{ false };
 };

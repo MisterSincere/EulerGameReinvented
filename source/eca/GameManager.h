@@ -14,6 +14,12 @@
 // FORWARD DECLARATIONS //
 //////////////////////////
 class EulerAdventure;
+namespace SCENES {
+	class Tuna;
+}
+namespace ECA {
+	class Euler;
+}
 
 
 namespace ECA
@@ -21,7 +27,7 @@ namespace ECA
 	class GameManager : public ::CORETOOLS::ITextHandler
 	{
 	public:
-		GameManager(EulerAdventure* pAdv);
+		GameManager(EulerAdventure* pAdv, SCENES::Tuna* pTuna);
 
 		bool Handle(EEcstr text) override;
 		void Init();
@@ -30,7 +36,10 @@ namespace ECA
 
 	private:
 		EulerAdventure* m_pAdv;
+		SCENES::Tuna*		m_pTuna;
+		ECA::Euler*			m_pEuler; //< HÖ!
 
-		std::map<LocationEnum, Location> m_locations; //set in Init()
+
+		std::map<LocationID, Location> m_locations; //set in Init()
 	};
 }
