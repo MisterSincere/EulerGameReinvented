@@ -62,6 +62,23 @@ bool ECA::GameManager::Handle(EEcstr text) {
 		LocationID newLocation = LOCATION_ID(strToRoomID(room.c_str()), m_pEuler->getEnvironmentID());
 		m_pEuler->move(&m_locations[newLocation]);
 
+	// XPLORATION... YAY!!!
+	} else if (cmd == STR("explore")) {
+
+		static bool badExploration = false;
+
+		Location& curLoc = m_locations[m_pEuler->getCurLocation()];
+		if (!curLoc.explored) {
+			m_pTuna->AddOutputText(curLoc.description.explore);
+			curLoc.explored = true; //< Location was now explored
+			// Set all items to be visible
+			for (auto& curItem : curLoc.items) curItem.visible = true;
+			badExploration = false;
+		} else if(!badExploration) {
+			m_pTuna->AddOutputText(STR("Already explored, ya' bitch!!"));
+			badExploration = true;
+		}
+
 	}
 
 	return false;

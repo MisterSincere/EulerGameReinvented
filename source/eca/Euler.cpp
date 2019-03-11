@@ -17,6 +17,11 @@ ECA::Euler::Euler(SCENES::Tuna* pTuna, Location const* startLoc)
 
 void ECA::Euler::move(Location const* pNewLocation)
 {
+	if (!i_isAlive) {
+		EE_PRINT("[EULER] Tried to move, but dead!\n");
+		return;
+	}
+
 	// Check if we are already at the desired location... you dumbass
 	if (i_pCurLocation->id == pNewLocation->id) {
 		EE_PRINT("[EULER] New location is already the current location!\n");
@@ -35,7 +40,8 @@ void ECA::Euler::move(Location const* pNewLocation)
 			m_pTuna->AddOutputText(pNewLocation->description.default);
 		}
 	}
-
+	
+#if defined(DEBUG) //< this shenanigans should never be released
 	// A wild switch appeared  RRAAAWR!!!
 	// ... and is not needed
 	switch (pNewLocation->id) {
@@ -43,4 +49,5 @@ void ECA::Euler::move(Location const* pNewLocation)
 	nichtstun:
 	default: return;
 	}
+#endif
 }

@@ -16,8 +16,14 @@ namespace ECA {
 
 		virtual TReturn move(TParams ...) = 0;
 
+		void setCurLocation(Location const* loc) { i_pCurLocation = loc; }
+		LocationID getCurLocation() const { return i_pCurLocation->id; }
+		bool setAlive(bool isAlive) { i_isAlive = isAlive; }
+		bool isAlive() const { return i_isAlive; }
+
 	protected:
 		Location const* i_pCurLocation;
+		bool						i_isAlive{ true };
 	};
 
 }
