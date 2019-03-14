@@ -13,7 +13,4 @@ namespace ECA {
 	 **/
 	extern RoomID strToRoomID(EEcstr str);
 	extern EEcstr roomIDToStr(RoomID id);
-
-	/* @brief Returns true if the location id passed in is an adjacent room */
-	extern bool isExitOf(LocationID id, Location const* location);
 }

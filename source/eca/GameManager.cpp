@@ -11,6 +11,7 @@
 
 #include "EulerAdventure.h"
 #include "Euler.h"
+#include "Location.h"
 #include "Tuna.h"
 #include "ecaHelper.h"
 
@@ -59,20 +60,35 @@ bool ECA::GameManager::Handle(EEcstr text) {
 		EEstring room;
 		for (size_t i = 0u; i < cmd.params.size(); i++) room += cmd.params[i];
 
-		LocationID newLocation = LOCATION_ID(strToRoomID(room.c_str()), m_pEuler->getEnvironmentID());
-		m_pEuler->move(&m_locations[newLocation]);
+		// Search for at least a location that matches the desired room id, but keep searching for
+		// perfect match, meaning also the same environemnt id as euler.
+		RoomID roomID = strToRoomID(room.c_str());
+		Location* newLoc{ nullptr };
+		for (auto const& curLoc : m_locations) {
+			if (ROOM_ID(curLoc.second->getID()) == roomID) {
+				newLoc = curLoc.second;
+				EnvironmentID envID = ENVIRONMENT_ID(curLoc.second->getID());
+				if (envID & m_pEuler->getEnvironmentID()) break;
+			}
+		}
+
+		// If we have found our new location , make a move
+		if (newLoc) {
+			m_pEuler->move(newLoc);
+		} else {
+			EE_PRINT("[GAMEMANAGER] Invalid input/location!\n");
+		}
 
 	// XPLORATION... YAY!!!
 	} else if (cmd == STR("explore")) {
 
-		static bool badExploration = false;
+		static bool badExploration{ false };
 
-		Location& curLoc = m_locations[m_pEuler->getCurLocation()];
-		if (!curLoc.explored) {
-			m_pTuna->AddOutputText(curLoc.description.explore);
-			curLoc.explored = true; //< Location was now explored
-			// Set all items to be visible
-			for (auto& curItem : curLoc.items) curItem.visible = true;
+		Location* pLocation = m_locations[m_pEuler->getCurLocation()];
+		if (!pLocation->isExplored()) {
+			m_pTuna->AddOutputText(pLocation->getDescription(DESC_EXPLORE));
+			pLocation->explore();
+
 			badExploration = false;
 		} else if(!badExploration) {
 			m_pTuna->AddOutputText(STR("Already explored, ya' bitch!!"));
@@ -85,8 +101,8 @@ bool ECA::GameManager::Handle(EEcstr text) {
 }
 
 void ECA::GameManager::Init() {
-	Description description;
-	Location location;
+	LocationDescriptions description;
+	LocationCreateInfo locationCInfo;
 	Student student;
 	Item item;
 	std::vector<Item> items;
@@ -134,15 +150,15 @@ void ECA::GameManager::Init() {
 
 	exits.push_back(LOCATION_CORRIDOR_UP);
 
-	location.id						= LOCATION_OFFICE;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Büro [office]");
-	location.description	= description;
-	location.explored			= false;
-	location.visible			= true;
-	m_locations[location.id] = location;
+	locationCInfo.id						= LOCATION_OFFICE;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students			= students;
+	locationCInfo.name					= STR("Büro [office]");
+	locationCInfo.description	= description;
+	locationCInfo.explored			= false;
+	locationCInfo.visible			= true;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Korridor obere Etage
@@ -178,18 +194,19 @@ void ECA::GameManager::Init() {
 	exits.push_back(LOCATION_CONFERENCE_ROOM);
 	exits.push_back(LOCATION_PRINCIPALS_ROOM);
 	exits.push_back(LOCATION_GENTLEMENS_TOILET_UP);
+	exits.push_back(LOCATION_LADIES_TOILET_UP);
 	exits.push_back(LOCATION_STAIRWELL);
 	exits.push_back(LOCATION_ELEVATOR);
 
-	location.id						= LOCATION_CORRIDOR_UP;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Korridor [corridor]");
-	location.description	= description;
-	location.explored			= false;
-	location.visible			= true;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_CORRIDOR_UP;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Korridor [corridor]");
+	locationCInfo.description	= description;
+	locationCInfo.explored		= false;
+	locationCInfo.visible			= true;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Lethal coffee room
@@ -224,15 +241,15 @@ void ECA::GameManager::Init() {
 	exits.push_back(LOCATION_CORRIDOR_UP);
 	exits.push_back(LOCATION_CONFERENCE_ROOM);
 
-	location.id						= LOCATION_COFFEE_ROOM;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Kaffeeraum [coffeeroom]");
-	location.description	= description;
-	location.explored			= false;
-	location.visible			= true;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_COFFEE_ROOM;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Kaffeeraum [coffeeroom]");
+	locationCInfo.description	= description;
+	locationCInfo.explored		= false;
+	locationCInfo.visible			= true;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Teacher's room
@@ -258,15 +275,15 @@ void ECA::GameManager::Init() {
 	exits.push_back(LOCATION_CORRIDOR_UP);
 	exits.push_back(LOCATION_COFFEE_ROOM);
 
-	location.id						= LOCATION_CONFERENCE_ROOM;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Konferenzraum [conferenceroom]");
-	location.description	= description;
-	location.explored			= false;
-	location.visible			= true;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_CONFERENCE_ROOM;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Konferenzraum [conferenceroom]");
+	locationCInfo.description	= description;
+	locationCInfo.explored		= false;
+	locationCInfo.visible			= true;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Chamber of the void
@@ -291,15 +308,15 @@ void ECA::GameManager::Init() {
 
 	exits.push_back(LOCATION_COFFEE_ROOM);
 
-	location.id						= LOCATION_CHAMBER;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Kammer der Leere [chamber]");
-	location.description	= description;
-	location.explored			=	false;
-	location.visible			= false;
-	m_locations[location.id] = location;
+	locationCInfo.id						= LOCATION_CHAMBER;
+	locationCInfo.items					= items;
+	locationCInfo.exits					= exits;
+	locationCInfo.students			= students;
+	locationCInfo.name					= STR("Kammer der Leere [chamber]");
+	locationCInfo.description		= description;
+	locationCInfo.explored			=	false;
+	locationCInfo.visible				= false;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Ventilation room
@@ -324,15 +341,15 @@ void ECA::GameManager::Init() {
 
 	exits.push_back(LOCATION_CONFERENCE_ROOM);
 
-	location.id						= LOCATION_VENTILATION_ROOM;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Ventilationsraum [ventroom]");
-	location.description	= description;
-	location.explored			= false;
-	location.visible			= false;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_VENTILATION_ROOM;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Ventilationsraum [ventroom]");
+	locationCInfo.description	= description;
+	locationCInfo.explored		= false;
+	locationCInfo.visible			= false;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Ladies' toilets upper level
@@ -357,15 +374,15 @@ void ECA::GameManager::Init() {
 
 	exits.push_back(LOCATION_CORRIDOR_UP);
 
-	location.id						= LOCATION_LADIES_TOILET_UP;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Damentoilette [ladiestoilet]");
-	location.description	= description;
-	location.explored			= false;
-	location.visible			= false;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_LADIES_TOILET_UP;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Damentoilette [ladiestoilet]");
+	locationCInfo.description	= description;
+	locationCInfo.explored		= false;
+	locationCInfo.visible			= false;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Mens' toilet upper level
@@ -381,15 +398,15 @@ void ECA::GameManager::Init() {
 
 	exits.push_back(LOCATION_CORRIDOR_UP);
 
-	location.id						= LOCATION_GENTLEMENS_TOILET_UP;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Herrentoilette [gentlemenstoilet]");
-	location.description	= description;
-	location.explored			= false;
-	location.visible			= true;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_GENTLEMENS_TOILET_UP;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Herrentoilette [gentlemenstoilet]");
+	locationCInfo.description	= description;
+	locationCInfo.explored		= false;
+	locationCInfo.visible			= true;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Principals' room
@@ -405,15 +422,15 @@ void ECA::GameManager::Init() {
 
 	exits.push_back(LOCATION_CORRIDOR_UP);
 
-	location.id						= LOCATION_PRINCIPALS_ROOM;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Schulleiterraum [principalsroom]");
-	location.description	= description;
-	location.explored			= false;
-	location.visible			= true;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_PRINCIPALS_ROOM;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Schulleiterraum [principalsroom]");
+	locationCInfo.description	= description;
+	locationCInfo.explored		= false;
+	locationCInfo.visible			= true;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Elevator
@@ -447,15 +464,15 @@ void ECA::GameManager::Init() {
 
 	exits.push_back(LOCATION_CORRIDOR_UP);
 
-	location.id						= LOCATION_ELEVATOR;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Fahrstuhl [elevator]");
-	location.description	= description;
-	location.explored			= false;
-	location.visible			= true;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_ELEVATOR;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Fahrstuhl [elevator]");
+	locationCInfo.description	= description;
+	locationCInfo.explored		= false;
+	locationCInfo.visible			= true;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Staircase
@@ -472,15 +489,15 @@ void ECA::GameManager::Init() {
 	exits.push_back(LOCATION_CORRIDOR_UP);
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id						= LOCATION_STAIRWELL;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Treppenhaus [stairwell]");
-	location.description	= description;
-	location.explored			= false;
-	location.visible			= true;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_STAIRWELL;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Treppenhaus [stairwell]");
+	locationCInfo.description	= description;
+	locationCInfo.explored		= false;
+	locationCInfo.visible			= true;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Corridor lower level
@@ -505,15 +522,15 @@ void ECA::GameManager::Init() {
 	exits.push_back(LOCATION_ELEVATOR);
 	exits.push_back(LOCATION_STAIRWELL);
 
-	location.id						= LOCATION_CORRIDOR_DOWN;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Schüleretage [studentsfloor]");
-	location.description	= description;
-	location.explored			= false;
-	location.visible			= true;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_CORRIDOR_DOWN;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Schüleretage [studentsfloor]");
+	locationCInfo.description	= description;
+	locationCInfo.explored		= false;
+	locationCInfo.visible			= true;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Lecture hall 1
@@ -521,7 +538,7 @@ void ECA::GameManager::Init() {
 	description.default					= STR("Man darf sich bekanntlich nicht mehr fragen, ob musische Wissenschaften überhaupt als eine Wissenschaft gelten, da Künstler und Freidenker sich sonst angegriffen fühlen, aber ein Naturwissenschaftler wie du hat wohl besseres verdient!");
 	description.explore					= STR("Der Professor liegt in ziemlich bizarren Posen auf dem Tisch und erklärt den Studenten(und Studentinnen), welche Pose welche Wirkung hat.\nDu kannst das Geld, dass für jede Pose gezahlt wird, förmlich von dem Direktor in die Tasche des Professors wandern sehen.\nHier steht noch Maribelle [student], obwohl sie wesentlich kleiner ist, schaut sie hochnäsig auf dich herab.");
 	description.alreadyExplored = STR("Maribelle [student] stolziert hier immer noch herum.");
-	description.enter						= STR("Du gehst in den ersten Hörsaal, der Welt... ne warte.");
+	description.enter						= STR("Du gehst in den ersten Hörsaal der Welt... ne warte.");
 
 
 	items.clear();
@@ -538,15 +555,15 @@ void ECA::GameManager::Init() {
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id						= LOCATION_LECTURE_HALL_1;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Hörsaal 1 [lecturehall1]");
-	location.description	= description;
-	location.visible			= true;
-	location.explored			= false;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_LECTURE_HALL_1;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Hörsaal 1 [lecturehall1]");
+	locationCInfo.description	= description;
+	locationCInfo.visible			= true;
+	locationCInfo.explored		= false;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Lecture hall 2
@@ -570,15 +587,15 @@ void ECA::GameManager::Init() {
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id						= LOCATION_LECTURE_HALL_2;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Hörsaal 2 [lecturehall2]");
-	location.description	= description;
-	location.visible			= true;
-	location.explored			= false;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_LECTURE_HALL_2;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Hörsaal 2 [lecturehall2]");
+	locationCInfo.description	= description;
+	locationCInfo.visible			= true;
+	locationCInfo.explored		= false;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Lecture hall 3
@@ -602,15 +619,15 @@ void ECA::GameManager::Init() {
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id						= LOCATION_LECTURE_HALL_3;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Hörsaal 3 [lecturehall3]");
-	location.description	= description;
-	location.visible			= true;
-	location.explored			= false;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_LECTURE_HALL_3;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Hörsaal 3 [lecturehall3]");
+	locationCInfo.description	= description;
+	locationCInfo.visible			= true;
+	locationCInfo.explored		= false;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Lecture hall 4
@@ -634,15 +651,15 @@ void ECA::GameManager::Init() {
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id						= LOCATION_LECTURE_HALL_4;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Hörsaal 4 [lecturehall4]");
-	location.description	= description;
-	location.visible			= true;
-	location.explored			= false;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_LECTURE_HALL_4;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Hörsaal 4 [lecturehall4]");
+	locationCInfo.description	= description;
+	locationCInfo.visible			= true;
+	locationCInfo.explored		= false;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Locker room
@@ -685,15 +702,15 @@ void ECA::GameManager::Init() {
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id						= LOCATION_LOCKER_ROOM;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Spindraum [lockerroom]");
-	location.description	= description;
-	location.visible			= true;
-	location.explored			= false;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_LOCKER_ROOM;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Spindraum [lockerroom]");
+	locationCInfo.description	= description;
+	locationCInfo.visible			= true;
+	locationCInfo.explored		= false;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Storage room
@@ -718,15 +735,15 @@ void ECA::GameManager::Init() {
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id						= LOCATION_STORAGE_ROOM;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Abstellraum [storeroom]");
-	location.description	= description;
-	location.visible			= true;
-	location.explored			= false;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_STORAGE_ROOM;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Abstellraum [storeroom]");
+	locationCInfo.description	= description;
+	locationCInfo.visible			= true;
+	locationCInfo.explored		= false;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Ladies' toilet lower level
@@ -742,15 +759,15 @@ void ECA::GameManager::Init() {
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id						= LOCATION_LADIES_TOILET_DOWN;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Damentoilette [ladiestoilet]");
-	location.description	= description;
-	location.visible			= true;
-	location.explored			= false;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_LADIES_TOILET_DOWN;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Damentoilette [ladiestoilet]");
+	locationCInfo.description	= description;
+	locationCInfo.visible			= true;
+	locationCInfo.explored		= false;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Mens' toilet lower level
@@ -775,15 +792,15 @@ void ECA::GameManager::Init() {
 
 	exits.push_back(LOCATION_CORRIDOR_DOWN);
 
-	location.id						= LOCATION_GENTLEMENS_TOILET_DOWN;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Herrentoilette [gentlemenstoilet]");
-	location.description	= description;
-	location.visible			= true;
-	location.explored			= false;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_GENTLEMENS_TOILET_DOWN;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Herrentoilette [gentlemenstoilet]");
+	locationCInfo.description	= description;
+	locationCInfo.visible			= true;
+	locationCInfo.explored		= false;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 	//--------------------------------------------------------------------------
 	// Elevator shaft
@@ -806,70 +823,32 @@ void ECA::GameManager::Init() {
 	item.collected						= false;
 	items.push_back(item);
 
-	location.id						= LOCATION_ELEVATOR_SHAFT;
-	location.items				= items;
-	location.exits				= exits;
-	location.students			= students;
-	location.name					= STR("Fahrstuhlschacht [elevatorshaft]");
-	location.description	= description;
-	location.visible			= false;
-	location.explored			= false;
-	m_locations[location.id] = location;
+	locationCInfo.id					= LOCATION_ELEVATOR_SHAFT;
+	locationCInfo.items				= items;
+	locationCInfo.exits				= exits;
+	locationCInfo.students		= students;
+	locationCInfo.name				= STR("Fahrstuhlschacht [elevatorshaft]");
+	locationCInfo.description	= description;
+	locationCInfo.visible			= false;
+	locationCInfo.explored		= false;
+	m_locations[locationCInfo.id] = new ECA::Location(locationCInfo);
 
 
 
-	// Create the almighty euler himsel
-	m_pEuler = new ECA::Euler(m_pTuna, &m_locations[LOCATION_OFFICE]);
+	// Create the almighty euler himself
+	m_pEuler = new ECA::Euler(m_pTuna, m_locations[LOCATION_OFFICE]);
 }
 
 void ECA::GameManager::PrintCurrentState()
-{
-	_setmode(_fileno(stdout), _O_U16TEXT);
-	EE_PRINTW("\n||GAME_STATE||");
-	for (const auto& curLocation : m_locations) {
-		EE_PRINTW("\n\n| \033[1;32m%s\033[0m | E:%s V:%s | \033[1;35m%02d\033[0m\n",
-							curLocation.second.name,
-							(curLocation.second.explored)	? L"■" : L"□",
-							(curLocation.second.visible)	? L"■" : L"□",
-							curLocation.second.id);
-		EE_PRINTW("|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾\n", );
-		// Descriptions
-		EE_PRINTW("| \033[1;35mDESCRIPTIONS\033[0m:\n")
-		EE_PRINTW("| | \033[0;35mDEFAULT:\033[0m %s\n", curLocation.second.description.default);
-		EE_PRINTW("| | \033[0;35mEXPLORE:\033[0m %s\n", curLocation.second.description.explore);
-		EE_PRINTW("| | \033[0;35mEXPLORED:\033[0m %s\n", curLocation.second.description.alreadyExplored);
-		// Items
-		if (!curLocation.second.items.empty()) {
-			EE_PRINTW("|\n");
-			EE_PRINTW("| \033[1;35mITEMS:\033[0m\n");
-			for (const Item& curItem : curLocation.second.items) {
-				EE_PRINTW("| | \033[1;35m%02d » \033[0m\033[0;35m%s\033[0m %svisible\033[0m %scollected\033[0m\n",
-					curItem.id,
-					curItem.name,
-					(curItem.visible)		?	L"\033[1;32m" : L"\033[1;31m",
-					(curItem.collected)	? L"\033[1;32m" : L"\033[1;31m");
-				EE_PRINTW("| | | \033[0;35mD:\033[0m %s\n", curItem.description);
-				EE_PRINTW("| | | \033[0;35mI:\033[0m %s\n", curItem.interactDescription);
-			}
-		}
-		// Students
-		if (!curLocation.second.students.empty()) {
-			EE_PRINTW("|\n");
-			EE_PRINTW("| \033[1;35mSTUDENTS:\033[0m\n");
-			for (const Student& curStud : curLocation.second.students) {
-				EE_PRINTW("| | \033[1;35m%s %s\033[0m\t\n",
-					(curStud.defeated) ? L"■" : L"□",
-					curStud.name);
-			}
-		}
-		// Exits
-		if (!curLocation.second.exits.empty()) {
-			EE_PRINTW("|\n");
-			EE_PRINTW("| \033[1;35mEXITS:\033[0m ");
-			for (LocationID loc : curLocation.second.exits) EE_PRINTW("%02d ", loc);
-			EE_PRINTW("\n");
-		}
+{	
+	// We use some fancy unicode symbols to keep the mass of details enjoyable
+	int prevMode = _setmode(_fileno(stdout), _O_U16TEXT);
 
-		EE_PRINTW("|________________________________________________________________________________________________\n");
-	}
+	EE_PRINTW("\n||GAME_STATE||");
+
+	// Iterate through all locations and let them print their informations to the console
+	for (auto const& curLocation : m_locations) curLocation.second->printDetails();
+
+	// Needs to be reseted for other prints to the console that would fail otherwise
+	_setmode(_fileno(stdout), prevMode);
 }

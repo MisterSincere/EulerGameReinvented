@@ -13,14 +13,17 @@ namespace SCENES {
 
 
 namespace ECA {
-	class Euler : public IEntity<void, Location const*>
+	class Euler : public IEntity<void, ::ECA::Location const*>
 	{
 	public:
-		Euler(SCENES::Tuna* pTuna, Location const* startLoc = nullptr);
+		Euler(SCENES::Tuna* pTuna, ::ECA::Location const* startLoc = nullptr);
 
-		void move(Location const* pNewRoom) override;
+		void move(::ECA::Location const* pNewRoom) override;
 
-		EnvironmentID getEnvironmentID() const { return ENVIRONMENT_ID(i_pCurLocation->id); }
+		/* @brief returns false if the current location was already explored */
+		bool explore();
+
+		EnvironmentID getEnvironmentID() const;
 
 	private:
 		bool						m_isBeamable{ false };

@@ -5,8 +5,8 @@
 /////////////////////////////////////////////////////////////////////
 #include "Euler.h"
 
-#include "ecaHelper.h"
 #include "Tuna.h"
+#include "Location.h"
 
 ECA::Euler::Euler(SCENES::Tuna* pTuna, Location const* startLoc)
 	: IEntity(startLoc)
@@ -23,22 +23,24 @@ void ECA::Euler::move(Location const* pNewLocation)
 	}
 
 	// Check if we are already at the desired location... you dumbass
-	if (i_pCurLocation->id == pNewLocation->id) {
+	if (i_pCurLocation == pNewLocation) {
 		EE_PRINT("[EULER] New location is already the current location!\n");
 		return;
 	}
 
 	// Check if we can move to the new position
-	if ((isExitOf(pNewLocation->id, i_pCurLocation) || m_isBeamable) && pNewLocation->visible) {
+	if ((i_pCurLocation->isAdjacent(pNewLocation->getID()) || m_isBeamable) && pNewLocation->isVisible()) {
 		m_pLastLocation = i_pCurLocation;
 		i_pCurLocation = pNewLocation;
 
-		m_pTuna->SetOutputText(pNewLocation->description.enter);
-		if (pNewLocation->explored) {
-			m_pTuna->AddOutputText(pNewLocation->description.alreadyExplored);
+		m_pTuna->SetOutputText(pNewLocation->getDescription(DESC_ENTER));
+		if (pNewLocation->isExplored()) {
+			m_pTuna->AddOutputText(pNewLocation->getDescription(DESC_ALREADY_EXPLORED));
 		} else {
-			m_pTuna->AddOutputText(pNewLocation->description.default);
+			m_pTuna->AddOutputText(pNewLocation->getDescription(DESC_DEFAULT));
 		}
+	} else if (!m_isBeamable && !i_pCurLocation->isAdjacent(pNewLocation->getID()) && pNewLocation->isVisible()) {
+		EE_PRINT("[EULER] Not beamable yet!\n");
 	}
 	
 #if defined(DEBUG) //< this shenanigans should never be released
@@ -50,4 +52,14 @@ void ECA::Euler::move(Location const* pNewLocation)
 	default: return;
 	}
 #endif
+}
+
+bool ECA::Euler::explore()
+{
+	return true;
+}
+
+EnvironmentID ECA::Euler::getEnvironmentID() const
+{
+	return ENVIRONMENT_ID(i_pCurLocation->getID());
 }

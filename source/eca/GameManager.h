@@ -19,6 +19,7 @@ namespace SCENES {
 }
 namespace ECA {
 	class Euler;
+	class Location;
 }
 
 
@@ -40,6 +41,6 @@ namespace ECA
 		ECA::Euler*			m_pEuler; //< HÖ!
 
 
-		std::map<LocationID, Location> m_locations; //set in Init()
+		std::map<LocationID, Location*> m_locations; //set in Init()
 	};
 }

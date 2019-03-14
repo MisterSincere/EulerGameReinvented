@@ -19,9 +19,11 @@
 
 #define RELEASEP(x) if(x) {delete x; x = nullptr;}
 
+/* @brief Helper macros for the easy id management */
 #define LOCATION_ID(room, env)	(LocationID)(env | room << 4)
 #define ROOM_ID(id)							(RoomID)(id >> 4)
 #define ENVIRONMENT_ID(id)			(EnvironmentID)(id & ENVIRONMENT_MAX)
+
 
 enum GameState {
 	RUNNING,
@@ -55,8 +57,9 @@ enum RoomID {
 };
 
 enum EnvironmentID {
-	ENVIRONMENT_UPPER_LEVEL,
-	ENVIRONMENT_LOWER_LEVEL,
+	ENVIRONMENT_UPPER_LEVEL = 0x01,
+	ENVIRONMENT_LOWER_LEVEL = 0x02,
+	ENVIRONMENT_BOTH_LEVEL  = ENVIRONMENT_LOWER_LEVEL | ENVIRONMENT_UPPER_LEVEL,
 
 	ENVIRONMENT_MAX = 0x0F
 };
@@ -114,14 +117,6 @@ enum ItemEnum {
 	ITEM_NONE
 };
 
-struct Description {
-	// all set in GameManager::Init()
-	EEcstr default;
-	EEcstr explore;
-	EEcstr alreadyExplored;
-	EEcstr enter;
-};
-
 struct Item {
 	// all set in GameManager::Init()
 	ItemEnum		id;
@@ -141,14 +136,31 @@ struct Student {
 	bool	 defeated{ false };
 };
 
-struct Location {
+struct LocationDescriptions {
+	// all set in GameManager::Init()
+	EEcstr default				{ nullptr };
+	EEcstr explore				{ nullptr };
+	EEcstr alreadyExplored{ nullptr };
+	EEcstr enter					{ nullptr };
+};
+
+struct LocationCreateInfo {
 	//all set in GameManager::Init()
 	LocationID							id					{ LocationID::LOCATION_NONE };
 	std::vector<Item>				items				{};	// may still be empty after GameManager::Init()
 	std::vector<LocationID> exits				{};	// may still be empty after GameManager::Init()
 	std::vector<Student>		students		{};	// may still be empty after GameManager::Init()
 	EEcstr									name				{ nullptr };
-	Description							description	{ nullptr };
+	LocationDescriptions		description	{};
 	bool										visible			{ false };
 	bool										explored		{ false };
+};
+
+
+// Getter specifications for the descriptions of the locations
+enum LocationDescriptionType {
+	DESC_DEFAULT					= offsetof(LocationDescriptions, default),
+	DESC_EXPLORE					= offsetof(LocationDescriptions, explore),
+	DESC_ALREADY_EXPLORED	= offsetof(LocationDescriptions, alreadyExplored),
+	DESC_ENTER						= offsetof(LocationDescriptions, enter),
 };

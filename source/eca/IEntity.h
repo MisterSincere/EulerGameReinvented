@@ -6,18 +6,19 @@
 #pragma once
 
 #include "ecaDefs.h"
+#include "Location.h"
 
 namespace ECA {
 
 	template<typename TReturn, typename ... TParams>
 	class IEntity {
 	public:
-		IEntity(Location const* loc = nullptr) : i_pCurLocation(loc) {}
+		IEntity(::ECA::Location const* loc = nullptr) : i_pCurLocation(loc) {}
 
 		virtual TReturn move(TParams ...) = 0;
 
 		void setCurLocation(Location const* loc) { i_pCurLocation = loc; }
-		LocationID getCurLocation() const { return i_pCurLocation->id; }
+		LocationID getCurLocation() const { return i_pCurLocation->getID(); }
 		bool setAlive(bool isAlive) { i_isAlive = isAlive; }
 		bool isAlive() const { return i_isAlive; }
 

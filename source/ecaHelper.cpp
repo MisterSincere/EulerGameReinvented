@@ -45,8 +45,3 @@ EEcstr ECA::roomIDToStr(RoomID idToCompare)
 #undef __TCASE
 	return STR("");
 }
-
-bool ECA::isExitOf(LocationID id, Location const* loc)
-{
-	return std::find(loc->exits.begin(), loc->exits.end(), id) != loc->exits.end();
-}
