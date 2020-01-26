@@ -38,7 +38,11 @@ add_definitions("-DASSETS_PATH=\"${CMAKE_SOURCE_DIR}/assets/\"")
 add_executable (EulerAdventure ${EulerAdventure} ${ECA} ${SCENES} ${CORETOOLS})
 add_dependencies(EulerAdventure EulerEngine)
 
+# Other dependencies
+target_link_libraries (EulerAdventure general ${Vulkan_LIBRARIES}
+                                              ${FREETYPE_LIBRARIES}
+                                              ${GLFW_STATIC_LIBRARIES}
+                                              glm)
+
 # EulerEngine library
-target_link_libraries (EulerAdventure
-	debug Debug/EulerEngine
-	optimized Release/EulerEngine)
+target_link_libraries (EulerAdventure EulerEngine)

@@ -5,8 +5,16 @@
 /////////////////////////////////////////////////////////////////////
 #include "GameManager.h"
 
-#include <Windows.h>
-#include <io.h>
+#if defined(_WIN32)
+# include <Windows.h>
+# include <io>
+# define WRITE_UNICODE int __prevMode{ _setmode(_fileno(stdout), _O_U16TEXT) };
+# define WRITE_RESTORE _setmode(_fileno(stdout), __prevMode);
+#else
+# include <locale>
+# define WRITE_UNICODE (void)0
+# define WRITE_RESTORE (void)0
+#endif
 #include <fcntl.h>
 
 #include "EulerAdventure.h"
@@ -112,7 +120,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Office
 	//--------------------------------------------------------------------------
-	description.default					= STR("In deinem Büro ist mittig ein überfüllter Schreibtisch [desk] an dem ein Scott Chefsessel mit original Kunstleder im Wert von 500€ steht [chair]. Außerdem stehen zwei Schränke in jeweils einer Ecke des Raumes.");
+	description.defaultStr					= STR("In deinem Büro ist mittig ein überfüllter Schreibtisch [desk] an dem ein Scott Chefsessel mit original Kunstleder im Wert von 500€ steht [chair]. Außerdem stehen zwei Schränke in jeweils einer Ecke des Raumes.");
 	description.explore					= STR("Das Büro ist nicht besonders groß, aber du bist trotzdem stolz auf deinen Chefsessel. Außerdem steht eine Vitrine in dem Raum, in der deine Preise und Trophäen stehen.");
 	description.alreadyExplored	= STR("Der Raum ist nicht besonders groß, aber auf deinen Chefsessel bist du trotzdem stolz und natürlich auf deine Preis und Trophäen in deiner Vitrine.");
 	description.enter						= STR("Du gehst in dein Büro.");
@@ -163,7 +171,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Korridor obere Etage
 	//--------------------------------------------------------------------------
-	description.default					= STR("Im Korridor angekommen siehst du mehrere Räume.");
+	description.defaultStr					= STR("Im Korridor angekommen siehst du mehrere Räume.");
 	description.explore					= STR("Was willste wissen? Es ist nur ein typischer langweiliger Korridor, mit einem Kaffeelöscherkasten [extinguisher box], wie man's in Uni's gewohnt ist!");
 	description.alreadyExplored = STR("Ein typischer Korridor mit einem Kaffeelöscherkasten [extinguisherbox]. Ist halt 'ne Uni!");
 	description.enter						= STR("Du gehst in den Korridor.");
@@ -211,7 +219,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Lethal coffee room
 	//--------------------------------------------------------------------------
-	description.default					= STR("Dies ist der Kaffee- und Kuchenraum der Lehrer.\nDu siehst eine neumodische Ikea Küche, mit vielen Küchenschränken [cupboards] auf denen eine uralte verrostete vermutlich aus dem 1. Weltkrieg stammende Kaffeemaschine [coffeemachine] und eine Mikrowelle steht!");
+	description.defaultStr					= STR("Dies ist der Kaffee- und Kuchenraum der Lehrer.\nDu siehst eine neumodische Ikea Küche, mit vielen Küchenschränken [cupboards] auf denen eine uralte verrostete vermutlich aus dem 1. Weltkrieg stammende Kaffeemaschine [coffeemachine] und eine Mikrowelle steht!");
 	description.explore					= STR("Du fragst dich, ws in den ganzen Küchenschränken [cupboards] sein könnte und warum der Boden hier höher ist!");
 	description.alreadyExplored = STR("Weißt du noch als du dich gefragt hast was in den ganzen Küchenschränken sein könnte und warum der Boden hier höher ist?");
 	description.enter						= STR("Du gehst in den Kaffeeraum.");
@@ -254,7 +262,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Teacher's room
 	//--------------------------------------------------------------------------
-	description.default					= STR("In diesem Raum werden Konferenzen zu wichtigen Themen abgehalten und unwichtigen, aber die betreffen dich ja eh nicht!\nEinem Konferenzraum entsprechend befindet sich in der Mitte ein Tisch in der Form eines U's. Außerdem hängt an der Wand ein Stundenplan und ein Schrank mit den Fächern für die Lehrer.");
+	description.defaultStr					= STR("In diesem Raum werden Konferenzen zu wichtigen Themen abgehalten und unwichtigen, aber die betreffen dich ja eh nicht!\nEinem Konferenzraum entsprechend befindet sich in der Mitte ein Tisch in der Form eines U's. Außerdem hängt an der Wand ein Stundenplan und ein Schrank mit den Fächern für die Lehrer.");
 	description.explore					= STR("Die Lehrer starren dich aus großen Augen an. Du bist wohl mitten in eine Versammlung reingeplatzt. Kann dir auch egal sein, ist keine Konferenz von der du weißt. Dir fällt der Ventilationsschact [ventilation shaft] auf, bei dem das Gitter nur noch an den Schacht gelehnt ist.");
 	description.alreadyExplored = STR("Die Konferenz wird wohl nie enden. Der Ventilationsschacht [ventilationshaft] ist auch echt auffällig.");
 	description.enter						= STR("Du gehst in den Konferenzraum.");
@@ -288,7 +296,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Chamber of the void
 	//--------------------------------------------------------------------------
-	description.default					= STR("Dieser Raum sieht aus als wenn hier seit Jahren niemand mehr drin gewesen wäre.");
+	description.defaultStr					= STR("Dieser Raum sieht aus als wenn hier seit Jahren niemand mehr drin gewesen wäre.");
 	description.explore					= STR("Du siehst eine deiner Notizen [note] zwischen zwei Kartons gequetscht. Keine Ahnung wie der Windstoß das verursachen konnte...");
 	description.alreadyExplored = STR("Eine deiner Notizen [note] liegt zwischen zwei Kartons.");
 	description.enter						= STR("Du betrittst die Kammer der Leere.");
@@ -321,7 +329,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Ventilation room
 	//--------------------------------------------------------------------------
-	description.default					= STR("Ein Ventilationsraum. Alt, veranzt und staubig. Gelüftet wurde hier schon seit Jahren nicht mehr!");
+	description.defaultStr					= STR("Ein Ventilationsraum. Alt, veranzt und staubig. Gelüftet wurde hier schon seit Jahren nicht mehr!");
 	description.explore					= STR("Du siehst eine deiner Notizen [note].");
 	description.alreadyExplored = STR("Aber immerhin liegt hier eine deiner Notizen.");
 	description.enter						= STR("Du schwebst in den Ventilationsraum.");
@@ -354,7 +362,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Ladies' toilets upper level
 	//--------------------------------------------------------------------------
-	description.default					= STR("In der Damentoilette angekommen, sieht Kollegin Stelz dich irritiert an und geht mit den Worten: \"Sie überraschen mich immer wieder\" raus.\nBeschreibung: Warst du noch nie in einer Damentoilette?!");
+	description.defaultStr					= STR("In der Damentoilette angekommen, sieht Kollegin Stelz dich irritiert an und geht mit den Worten: \"Sie überraschen mich immer wieder\" raus.\nBeschreibung: Warst du noch nie in einer Damentoilette?!");
 	description.explore					= STR("Jetzt bloß nicht spülen. Es sei denn du magst keine Skilbooks... [skillbook]. Bei diesem Skillbook scheinst du deine Beamfähigkeit erlernen zu können.");
 	description.alreadyExplored = STR("Naja, hier liegt halt noch so ein lahmes Skillbook [skillbook].");
 	description.enter						= STR("Du perversierst in die Damentoilette.");
@@ -387,7 +395,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Mens' toilet upper level
 	//--------------------------------------------------------------------------
-	description.default					= STR("Als du die Herrentoilette betrittst, weht dir ein animalischer Duft entgegen, welchen du dem ebenfalls \"leicht\" animalischen Direktor zuordnest!");
+	description.defaultStr					= STR("Als du die Herrentoilette betrittst, weht dir ein animalischer Duft entgegen, welchen du dem ebenfalls \"leicht\" animalischen Direktor zuordnest!");
 	description.explore					= STR("Der Geruch ist wirklich unerträglich. Lange wirst du es hier nicht mehr aushalten können.");
 	description.alreadyExplored = STR("Der Geruch ist wirklich unerträglich. Lange wirst du es hier nicht mehr aushalten können.");
 	description.enter						= STR("Du gehst in die Herrentoilette.");
@@ -411,7 +419,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Principals' room
 	//--------------------------------------------------------------------------
-	description.default					= STR("Das Büro des Direktors ist ähnlich wie deines, über den vermüllten Schreibtisch schaut dich ein grimmiger Haufen Kalorien an. Dies müsste deiner mathematisch hoch komplexen Überlegungen nach der Direktor sein.");
+	description.defaultStr					= STR("Das Büro des Direktors ist ähnlich wie deines, über den vermüllten Schreibtisch schaut dich ein grimmiger Haufen Kalorien an. Dies müsste deiner mathematisch hoch komplexen Überlegungen nach der Direktor sein.");
 	description.explore					= STR("Meisterhaft in Inneneinrichtung hat der Direktor hier einen braunen Tisch, zwei graue Stühle und eine Ansammlung von an Krawatten erhängten Skeletten.\nEr ist damit beschäftigt, Frederic Chopin's neunte Death Metal Komposition zu hören.");
 	description.alreadyExplored = STR("Der Direktor hört noch immer laute Musik von Frederic Chopin.");
 	description.enter						= STR("Du stolzierst in das Büro des Schulleiters.");
@@ -435,7 +443,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Elevator
 	//--------------------------------------------------------------------------
-	description.default					= STR("An einer der blank geputzten grauen Fahrstuhlwände steht:\"Im Brandfall nicht benutzbar!\".");
+	description.defaultStr					= STR("An einer der blank geputzten grauen Fahrstuhlwände steht:\"Im Brandfall nicht benutzbar!\".");
 	description.explore					= STR("Erst jetzt fällt dir der Gully [gully] auf dem Boden auf. Wo der wohl hinführt...\nUm das herauszufinden wirst du definitiv so etwas wie einen Hebel benötigen.\nDie Feueraxt [fire ax] ist dir eigentlich schon vorher aufgefallen, doch vielleicht wird sie jetzt wichtig?");
 	description.alreadyExplored = STR("Auch ein Gullideckel ist hier noch. #normal");
 	description.enter						= STR("So gehe er in das Objekt, welches auch als ein fahrender Stuhl bezeichnet wird.");
@@ -477,7 +485,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Staircase
 	//--------------------------------------------------------------------------
-	description.default					= STR("Ein Treppenhaus...       es brennt!");
+	description.defaultStr					= STR("Ein Treppenhaus...       es brennt!");
 	description.explore					= STR("Das Feuer ist echt unverschämt! Es blockiert dir doch tatsächlich den Weg in den ersten Stock [floor 1]. Was bildet es sich eigentlich ein?!");
 	description.alreadyExplored = STR("Das Feuer blockiert dir immer noch den Weg in den ersten Stock [floor 1]!");
 	description.enter						= STR("Du stolperst in das Treppenhaus.");
@@ -502,7 +510,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Corridor lower level
 	//--------------------------------------------------------------------------
-	description.default					= STR("Ein langer Korridor...\nAn ihm liegen vier vom Aufbau her identische Hörsäle, jedoch gehört der erste den musischen Wissenschaften, der zweite zu den literarischen, der dritte zu den gesellschaftlichen und als letztes kommt endlich der naturwissenschaftliche Hörsal.");
+	description.defaultStr					= STR("Ein langer Korridor...\nAn ihm liegen vier vom Aufbau her identische Hörsäle, jedoch gehört der erste den musischen Wissenschaften, der zweite zu den literarischen, der dritte zu den gesellschaftlichen und als letztes kommt endlich der naturwissenschaftliche Hörsal.");
 	description.explore					= STR("Grau. Und unspektakulär. Der Mülleimer muss unbedingt mal geleert werden.");
 	description.alreadyExplored = STR("Grau. Und unspektakulär.");
 	description.enter						= STR("Du langweilst dich in den Korridor.");
@@ -535,7 +543,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Lecture hall 1
 	//--------------------------------------------------------------------------
-	description.default					= STR("Man darf sich bekanntlich nicht mehr fragen, ob musische Wissenschaften überhaupt als eine Wissenschaft gelten, da Künstler und Freidenker sich sonst angegriffen fühlen, aber ein Naturwissenschaftler wie du hat wohl besseres verdient!");
+	description.defaultStr					= STR("Man darf sich bekanntlich nicht mehr fragen, ob musische Wissenschaften überhaupt als eine Wissenschaft gelten, da Künstler und Freidenker sich sonst angegriffen fühlen, aber ein Naturwissenschaftler wie du hat wohl besseres verdient!");
 	description.explore					= STR("Der Professor liegt in ziemlich bizarren Posen auf dem Tisch und erklärt den Studenten(und Studentinnen), welche Pose welche Wirkung hat.\nDu kannst das Geld, dass für jede Pose gezahlt wird, förmlich von dem Direktor in die Tasche des Professors wandern sehen.\nHier steht noch Maribelle [student], obwohl sie wesentlich kleiner ist, schaut sie hochnäsig auf dich herab.");
 	description.alreadyExplored = STR("Maribelle [student] stolziert hier immer noch herum.");
 	description.enter						= STR("Du gehst in den ersten Hörsaal der Welt... ne warte.");
@@ -568,7 +576,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Lecture hall 2
 	//--------------------------------------------------------------------------
-	description.default					= STR("Im vorderen Teil liest der Professor aus einem Buch einen Text in einer Sprache, die du nicht verstehst, während im hinteren Teil sich Schüler mit Käsekästchen, Schere-Stein-Papier und Battlefield die Zeit vertreiben.");
+	description.defaultStr					= STR("Im vorderen Teil liest der Professor aus einem Buch einen Text in einer Sprache, die du nicht verstehst, während im hinteren Teil sich Schüler mit Käsekästchen, Schere-Stein-Papier und Battlefield die Zeit vertreiben.");
 	description.explore					= STR("Schon wieder eine Runde 4-1 KD, der Schüler ist wirklich gut darin, Minen im richtigen Moment hochzujagen. Der Professer liest weiterhin monoton aus dem Buch vor.\nJochen [student] ist so gelangweilt, dass er deinen Schritten Aufmerksamkeit schenkt.");
 	description.alreadyExplored = STR("Der Professer liest noch immer aus dem Buch vor, während dir Jochen noch immer hinterher starrt.");
 	description.enter						= STR("Du gehst in den zweiten Hörsaal der Welt... ne warte");
@@ -600,7 +608,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Lecture hall 3
 	//--------------------------------------------------------------------------
-	description.default					= STR("Der Lehrende zeigt aufgeregt auf eine Karte, welchen Schwerpunkt diese Vorlesung auch immer hat, eine Karte macht alles spannender! Sein Gegenspieler gewinnt in dem Pokerduell und jubelt laut auf!");
+	description.defaultStr					= STR("Der Lehrende zeigt aufgeregt auf eine Karte, welchen Schwerpunkt diese Vorlesung auch immer hat, eine Karte macht alles spannender! Sein Gegenspieler gewinnt in dem Pokerduell und jubelt laut auf!");
 	description.explore					= STR("Alle Studierenden sind inzwischen wieder drin, während der Professor eine Runde in der Ecke schmollt.\nOh-oh, da kommt Anthon [student]");
 	description.alreadyExplored = STR("Anthon [student] bemerkt dich sofort, als du den Raum betrittst.");
 	description.enter						= STR("Du gehst in den dritten Hörsaal der...Ach was soll der Scheiß denn!");
@@ -632,7 +640,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Lecture hall 4
 	//--------------------------------------------------------------------------
-	description.default					= STR("Dein Reich ist gerade von einem Chemieprofessor belegt. Dieser ist grade dabei mit peinlicher Sorgfalt den Tisch in alle vier Himmelsrichtungen gleichzeitig zu katapultieren!");
+	description.defaultStr					= STR("Dein Reich ist gerade von einem Chemieprofessor belegt. Dieser ist grade dabei mit peinlicher Sorgfalt den Tisch in alle vier Himmelsrichtungen gleichzeitig zu katapultieren!");
 	description.explore					= STR("Die Frau braucht wieder einmal zu lange, du musst den Vortrag wohl beginnen, während sie noch Chemikalien mischt.\nGerhard [student], dein persöhnlicher Fanboy, starrt dich mit großen Augen an.");
 	description.alreadyExplored = STR("Gerhards Blick bleibt sofort auf dir haften, als du in Raum gehst.");
 	description.enter						= STR("Auf allen Vieren in Hörsaal 4 stolzieren.");
@@ -664,7 +672,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Locker room
 	//--------------------------------------------------------------------------
-	description.default					= STR("Modrig steigt der Geruch ranziger Käsebrote durch die Lüftungsschlitze einiger Schließfächer, welche jedoch alle durch Algen in einem schönen Armee-Grünton gehalten werden. Alle? Nein, nicht alle! Eine glanzpolierte Marmorvariante, die dem Hausmeister gehört, koexistiert tatsächlich noch in diesem Raum.");
+	description.defaultStr					= STR("Modrig steigt der Geruch ranziger Käsebrote durch die Lüftungsschlitze einiger Schließfächer, welche jedoch alle durch Algen in einem schönen Armee-Grünton gehalten werden. Alle? Nein, nicht alle! Eine glanzpolierte Marmorvariante, die dem Hausmeister gehört, koexistiert tatsächlich noch in diesem Raum.");
 	description.explore					= STR("So viele Schließfächer [locker], und alle sind nummeriert. Verhindert wird jedoch eine genaue Identifikation des Hausmeisterfaches [shiny locker], da die Nummer wegpoliert wurde.");
 	description.alreadyExplored = STR("Jedoch sind sowohl die Normalen [locker] als auch der Besondere [shiny locker] relativ uninteressant.");
 	description.enter						= STR("Du gehst in den lockeren Raum. (Translator was fired in the process)");
@@ -715,7 +723,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Storage room
 	//--------------------------------------------------------------------------
-	description.default					= STR("Ein Mob, ein Eimer, ein Feuchttuch.... dich verwundert es, wie der Hausmeister nur mit diesen Sachen zumindest sein Revier so poliert");
+	description.defaultStr					= STR("Ein Mob, ein Eimer, ein Feuchttuch.... dich verwundert es, wie der Hausmeister nur mit diesen Sachen zumindest sein Revier so poliert");
 	description.explore					= STR("Dir fällt ein Spachtel [spatula] auf, der eindeutig aus der Chemiesammlung genommen wurde. Hol zurück, was dir gehört!");
 	description.alreadyExplored = STR("Hier liegt ein Spachtel [spatula], der eindeutig aus der Chemiesammlung genommen wurde.");
 	description.enter						= STR("Du betrittst die Müllhalde.");
@@ -748,7 +756,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Ladies' toilet lower level
 	//--------------------------------------------------------------------------
-	description.default					= STR("Es riecht herrlich nach Einhorn und Regenbogen, und nach dem alkohoisierten Hausmeister, der dabei ist den Lippenstift vom Spiegel zu entfernen und dich nicht bemerkt.");
+	description.defaultStr					= STR("Es riecht herrlich nach Einhorn und Regenbogen, und nach dem alkohoisierten Hausmeister, der dabei ist den Lippenstift vom Spiegel zu entfernen und dich nicht bemerkt.");
 	description.explore					= STR("Es ist ein Graus, Steven hat sich von Rebecca getrennt, und Grün ist das neue Schwarz, zumindest nach den Tratschtanten auf dem Klo.");
 	description.alreadyExplored = STR("Die Tratschtanten reden noch immer.");
 	description.enter						= STR("Du gehst mal wieder in eine Damentoilette.");
@@ -772,7 +780,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Mens' toilet lower level
 	//--------------------------------------------------------------------------
-	description.default					= STR("Das Putzfrauenspecialcorps hat sich gestern zur Aufgabe gemacht den grünen Schleim von der Wand zu entfernen... Nur noch ein wenig Neutralreiniger auf dem Boden und eine Cap, mit dem Wort \"Obey\", schaukelnd an einer Lampe, sind noch übrig geblieben.");
+	description.defaultStr					= STR("Das Putzfrauenspecialcorps hat sich gestern zur Aufgabe gemacht den grünen Schleim von der Wand zu entfernen... Nur noch ein wenig Neutralreiniger auf dem Boden und eine Cap, mit dem Wort \"Obey\", schaukelnd an einer Lampe, sind noch übrig geblieben.");
 	description.explore					= STR("Der Schleim heißt Wilhelm von Kaiser [wilhelm] und verkauft während der Pausen Katzenbabys für diejenigen in Not, ein sehr angenehmer Geselle.");
 	description.alreadyExplored = STR("Wilhelm von Kaiser [wilhelm] schleimt noch immer hier rum.");
 	description.enter						= STR("Du gehst in die Herrentoilette.");
@@ -805,7 +813,7 @@ void ECA::GameManager::Init() {
 	//--------------------------------------------------------------------------
 	// Elevator shaft
 	//--------------------------------------------------------------------------
-	description.default					= STR("Im Raum angekommen fällt dir sofort die ganze Elektronik hier unten auf. Ob hier noch mehr ist?");
+	description.defaultStr					= STR("Im Raum angekommen fällt dir sofort die ganze Elektronik hier unten auf. Ob hier noch mehr ist?");
 	description.explore					= STR("Hier liegt eine Kaffeetasse mit, wer hätte es gedacht, heißem Kaffee [cup coffee] drin.");
 	description.alreadyExplored = STR("FANCY DESCRIPTION"); // TODO
 	description.enter						= STR("Du gehst in den Schaft des fahrenden Stuhls.");
@@ -842,7 +850,7 @@ void ECA::GameManager::Init() {
 void ECA::GameManager::PrintCurrentState()
 {	
 	// We use some fancy unicode symbols to keep the mass of details enjoyable
-	int prevMode = _setmode(_fileno(stdout), _O_U16TEXT);
+  WRITE_UNICODE;
 
 	EE_PRINTW("\n||GAME_STATE||");
 
@@ -850,5 +858,5 @@ void ECA::GameManager::PrintCurrentState()
 	for (auto const& curLocation : m_locations) curLocation.second->printDetails();
 
 	// Needs to be reseted for other prints to the console that would fail otherwise
-	_setmode(_fileno(stdout), prevMode);
+	WRITE_RESTORE;
 }

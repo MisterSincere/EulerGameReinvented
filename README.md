@@ -1,5 +1,16 @@
 # EulerGameReinvented
-## How to setup
+
+## How to setup (Linux)
+1. Vulkan: `https://vulkan.lunarg.com/` provides information about how to setup vulkan
+2. GLFW:
+  - `git clone git@github.com:glfw/glfw.git`
+  - `mkdir build`, `cd build`
+  - `cmake ..`
+  - for building: `make` or `cmake --build`
+3. FreeType:
+  - Check out this link!!!! `http://www.linuxfromscratch.org/blfs/view/svn/general/freetype2.html`
+
+## How to setup (Windows)
 1. Download the following third party libraries and set it to the specified environmental variable.
    1. ```EE_VULKAN_PATH```: https://vulkan.lunarg.com/sdk/home
    2. ```EE_GLFW_PATH```: https://www.glfw.org/

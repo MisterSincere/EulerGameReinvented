@@ -1,40 +1,41 @@
-cmake_minimum_required(VERSION 3.13.1)
+cmake_minimum_required(VERSION 3.10.0)
 project (EulerAdventureReinvented)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-if (CMAKE_GENERATOR MATCHES Win64)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/Win64/")
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/Win64/")
-    SET(EXECUTABLE_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin/Win64/")
-else()
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/Win32/")
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/Win32/")
-    SET(EXECUTABLE_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin/Win32/")
-endif()
+# Link our find scripts to find the corresponding files
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
-# Library paths
-link_directories ($ENV{EE_VULKAN_PATH}/Lib)
-link_directories ($ENV{EE_GLFW_PATH}/lib-vc2015)
-link_directories (${CMAKE_CURRENT_SOURCE_DIR}/EulerEngine/source/freetype/lib64)
+# We need vulkan... pronto!
+find_package(Vulkan REQUIRED)
+# We also need some computation thingies
+find_package(glm REQUIRED)
+
+# Lets find glfw
+find_package(PkgConfig REQUIRED)
+pkg_search_module(GLFW REQUIRED glfw3)
+
+# Lets find freetype
+find_package(Freetype REQUIRED)
+message("Includes ${FREETYPE_INCLUDE_DIRS}")
+message("Libraries ${FREETYPE_LIBRARIES}")
+
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/")
+set(EXECUTABLE_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin/")
+
 
 # Include paths
-include_directories ($ENV{EE_GLM_PATH})
-include_directories ($ENV{EE_VULKAN_PATH}/Include)
-include_directories ($ENV{EE_GLFW_PATH}/include)
+include_directories (${Vulkan_INCLUDE_DIR})
+include_directories (${GLFW_INCLUDE_DIRS})
+include_directories (${FREETYPE_INCLUDE_DIRS})
 include_directories (${CMAKE_CURRENT_SOURCE_DIR})
-include_directories (${CMAKE_CURRENT_SOURCE_DIR}/EulerEngine/source/freetype/include)
 
 # Euler Engine
-add_definitions("-DEE_USE_UNICODE")
+#add_definitions("-DEE_USE_UNICODE")
 add_subdirectory(EulerEngine/source)
 set_property(TARGET EulerEngine PROPERTY FOLDER "Core")
 
 # Main Game
 add_subdirectory(source)
 set_property(TARGET EulerAdventure PROPERTY FOLDER "Project")
-
-
-# Vulkan and glfw library
-target_link_libraries (EulerEngine general vulkan-1.lib glfw3.lib freetype.lib)
-target_link_libraries (EulerAdventure general vulkan-1.lib glfw3.lib freetype.lib)

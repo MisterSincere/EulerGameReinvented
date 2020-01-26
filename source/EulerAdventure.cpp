@@ -136,7 +136,7 @@ void EulerAdventure::ChangeGameState(GameState gs) {
 
 
 /*** MAIN ENTRY POINT ***/
-int main(char** argv, int argc) {
+int main(int argc, char** argv) {
 	EulerAdventure* ea = new EulerAdventure;
 	assert(ea);
 

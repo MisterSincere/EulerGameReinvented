@@ -9,6 +9,7 @@ cmake_install.cmake
 *.lnk
 *.bat
 *.spv
+*.idea
 !GenerateSolution.bat
 
 .vs/

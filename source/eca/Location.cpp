@@ -1,5 +1,6 @@
 ﻿#include "Location.h"
 
+#include <algorithm>
 #include "ecaHelper.h"
 
 ECA::Location::Location(LocationCreateInfo const& cinfo)
@@ -17,7 +18,7 @@ ECA::Location::Location(LocationCreateInfo const& cinfo)
 ECA::Location::~Location()
 {
 	RELEASE_S(m_name);
-	RELEASE_S(m_descriptions.default);
+	RELEASE_S(m_descriptions.defaultStr);
 	RELEASE_S(m_descriptions.explore);
 	RELEASE_S(m_descriptions.alreadyExplored);
 	RELEASE_S(m_descriptions.enter);
@@ -71,7 +72,7 @@ void ECA::Location::removeExit(LocationID id)
 void ECA::Location::setDescription(LocationDescriptionType which, EEcstr str)
 {
 	switch (which) {
-	case DESC_DEFAULT: m_descriptions.default = str;
+	case DESC_DEFAULT: m_descriptions.defaultStr = str;
 	case DESC_EXPLORE: m_descriptions.explore = str;
 	case DESC_ALREADY_EXPLORED: m_descriptions.alreadyExplored = str;
 	case DESC_ENTER: m_descriptions.enter = str;
@@ -83,7 +84,7 @@ EEcstr ECA::Location::getDescription(LocationDescriptionType which) const
 	//if ((int)which > sizeof(LocationDescriptions)) return nullptr;
 	//return reinterpret_cast<EEcstr>(reinterpret_cast<char const*>(&m_descriptions) + (int)which);
 	switch (which) {
-	case DESC_DEFAULT: return m_descriptions.default;
+	case DESC_DEFAULT: return m_descriptions.defaultStr;
 	case DESC_EXPLORE: return m_descriptions.explore;
 	case DESC_ALREADY_EXPLORED: return m_descriptions.alreadyExplored;
 	case DESC_ENTER: return m_descriptions.enter;
@@ -107,11 +108,11 @@ void ECA::Location::printDetails() const
 		(m_isVisible) ? L"■" : L"□",
 		m_id);
 
-	EE_PRINTW("|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾\n", );
+	EE_PRINTW("|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾\n");
 
 	// Descriptions
 	EE_PRINTW("| \033[1;35mDESCRIPTIONS\033[0m:\n")
-	EE_PRINTW("| | \033[0;35mDEFAULT:\033[0m %s\n",  m_descriptions.default);
+	EE_PRINTW("| | \033[0;35mDEFAULT:\033[0m %s\n",  m_descriptions.defaultStr);
 	EE_PRINTW("| | \033[0;35mEXPLORE:\033[0m %s\n",  m_descriptions.explore);
 	EE_PRINTW("| | \033[0;35mEXPLORED:\033[0m %s\n", m_descriptions.alreadyExplored);
 

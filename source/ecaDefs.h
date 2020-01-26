@@ -20,9 +20,9 @@
 #define RELEASEP(x) if(x) {delete x; x = nullptr;}
 
 /* @brief Helper macros for the easy id management */
-#define LOCATION_ID(room, env)	(LocationID)(env | room << 4)
-#define ROOM_ID(id)							(RoomID)(id >> 4)
-#define ENVIRONMENT_ID(id)			(EnvironmentID)(id & ENVIRONMENT_MAX)
+#define LOCATION_ID(room, env)  (env | room << 4)
+#define ROOM_ID(id)							RoomID(id >> 4)
+#define ENVIRONMENT_ID(id)			EnvironmentID(id & ENVIRONMENT_MAX)
 
 
 enum GameState {
@@ -30,7 +30,15 @@ enum GameState {
 	INITIALIZING,
 	INGAME,
 	MENU,
-	EXIT,
+	EXIT
+};
+
+enum EnvironmentID {
+	ENVIRONMENT_UPPER_LEVEL = 0x01,
+	ENVIRONMENT_LOWER_LEVEL = 0x02,
+	ENVIRONMENT_BOTH_LEVEL  = ENVIRONMENT_LOWER_LEVEL | ENVIRONMENT_UPPER_LEVEL,
+
+	ENVIRONMENT_MAX = 0x0F
 };
 
 enum RoomID {
@@ -54,14 +62,6 @@ enum RoomID {
 	ROOM_ELEVATOR_SHAFT,
 
 	ROOM_NONE
-};
-
-enum EnvironmentID {
-	ENVIRONMENT_UPPER_LEVEL = 0x01,
-	ENVIRONMENT_LOWER_LEVEL = 0x02,
-	ENVIRONMENT_BOTH_LEVEL  = ENVIRONMENT_LOWER_LEVEL | ENVIRONMENT_UPPER_LEVEL,
-
-	ENVIRONMENT_MAX = 0x0F
 };
 
 enum LocationID {
@@ -138,7 +138,7 @@ struct Student {
 
 struct LocationDescriptions {
 	// all set in GameManager::Init()
-	EEcstr default				{ nullptr };
+	EEcstr defaultStr 		{ nullptr };
 	EEcstr explore				{ nullptr };
 	EEcstr alreadyExplored{ nullptr };
 	EEcstr enter					{ nullptr };
@@ -159,7 +159,7 @@ struct LocationCreateInfo {
 
 // Getter specifications for the descriptions of the locations
 enum LocationDescriptionType {
-	DESC_DEFAULT					= offsetof(LocationDescriptions, default),
+	DESC_DEFAULT					= offsetof(LocationDescriptions, defaultStr),
 	DESC_EXPLORE					= offsetof(LocationDescriptions, explore),
 	DESC_ALREADY_EXPLORED	= offsetof(LocationDescriptions, alreadyExplored),
 	DESC_ENTER						= offsetof(LocationDescriptions, enter),
